@@ -1,411 +1,345 @@
-# Initial Architecture
+# Architecture
 
-## Status
+## Status and evidence labels
 
-This document records the initial architecture of a working concept called the
-**Incident-Derived Resilience Hardening Framework**. The project name is not
-finalized. This is an architecture freeze, not evidence that the system has been
-implemented or validated.
+This document defines the proposed architecture for the working concept
+**Incident-Derived Resilience Hardening Framework**. It is a design, not an
+implemented or validated system.
 
-The following labels distinguish the maturity of statements in this document:
+Statements use these meanings:
 
-- **Current Design Decision**: a boundary accepted for the initial architecture.
-- **Hypothesis**: an idea that must be tested.
-- **Open Question**: a decision intentionally deferred.
-- **Future Evaluation**: a proposed measurement, not a reported result.
-- **Non-goal**: work intentionally outside the current scope.
+- **Decision:** a boundary accepted for the initial design.
+- **Hypothesis:** a proposition that requires evaluation.
+- **Open question:** an intentionally deferred choice.
+- **Illustrative example:** a hypothetical, unexecuted scenario.
+- **Non-goal:** work intentionally outside the current scope.
 
-## Problem statement
+## Problems and design objective
 
-AI-assisted software development can support source analysis, code generation,
-bug fixing, tests, and application of general engineering practices. Source code
-alone, however, does not completely reveal where a system will fail in
-production, which failure modes have not yet been experienced, or how an incident
-from another system could manifest locally.
+The framework addresses discovery and reuse. Free-form reasoning and generic
+fault catalogues do not necessarily explore the combinations of timing,
+resources, dependencies, and recovery behavior that exist in a target. At the
+same time, reinterpreting the same evidence and rebuilding target context for
+every investigation may be expensive.
 
-Traditional chaos engineering often begins with a failure already imagined by a
-developer or operator:
+The objective is therefore to transform external operational failure knowledge
+into evidence-linked, target-specific experiments and verified regression
+assets, while recording enough identity and invalidation information to avoid
+unsafe or stale reuse.
 
-```text
-Human imagines failure
-        ↓
-Chaos experiment
-        ↓
-System test
+The design does not assume that repeated reading of source material is the only
+cost driver. Long searches, tool calls, patch-and-test iterations, experimental
+infrastructure, verification, context reconstruction, and human review are also
+candidate causes to be measured.
+
+## Architectural decisions
+
+1. Source statements and project inferences remain distinguishable.
+2. A failure model records mechanisms and preconditions, not only a category.
+3. Every target mapping is bound to target evidence and can end as
+   `APPLICABLE`, `NOT_APPLICABLE`, or `INSUFFICIENT_INFORMATION`.
+4. A human-controlled `SystemContract` is an independent input.
+5. AI output remains proposal-level information.
+6. A deterministic policy gate alone decides whether a structured experiment is
+   admissible within already granted authority.
+7. Experiment execution, injection validity, target verdict, and problem
+   attribution are separate result dimensions.
+8. An independent oracle evaluates the frozen contract from collected evidence;
+   the proposal generator cannot relax its own scoring rules.
+9. Exploration and regression have separate selection objectives.
+10. A hardening result becomes reusable only after same-condition and holdout
+    checks are recorded with scope and limitations.
+11. v0.x should be one CLI/library process with local artifacts. These logical
+    responsibilities do not require separate services, databases, or repos.
+12. Production execution is not an initial capability or implied future right.
+
+## Data flow
+
+```mermaid
+flowchart TD
+    S[External incident or postmortem] --> SR[SourceRecord]
+    SR --> IM[IncidentModel]
+    IM --> FM[FailureModel]
+    TE[Versioned target evidence] --> TM[TargetMapping]
+    FM --> TM
+    SC[Human-owned SystemContract] --> TM
+    TM --> SEL[Candidate selection]
+    MODE{Exploration or regression} --> SEL
+    SEL --> ES[ExperimentSpec]
+    SC --> ES
+    ES --> SG[Deterministic Policy / Safety Gate]
+    SG -->|rejected| EV[EvidenceBundle]
+    SG -->|approved| EX[Isolated execution adapter]
+    EX --> IC[Injection confirmation and observation]
+    IC --> OR[Independent Oracle]
+    SC --> OR
+    OR --> ER[ExperimentResult]
+    ER --> EV
+    EV --> HR[Human-reviewed hardening proposal]
+    HR --> RT[Same-condition and holdout re-tests]
+    RT --> HREC[HardeningRecord]
+    RT --> RC[RegressionCase]
+    HREC --> SEL
+    RC --> MODE
 ```
 
-This leaves failure-space coverage bounded by what people have already imagined.
-Real-world postmortems, outage reports, root-cause analyses, operational failures,
-and near-miss reports contain additional mechanisms that can broaden that space.
+The local artifact store is omitted from the arrows for readability. Every
+named model, decision, specification, and result is persisted there with
+references to its inputs. Storage is a logical responsibility; v0.x can use
+ordinary files and does not require a database.
 
-**Hypothesis:** reusable mechanisms can be extracted from those incidents, mapped
-to analogous structures in a target system, and converted into controlled fault
-experiments. Failures experienced elsewhere could then become failures tested
-proactively and safely in a local environment.
+## Component responsibilities
 
-## Core objective
+### Source handling
 
-Fault injection is a means, not the objective. The objective is to transform
-real-world operational failure knowledge into measurable software and system
-hardening.
+Records source identity, publisher, version, acquisition time and status, and
+allowed retention and disclosure scopes. It treats all external prose, source
+code, and logs as untrusted data rather than operational instructions. It does
+not assert that publicly accessible content is freely redistributable.
 
-The hardening surface can include:
+### Incident interpretation
 
-- application and infrastructure code;
-- configuration, retries, timeouts, queues, concurrency, and resource limits;
-- dependency handling and recovery logic;
-- restart and mutation authority;
-- observability and detection;
-- control-plane behavior and architecture boundaries.
+Builds an `IncidentModel` containing what the source reports: symptoms,
+timeline, environment, reported cause, mitigations, unresolved questions, and
+citations into the permitted source representation. A reported cause is not
+promoted into a cause independently verified by this project.
 
-The intended closed loop is:
+### Failure abstraction
 
-```text
-External failure knowledge
-        ↓
-Failure abstraction
-        ↓
-Target-system mapping
-        ↓
-Controlled fault experiment
-        ↓
-Observation
-        ↓
-Weakness discovery
-        ↓
-Hardening
-        ↓
-Re-test
-        ↓
-Persistent resilience regression
-```
+Builds a `FailureModel` that retains enabling conditions, trigger, mechanism,
+propagation, finite resources, expected observations, exclusions, and
+uncertainty. It may remove vendor-specific details only when the evidence still
+supports the resulting abstraction.
 
-## Design principles
+### Target analysis and mapping
 
-### Current Design Decisions
+Relates a failure mechanism to a versioned snapshot of target code,
+configuration, dependencies, permissions, topology, and test coverage. Each
+`TargetMapping` states which conditions were confirmed, which remain unknown,
+and why the mechanism is applicable, not applicable, or cannot yet be judged.
+Non-applicable incidents are valid outcomes, not pressure to invent an
+experiment.
 
-1. Incident provenance remains attached to derived failure knowledge.
-2. Failure semantics are separated from unnecessary vendor and system details.
-3. A human-authored system contract defines what must remain true.
-4. AI output remains proposal-level information.
-5. Deterministic policy controls execution authority and safety limits.
-6. Experiments use a structured intermediate representation before execution.
-7. Results have at least three states: `PASS`, `FAIL`, and `INCONCLUSIVE`.
-8. Missing evidence does not silently become `PASS`.
-9. Successful hardening is re-tested before it becomes a regression asset.
-10. Existing fault-injection providers should be reused where suitable.
+### Candidate selection
 
-## High-level architecture
+Selects from applicable mappings according to target relevance, untested scope,
+similarity to existing candidates, risk, and execution cost. Exact weights and
+optimization algorithms remain open until evaluation data exists. Candidate
+generation remains bounded by budget and does not attempt unrestrained
+combinatorial search.
 
-```text
-┌──────────────────────────────────────┐
-│ External Failure Knowledge           │
-│ Postmortems, incident reports, RCA   │
-└──────────────────┬───────────────────┘
-                   ▼
-┌──────────────────────────────────────┐
-│ 1. Source / Provenance               │
-│ Identity, time, license, integrity   │
-└──────────────────┬───────────────────┘
-                   ▼
-┌──────────────────────────────────────┐
-│ 2. Failure Knowledge Extraction      │
-│ Trigger, mechanism, impact, unknowns │
-└──────────────────┬───────────────────┘
-                   ▼
-┌──────────────────────────────────────┐
-│ 3. Portable Failure Model            │
-│ Reusable failure semantics           │
-└──────────────────┬───────────────────┘
-                   ▼
-┌──────────────────────────────────────┐
-│ 4. Target-System Understanding       │
-│ Topology, contracts, invariants      │
-└──────────────────┬───────────────────┘
-                   ▼
-┌──────────────────────────────────────┐
-│ 5. Failure Mapping                   │
-│ Analogous local structures           │
-└──────────────────┬───────────────────┘
-                   ▼
-┌──────────────────────────────────────┐
-│ 6. Experiment Generation             │
-│ Structured ExperimentSpec            │
-└──────────────────┬───────────────────┘
-                   ▼
-┌──────────────────────────────────────┐
-│ 7. Deterministic Safety Gate         │
-│ Authority, limits, abort, rollback   │
-└──────────────────┬───────────────────┘
-                   │ APPROVED
-                   ▼
-┌──────────────────────────────────────┐
-│ 8. Fault-Injection Provider          │
-│ Provider selected by capability      │
-└──────────────────┬───────────────────┘
-                   ▼
-┌──────────────────────────────────────┐
-│ 9. Observation                       │
-│ Metrics, logs, traces, visible state │
-└──────────────────┬───────────────────┘
-                   ▼
-┌──────────────────────────────────────┐
-│ 10. Deterministic Oracle             │
-│ PASS / FAIL / INCONCLUSIVE           │
-└──────────────────┬───────────────────┘
-                   │ FAIL
-                   ▼
-┌──────────────────────────────────────┐
-│ 11. Hardening                        │
-│ Code, config, architecture, recovery │
-└──────────────────┬───────────────────┘
-                   ▼
-┌──────────────────────────────────────┐
-│ 12. Re-test                          │
-│ Execute an equivalent experiment     │
-└──────────────────┬───────────────────┘
-                   │ PASS
-                   ▼
-┌──────────────────────────────────────┐
-│ 13. Resilience Regression            │
-│ Persist reusable regression knowledge│
-└──────────────────────────────────────┘
-```
+### Specification and deterministic policy
 
-## Initial contract boundaries
+`ExperimentSpec` freezes target identity, inputs, injection, load, duration,
+limits, injection-confirmation method, observations, oracle, cleanup, budget,
+and referenced versions. Immediately before execution, the gate rechecks target
+identity, prerequisites, current authority, protected resources, and limits.
 
-These boundaries are concepts, not implemented schemas.
+An old or previously approved specification is not automatically safe. A policy
+decision is bound to the current inputs and execution context and is invalidated
+when those inputs change.
 
-### `SourceIncident`
+### Execution and observation
 
-Identifies the external source and its provenance. Candidate fields include the
-source URL, publisher, title, source type, publication and retrieval timestamps,
-license metadata, provenance, and integrity metadata.
+An adapter invokes one selected, existing fault-injection backend in an isolated
+environment. It records whether the requested action started, whether the
+intended fault condition actually became true, whether required observations
+were collected, whether stop/cleanup completed, and what residual state remains.
+Provider success alone is not target recovery.
 
-### `FailureMechanism`
+### Independent oracle
 
-Represents failure semantics with unnecessary vendor or product details removed
-where possible. For example:
+The oracle evaluates a frozen `SystemContract` using declared evidence. The
+experiment generator and patch proposer cannot change invariants, load,
+observations, or thresholds in order to produce a favorable verdict. Contract or
+oracle changes are reviewed and versioned separately from target changes.
 
-```text
-dependency degradation
-+ unbounded retry
-+ bounded resource pool
-+ traffic amplification
-= resource exhaustion or cascading failure
-```
+### Evidence, hardening, and retention
 
-### `SystemContract`
+`EvidenceBundle` links immutable or integrity-addressed copies/references of the
+plan, policy decision, execution events, observations, oracle inputs and output,
+cleanup evidence, and unresolved gaps. AI may propose a hardening change, but a
+human reviews it before application to an isolated target.
 
-Defines, through human-controlled input, what must remain true. Candidate content
-includes objectives, invariants, service-level indicators, protected resources,
-authority boundaries, prohibited mutations, critical dependencies, and the
-allowed mutation surface. The architecture does not assume that an AI model has
-complete understanding of the target system.
+`HardeningRecord` records the change and before/after evidence. A
+`RegressionCase` is retained only with an executable scope, same-condition
+re-test, and limitations. Passing only the exact condition used to design the
+fix does not establish generalization.
 
-### `TargetMapping`
+## Human-owned `SystemContract`
 
-Maps a `FailureMechanism` onto target components, dependencies, resources,
-services, processes, code paths, queues, or network paths. A future representation
-may include supporting evidence, confidence, and explicit uncertainty.
+The contract defines at minimum:
 
-### `ExperimentSpec`
+- protected functions and invariants;
+- permitted degradation and required recovery;
+- target identity and blast-radius boundary;
+- permitted and prohibited operations;
+- observation and verdict prerequisites;
+- experiment budget, concurrency, and stop conditions; and
+- ownership, approval, freeze point, and change-review rules.
 
-Provides a structured intermediate representation rather than immediately
-executing generated shell commands. Candidate content includes the target,
-failure type, parameters, intensity, duration, expected symptoms, expected
-detection and recovery, invariants, and abort conditions.
+Changing a contract can change what counts as success without changing target
+behavior. It therefore creates a new evaluation lineage and triggers review of
+dependent mappings, specifications, oracles, and regression cases.
 
-### `SafetyDecision`
+## AI and authority boundary
 
-Records a deterministic decision about whether an `ExperimentSpec` may execute,
-including the applicable authority and enforced limits.
+AI may propose:
 
-### `ObservationBundle`
+- incident interpretation and reusable failure mechanisms;
+- target mappings and candidate rankings;
+- structured experiments within a supplied contract;
+- hardening changes; and
+- evidence-linked explanations and uncertainty.
 
-Contains the observability evidence collected during and after an experiment.
+AI output alone must not:
 
-### `ExperimentResult`
+- authorize execution or select targets outside an allowlist;
+- turn instructions embedded in external material into tool calls;
+- set or expand blast radius, intensity, duration, or concurrency beyond policy;
+- mutate protected resources or production;
+- enforce cleanup, claim rollback, or grant additional authority;
+- change a contract or oracle as part of a target patch; or
+- convert missing evidence, a failed injection, or harness success into target
+  `PASS`.
 
-Records at least `PASS`, `FAIL`, or `INCONCLUSIVE`. An incomplete observation
-bundle cannot support `PASS` merely because a failure was not observed.
+## Exploration and regression
 
-### `RegressionCase`
+### Exploration
 
-Represents a reusable experiment that passed after a hardening change was applied
-and the equivalent failure condition was tested again.
+Exploration searches for conditions not covered by the frozen baseline test set.
+It may vary parameters, operation order, dependencies, finite resources, and
+bounded compound failures. Incident-derived knowledge is one source of
+candidates, alongside ordinary tests, design review, generic chaos techniques,
+and property-based approaches.
 
-## AI and deterministic responsibility
+### Regression
 
-### AI may propose
+Regression re-runs a known weakness and its verified fix under frozen,
+version-compatible conditions. A regression result can detect recurrence but
+does not by itself show that a fix works under a different condition or target.
 
-- incident interpretation and failure-mechanism extraction;
-- abstraction of reusable semantics;
-- target-system investigation and analogous-structure discovery;
-- target mappings and experiment designs;
-- hardening changes;
-- interpretation support for collected results.
+Holdout experiments and cross-target mappings are therefore recorded separately
+from exact regression replays.
 
-### AI alone must not authorize
+## Multidimensional result model
 
-- experiment execution or destructive mutation;
-- target selection outside an allowlist;
-- blast radius, concurrency, maximum intensity, or maximum duration;
-- mutation of protected resources;
-- abort enforcement or rollback;
-- production mutation;
-- a final evidence-dependent `PASS` decision.
+A single `PASS` / `FAIL` / `INCONCLUSIVE` value cannot represent execution and
+target behavior accurately. `ExperimentResult` records at least:
 
-**Current Design Decision:** AI may propose. Deterministic policy decides whether
-a proposal is executable.
+| Dimension | Candidate states |
+| --- | --- |
+| Execution | `NOT_RUN`, `REJECTED`, `RUNNING`, `STOPPED`, `COMPLETED`, `EXECUTION_ERROR` |
+| Experiment validity | `VALID`, `INVALID_PRECONDITION`, `INJECTION_NOT_ESTABLISHED`, `OBSERVATION_INCOMPLETE`, `UNKNOWN` |
+| Target verdict | `CONTRACT_MET`, `CONTRACT_VIOLATED`, `EVIDENCE_INSUFFICIENT`, `NOT_EVALUATED` |
+| Problem attribution | `TARGET`, `HARNESS`, `INFRASTRUCTURE`, `MIXED`, `UNKNOWN`, `NONE_OBSERVED` |
 
-## Safety boundary
+Consequences include:
 
-An experiment is ineligible for execution unless deterministic controls can
-enforce all applicable constraints:
+- failed injection is not target success;
+- harness failure is not target failure;
+- missing observation is not normal behavior;
+- clean harness exit is not proof of target recovery; and
+- a target verdict is issued only when the experiment was valid and its required
+  evidence was available.
 
-- explicit execution authority;
-- allowed and protected targets;
-- bounded blast radius, duration, intensity, and concurrency;
-- preconditions and stop conditions;
-- enforceable abort behavior;
-- a defined rollback or safe terminal state;
-- sufficient observation to evaluate invariants.
+The evidence also distinguishes these claims:
 
-The initial architecture grants no production authority and defines no autonomous
-production-destruction path. Safety violations—including unauthorized mutation,
-limit violations, protected-resource mutation, abort failure, and unintended
-destructive action—have a target count of zero.
+1. symptoms resembled an external incident;
+2. the hypothesized failure mechanism occurred in this target;
+3. a target weakness was confirmed under those conditions;
+4. the weakness improved after a target change; and
+5. the external incident's original cause was independently established.
 
-## Retrieval and context strategy
+The ordinary experiment loop may support claims 2–4. It does not automatically
+support claim 5.
 
-**Open Question:** Direct context, search, retrieval-augmented generation, vector
-databases, agent-tool protocols, repository-native access, web retrieval, and
-hybrid approaches remain candidates.
+## Reproducibility boundary
 
-The current hypotheses are that search or retrieval may help with external
-incident knowledge, tool interfaces may help with live repository or system
-access, and fixed direct context may suit system contracts and safety policy.
-These hypotheses are not selected architecture.
+Freezing an `ExperimentSpec` improves traceability but does not make distributed
+or concurrent behavior perfectly reproducible. The result records all
+controllable parameters, observable environment identity, timing, model and
+harness versions, and available random seeds. Unavailable model internals or
+seeds remain explicitly unavailable. Multiple trials are used where outcomes
+are probabilistic, and variation is reported rather than hidden.
 
-Retrieval and agent-tool architecture will be selected empirically rather than
-assumed upfront.
+## Illustrative examples
 
-## Fault-injection backend
+These examples are hypothetical and unexecuted. They are not confirmed defects
+in any stream or other real system.
 
-**Open Question:** No provider is selected. Future candidates may include Chaos
-Mesh, Litmus, `tc`/`netem`, Toxiproxy, systemd, container or Kubernetes
-primitives, and managed cloud fault-injection services. The primary purpose is
-not to reimplement a general-purpose fault injector.
+### Retry amplification exhausts a finite pool
 
-## Hardening automation boundary
-
-The future loop may be:
+An external report suggests the mechanism:
 
 ```text
-FAIL
-  ↓
-AI proposes a patch
-  ↓
-Isolated branch
-  ↓
-Tests
-  ↓
-Equivalent fault experiment
-  ↓
-PASS
-  ↓
-Human review
-  ↓
-Merge
+dependency latency → overlapping retries → worker/connection retention
+                   → finite pool exhaustion → cascading timeout
 ```
 
-**Current Design Decision:** AI does not receive direct write authority to the
-default branch. Automatic merge and production mutation are not assumed.
+A mapping is `APPLICABLE` only if target evidence confirms a bounded pool, retry
+behavior that can overlap, and delayed release. It is `NOT_APPLICABLE` if retries
+are absent or strictly serialized within the proven load boundary, and
+`INSUFFICIENT_INFORMATION` if pool or retry behavior cannot be established.
 
-## Relationship to Ops Evidence Synthesis
+An isolated experiment would introduce bounded dependency latency under a fixed
+load, verify both the latency and retry amplification, observe pool occupancy,
+queueing, errors, protected functions, and recovery, and abort before the
+contract limit. A possible hardening proposal is retry budgeting, backoff, or
+resource isolation. Re-test uses the original condition plus a holdout condition
+with different latency timing or load. No result is claimed here.
 
-Ops Evidence Synthesis (OES) and this project have separate responsibilities.
+### Lost response after a committed side effect
+
+The hypothetical mechanism is:
 
 ```text
-OES                                  This framework
-Incident                             Incident knowledge
-  ↓                                    ↓
-Evidence                             Failure abstraction
-  ↓                                    ↓
-Investigation                        System mapping
-  ↓                                    ↓
-Hypothesis                           Experiment
-  ↓                                    ↓
-Evidence-grounded review             Fault injection
-  ↓                                    ↓
-Human decision                       Observation
-                                       ↓
-                                     Hardening
-                                       ↓
-                                     Regression
+side effect committed → response lost → caller retries
+                      → duplicate side effect
 ```
 
-OES addresses incident investigation and evidence governance. This framework
-addresses resilience experimentation and the hardening loop. OES is not a
-required dependency, and this project does not change OES licensing or commercial
-policy. A future integration adapter is possible but undecided.
+Applicability requires evidence of a retrying caller, a non-read operation, and
+an ambiguity window between commit and acknowledgment. Mapping should inspect
+idempotency keys, durable outcome records, deduplication scope, and the caller's
+confirmation path rather than assume them.
 
-## Third-party source policy
+An isolated adapter would cause response loss only after confirming the test
+side effect, then observe durable records and externally visible effect count.
+The oracle would require exactly one effect and a conclusive caller outcome. A
+candidate improvement could combine durable idempotency with status lookup. A
+holdout re-test would vary the loss timing or process restart boundary. This is
+also an unexecuted teaching example.
 
-**Current Design Decision:** publicly accessible content is not assumed to permit
-unrestricted redistribution. Derived records should retain the source URL,
-publisher, publication and retrieval timestamps, available license metadata,
-provenance, and integrity metadata. Structured failure representations may be
-stored, but the architecture does not automatically vendor and redistribute full
-third-party postmortems.
+## Deployment form and open decisions
 
-This design principle is not a legal determination. Precise ingestion,
-retention, quotation, and redistribution rules remain future work.
+For v0.x, the preferred form is one local CLI/library process, one artifact tree,
+serial execution, one isolated target, and one existing injection backend.
+Independent services, distributed locks, vector databases, multi-agent voting,
+multi-cloud support, and a management UI are not initial requirements.
 
-## Future evaluation
+Open decisions are recorded in the
+[minimal implementation plan](minimal-implementation-plan.md), including the
+first target, injection backend, artifact serialization, oracle implementation,
+and criteria for any later production discussion.
 
-No evaluation result is claimed yet. Candidate measurements are:
+## Relationship to other systems
 
-- **Failure Extraction Accuracy:** correctness of extracted failure semantics.
-- **Target Mapping Accuracy:** correctness of mappings to target structures.
-- **Executable Experiment Rate:** share of mappings converted into safe,
-  executable experiments.
-- **Novel Failure Coverage:** failure modes added beyond existing human-authored
-  tests; this is an important candidate KPI.
-- **Reproduction Fidelity:** similarity between the injected failure semantics or
-  symptoms and those reported by the source incident.
-- **Hardening Yield:** share of source incidents that lead to meaningful code,
-  architecture, or configuration improvements and successful re-tests.
-- **Inconclusive Rate:** share of evaluations that lack enough evidence or
-  mapping certainty for a verdict.
-- **Safety Violations:** unauthorized mutation, boundary violations, abort
-  failures, and unintended destructive actions; the target is zero.
-- **Generalization Benefit:** whether hardening against one failure also improves
-  behavior under related failures that were not directly used for that change.
+OES remains independent and is not needed to execute an experiment, judge it, or
+store evidence. A future evidence-format adapter is possible, without importing
+OES code or changing either project's licensing.
 
-Metric definitions, datasets, baselines, and acceptance thresholds remain open.
+Existing fault-injection tools should be used behind a narrow adapter when they
+meet the selected experiment's needs. The framework's intended contribution is
+the provenance-to-mechanism-to-mapping-to-evidence loop, not reimplementation of
+every injector.
 
 ## Non-goals
 
-The initial architecture does not aim to:
-
-- create a replacement for existing chaos-engineering platforms;
-- enable autonomous production destruction or unrestricted privileged access;
-- automatically collect and redistribute complete third-party postmortems;
-- open-source OES or change its rights policy;
-- require a particular model provider, retrieval method, or agent-tool protocol;
-- claim production readiness, validated safety, or successful hardening results;
-- finalize the project name or turn conceptual analogies into implementation
-  terminology.
-
-## Open questions
-
-- Direct context, RAG, an agent-tool protocol, or a hybrid?
-- Which model or provider is appropriate for each reasoning task?
-- How should a target system and its evidence be represented?
-- Which provider abstraction supports controlled, portable experiments?
-- How should deterministic oracles be specified and implemented?
-- What hardening authority can be safely automated?
-- Under what conditions, if any, could production applicability be considered?
-- What should the project ultimately be called?
+- exhaustive coverage of global incidents or the target's unknown failure set;
+- complete reproduction of an external organization's environment;
+- endless replay of one known failure;
+- unrestricted AI or production authority;
+- a single score that guarantees whole-system resilience;
+- initial support for every cloud, operating system, or injector;
+- integration or relicensing of OES; and
+- feature count or document count as measures of project success.

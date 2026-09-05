@@ -29,7 +29,8 @@ Explore an architecture that:
 1. extracts reusable failure mechanisms from real incidents;
 2. maps those mechanisms to analogous structures in a target system;
 3. converts mappings into structured, controlled experiments;
-4. evaluates results through observable evidence and deterministic oracles;
+4. confirms that the intended fault occurred and evaluates the target through
+   observable evidence and an independent oracle;
 5. hardens the system when a weakness is demonstrated; and
 6. persists successful hardening as reusable resilience regression cases after
    an equivalent re-test passes.
@@ -44,9 +45,11 @@ AI output remains proposal-level information. Mutation authority stays behind
 deterministic policy and explicit safety boundaries.
 
 Execution requires enforceable decisions about allowed and protected targets,
-blast radius, intensity, duration, concurrency, abort conditions, rollback, and
-authority. Evidence-dependent results must distinguish `PASS`, `FAIL`, and
-`INCONCLUSIVE`; incomplete evidence must not silently produce `PASS`.
+blast radius, intensity, duration, concurrency, abort conditions, cleanup or a
+safe terminal state, and authority. Results separately record execution state,
+experiment validity, target-contract verdict, and problem attribution. An
+incomplete observation, failed injection, or harness failure must not silently
+become target success or target failure.
 
 The initial architecture provides no default-branch write authority, automatic
 merge authority, or production mutation authority to AI-generated proposals.
@@ -70,6 +73,7 @@ merge authority, or production mutation authority to AI-generated proposals.
 - model nondeterminism;
 - observability gaps;
 - false confidence caused by weak or incomplete evidence;
+- stale or incorrect reuse after target or contract change;
 - provider-specific behavior that reduces portability.
 
 ## Open questions
@@ -79,6 +83,7 @@ merge authority, or production mutation authority to AI-generated proposals.
 - How should the target system and its evidence be represented?
 - What fault-provider abstraction is appropriate?
 - How should deterministic oracles be specified and implemented?
+- Which local serialization and compatibility rules should v0.x use?
 - How much hardening authority can safely be automated?
 - Under what conditions, if any, is production applicability acceptable?
 - What should the final project name be?
