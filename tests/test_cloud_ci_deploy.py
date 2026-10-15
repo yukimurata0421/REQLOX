@@ -109,6 +109,19 @@ class FakeCloud:
 
 
 class DeployJobImportTests(unittest.TestCase):
+    def test_history_diagnostics_reject_append_delete_reorder_and_same_count_edit(self):
+        cfg, vm = fixture()
+        expected = [dict(id='private-first', status='COMPLETE'), dict(id='private-second')]
+        for observed in (expected + [dict(id='private-new')], expected[:1],
+                         list(reversed(expected)), [dict(id='private-first', status='CHANGED'), expected[1]]):
+            job = ci.Deployment(cfg, 'b'*40, ROOT, ROOT/'unused', FakeCloud(vm))
+            with self.subTest(observed=observed), self.assertRaisesRegex(ValueError, 'PRIVATE_HISTORY_DRIFT'):
+                job.verify_history(observed, expected, phase='before_vm_cutover')
+            evidence = job.result['private_history_checks'][-1]
+            self.assertFalse(evidence['unchanged'])
+            self.assertNotIn('private-first', json.dumps(evidence))
+            self.assertFalse(job.cloud.effects)
+
     def test_public_observation_retains_only_safe_response_headers(self):
         cfg,vm=fixture();cloud=FakeCloud(vm)
         response=io.BytesIO(b'curated page');response.status=200
@@ -250,7 +263,7 @@ class AdmissionTests(unittest.TestCase):
 
 
 class FakeDeploymentTests(AdmissionTests):
-    def run_owned(self,failure=False,identity_drift=False):
+    def run_owned(self,failure=False,identity_drift=False,history_drift=False):
         import sys
         sys.path.insert(0,str(ROOT/'scripts'))
         import cloud_web_assets
@@ -262,7 +275,9 @@ class FakeDeploymentTests(AdmissionTests):
             assets=cloud_web_assets.export(ROOT/'reqlox_demo/static',bundle/'assets')
             (bundle/'assets.json').write_text(json.dumps(assets))
             job=ci.Deployment(cfg,'b'*40,bundle,root/'out',cloud)
+            history_reads = 0
             def public(path,*,base=None,headers=None,value=None,authenticate=True):
+                nonlocal history_reads
                 job.last_public_response_headers={'cache-control':'no-store, no-transform',
                     'content-security-policy':"default-src 'self'"}
                 if path.startswith('/demo/'):
@@ -275,17 +290,31 @@ class FakeDeploymentTests(AdmissionTests):
                 evidence,deployment=host(cloud.vm)
                 responses={'/api/config':dict(token='owned-token'),'/api/host-context':evidence,
                     '/api/deployment':deployment,'/api/workspace/config':dict(execution_policy=policy(),history=['owned-record'])}
+                if path == '/api/workspace/config':
+                    history_reads += 1
+                    if history_drift and history_reads > 1:
+                        responses[path]['history'].append('concurrent-private-record')
                 if value is not None:return 403,b'{"error":"UI_EXECUTION_DISABLED"}'
                 if path in responses:return 200,json.dumps(responses[path]).encode()
                 name={'/':'index.html','/study':'study.html','/knowledge':'knowledge.html',
                     '/targets':'targets.html','/records':'records.html'}.get(path,path.removeprefix('/'))
                 return 200,(bundle/'assets'/name).read_bytes()
             with patch.object(job,'public',side_effect=public),patch.object(job,'build_gateway',return_value='owned-image@sha256:'+'b'*64):
-                if failure:
-                    with self.assertRaisesRegex(ValueError,'OWNED_DEPLOY_FAILURE'):job.run()
+                if failure or history_drift:
+                    reason = 'PRIVATE_HISTORY_DRIFT' if history_drift else 'OWNED_DEPLOY_FAILURE'
+                    with self.assertRaisesRegex(ValueError,reason):job.run()
                 else:job.run()
+            job.save()  # Mirror main() retaining a pre-cutover refusal.
             result=json.loads((root/'out/result.json').read_text())
             return result,cloud,vm
+
+    def test_history_change_during_build_stops_before_vm_mutation(self):
+        result, cloud, old = self.run_owned(history_drift=True)
+        self.assertEqual(cloud.effects, [])
+        self.assertEqual(cloud.vm, old)
+        self.assertNotIn('rollback', result)
+        self.assertFalse(result['private_history_checks'][-1]['unchanged'])
+        self.assertEqual(result['private_history_checks'][-1]['phase'], 'before_vm_cutover')
 
     def test_tested_release_is_promoted_after_same_budget_history_and_stop_checks(self):
         result,cloud,old=self.run_owned()

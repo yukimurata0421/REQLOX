@@ -263,7 +263,17 @@ class Deployment:
         self.result['build_id'] = value['id']
         return image.split(':git-')[0]+'@'+images[0]['digest']
 
-    def verify(self, base, expected, host_before, history_before):
+    def verify_history(self, observed, expected, *, phase):
+        """Retain safe diagnostics without accepting changed private records."""
+        require(isinstance(observed, list) and isinstance(expected, list), 'PRIVATE_HISTORY_FORMAT')
+        fingerprint = lambda rows: digest(json.dumps(rows, sort_keys=True).encode())
+        self.result.setdefault('private_history_checks', []).append(dict(
+            phase=phase, expected_records=len(expected), observed_records=len(observed),
+            expected_sha256=fingerprint(expected), observed_sha256=fingerprint(observed),
+            unchanged=observed == expected))
+        require(observed == expected, 'PRIVATE_HISTORY_DRIFT')
+
+    def verify(self, base, expected, host_before, history_before, *, phase='deployed'):
         host, deployment, workspace = self.observe(base)
         vm = self.cloud.api(self.vm_url)
         validate_host(vm, host, deployment, self.cfg)
@@ -272,7 +282,7 @@ class Deployment:
             and host['collector_unit'] == host_before['collector_unit']
             and json.loads(host['contract']) == dict(json.loads(host_before['contract']), release_sha256=expected),
             'UNREVIEWED_REMOTE_CONTRACT_CHANGE')
-        require(workspace['history'] == history_before, 'PRIVATE_HISTORY_DRIFT')
+        self.verify_history(workspace['history'], history_before, phase=phase)
         config = self.public_json('/api/config', base=base)
         checked = []
         for path in ('/api/run', '/api/targets/run', '/api/study/compare-run'):
@@ -422,6 +432,9 @@ class Deployment:
         current = self.cloud.api(self.vm_url)
         require(current['metadata'] == before_vm['metadata'] and current['scheduling'] == before_vm['scheduling']
             and current['id'] == before_vm['id'], 'VM_CHANGED_BEFORE_CUTOVER')
+        # Building can take minutes. Refuse concurrent workspace changes before
+        # changing the VM, while retaining the original exact-history baseline.
+        self.verify(None, old['release_sha256'], host, workspace['history'], phase='before_vm_cutover')
         items = {r['key']:r['value'] for r in current['metadata']['items']}
         items.update({'reqlox-runtime':json.dumps(new, sort_keys=True), 'reqlox-release-sha256':release,
                       'startup-script':startup, 'reqlox-source-commit':self.commit})

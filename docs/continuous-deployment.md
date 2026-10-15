@@ -11,8 +11,8 @@ packaging without cloud deployment.
 Only successful checks admit the deployment job. Its short-lived federated
 identity is restricted to this repository's numeric ID, owner ID, main branch,
 push event, and workflow path. No service account key is stored in the repository
-or in GitHub secrets. The repository remains private; “publication checkout” does
-not describe its GitHub visibility.
+or in GitHub secrets. The repository is public; private workspace state and raw
+experiment evidence remain outside the repository and deployment artifacts.
 
 ## Dedicated deployment boundary
 
@@ -55,6 +55,13 @@ the original metadata-only defect and the corrected returns observed in later fa
 Identity drift stops rollback; an unconfirmed outcome remains unknown. No automatic
 deployment retry or experiment-budget reset is performed. A corrected commit must
 pass validation again.
+
+Private history must match the complete initial snapshot exactly. A second check
+after artifact preparation rejects concurrent edits before VM cutover; staged and
+public-origin checks still enforce the same snapshot. The result retains only
+counts, hashes and comparison phases, not private record contents. A history
+change during cutover still fails verification and does not become an accepted
+deployment or a confirmed rollback merely because the old UI responds.
 
 Inspect the workflow run and its `deployment-<commit>` result artifact to determine
 what actually ran. Configuration and offline tests alone do not establish a
