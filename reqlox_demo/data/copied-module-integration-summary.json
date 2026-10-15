@@ -1,0 +1,80 @@
+{
+  "schema": "REQLOX_PUBLIC_INTEGRATION_SUMMARY_V1",
+  "summary": {
+    "audit": "VERIFIED_LOCAL_HASH_AUDIT",
+    "cumulative_campaigns": 15,
+    "cumulative_charged_seconds": 62,
+    "maximum_campaigns": 15,
+    "maximum_seconds": 120,
+    "new_campaigns": 3,
+    "phases": [
+      {
+        "attempt": 13,
+        "status": "VERIFIED",
+        "faults": {
+          "passed": 0,
+          "total": 5
+        },
+        "normal": {
+          "passed": 4,
+          "total": 4
+        },
+        "boundary": {
+          "passed": 0,
+          "total": 1
+        },
+        "scratch_removed": 10,
+        "lock_released": 4,
+        "failed_api_cleanup": 3
+      },
+      {
+        "attempt": 14,
+        "status": "VERIFIED",
+        "faults": {
+          "passed": 5,
+          "total": 5
+        },
+        "normal": {
+          "passed": 4,
+          "total": 4
+        },
+        "boundary": {
+          "passed": 1,
+          "total": 1
+        },
+        "scratch_removed": 10,
+        "lock_released": 10,
+        "failed_api_cleanup": 0
+      },
+      {
+        "attempt": 15,
+        "status": "VERIFIED",
+        "faults": {
+          "passed": 5,
+          "total": 5
+        },
+        "normal": {
+          "passed": 4,
+          "total": 4
+        },
+        "boundary": {
+          "passed": 1,
+          "total": 1
+        },
+        "scratch_removed": 10,
+        "lock_released": 10,
+        "failed_api_cleanup": 0
+      }
+    ],
+    "adoption": "ADOPTED_ISOLATED_COPY",
+    "candidate_scope": "ISOLATED_COMPOSED_CALLER_ONLY",
+    "held_atomic_bindings": 4,
+    "temppath_repair_performed": false,
+    "historical_raw_evidence_gap": true,
+    "originals_preserved": true,
+    "additional_execution_enabled": false,
+    "independent_generalization": false,
+    "probability_calibration": false,
+    "source_added_value": false
+  }
+}

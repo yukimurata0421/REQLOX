@@ -1,0 +1,325 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/immunize/incident-model-candidate.v1.schema.json",
+  "title": "Immunize IncidentModelCandidate v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "contract_type",
+    "contract_version",
+    "revision_id",
+    "created_at",
+    "lifecycle_status",
+    "source_ref",
+    "document_ref",
+    "incident",
+    "claims",
+    "facets",
+    "extraction",
+    "processing_boundary",
+    "limitations"
+  ],
+  "$defs": {
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "text",
+        "provenance_kind",
+        "source_location",
+        "extraction_rule"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^claim_[a-f0-9]{20}$"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "provenance_kind": {
+          "const": "SOURCE_REPORTED_UNVERIFIED"
+        },
+        "source_location": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "text_sha256",
+            "start_offset",
+            "end_offset"
+          ],
+          "properties": {
+            "kind": {
+              "const": "TEXT_OFFSET"
+            },
+            "text_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "start_offset": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "end_offset": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        "extraction_rule": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^inc_candidate_[a-f0-9]{20}$"
+    },
+    "contract_type": {
+      "const": "IncidentModelCandidate"
+    },
+    "contract_version": {
+      "const": "1.0.0"
+    },
+    "revision_id": {
+      "type": "string",
+      "pattern": "^rev_[0-9]{8}T[0-9]{6}Z_[a-f0-9]{12}$"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "lifecycle_status": {
+      "const": "REVIEW_REQUIRED"
+    },
+    "source_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "revision_id",
+        "canonical_url"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "revision_id": {
+          "type": "string"
+        },
+        "canonical_url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        }
+      }
+    },
+    "document_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "revision_id",
+        "text_sha256"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "revision_id": {
+          "type": "string"
+        },
+        "text_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "incident": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "publisher",
+        "source_type",
+        "incident_start",
+        "incident_end",
+        "affected_products",
+        "regions"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "publisher": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "incident_start": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "incident_end": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "affected_products": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "regions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "claims": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "symptoms",
+        "impact",
+        "timeline",
+        "reported_causes",
+        "contributing_factors",
+        "mitigations",
+        "follow_ups"
+      ],
+      "properties": {
+        "symptoms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/claim"
+          }
+        },
+        "impact": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/claim"
+          }
+        },
+        "timeline": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/claim"
+          }
+        },
+        "reported_causes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/claim"
+          }
+        },
+        "contributing_factors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/claim"
+          }
+        },
+        "mitigations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/claim"
+          }
+        },
+        "follow_ups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/claim"
+          }
+        }
+      }
+    },
+    "facets": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "uniqueItems": true
+      }
+    },
+    "extraction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "tool_version",
+        "human_review_state",
+        "claim_count"
+      ],
+      "properties": {
+        "method": {
+          "const": "DETERMINISTIC_RULES"
+        },
+        "tool_version": {
+          "const": "incident-candidate.rules.v1"
+        },
+        "human_review_state": {
+          "const": "NOT_REVIEWED"
+        },
+        "claim_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "processing_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope",
+        "source_rights_status",
+        "external_model_disclosure_allowed",
+        "publication_allowed"
+      ],
+      "properties": {
+        "scope": {
+          "const": "LOCAL_PRIVATE_QUARANTINE_ONLY"
+        },
+        "source_rights_status": {
+          "const": "UNKNOWN_NOT_REVIEWED"
+        },
+        "external_model_disclosure_allowed": {
+          "const": false
+        },
+        "publication_allowed": {
+          "const": false
+        }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  }
+}

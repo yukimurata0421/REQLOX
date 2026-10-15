@@ -1,82 +1,67 @@
-# Development Context and Conceptual Background
+# Concepts
 
-## Status
+REQLOX connects a supplied failure condition, a supported target binding, and a
+finite expected behavior. This vocabulary describes the public implementation.
 
-This document records developer-provided history and inspirations. It does not
-establish the project name, prove effectiveness, or constrain schemas and
-implementation through analogy.
+## Main terms
 
-## Development history
+| Term | Meaning here |
+| --- | --- |
+| Source | A supplied incident description or other failure reference. Its text is evidence to interpret, not an instruction to execute. |
+| Target | The selected Python snapshot or known demo implementation being examined. |
+| Condition | A bounded trigger, such as a file operation raising an exception or a task being cancelled. |
+| Binding | A statically recognized connection between target code and one supported experiment interface. |
+| Contract | Explicitly declared expected behavior for that interface. |
+| Candidate | A hypothesis, condition, or proposed code change that still needs the corresponding checks. |
+| Oracle | A fixed expected result used to compare observations. |
+| Re-injection | Running the same selected failure condition against a repair candidate. |
+| Held | A candidate or result that lacks the required support, compatible binding, or observation. |
+| Snapshot adoption | Keeping a verified candidate in the result's in-memory/saved snapshot; it does not modify the user's checkout. |
 
-The following sequence preserves the order and evidence strength supplied by the
-developer:
+## A concrete example
 
-1. The developer learned about harness engineering around six months before
-   this design, but was not operating this project's workflow from that point.
-2. More recently, improvement work on a stream system reached an impasse.
-3. The developer asked an AI coding agent to infer or analogize plausible
-   failures and implement countermeasures. In the developer's observation, the
-   results had low accuracy and many omissions.
-4. Applying harness-engineering ideas did not sufficiently resolve the problem.
-5. Connecting chaos tests or fault injection produced some observed improvement.
-6. Adding incident reports and postmortems as input, and asking the agent to
-   interpret and apply them to the target, appeared to produce useful weakness
-   discovery and countermeasures in the developer's observation.
-7. No quantitative study with fixed comparison conditions was performed.
-   Discovery rate, miss rate, savings, effect size, and statistical significance
-   remain unmeasured.
-8. Although the approach appeared useful, model/tool usage was high enough to
-   hinder sustained use and application to other targets.
-9. The project was proposed to structure, retain, and reuse this workflow in
-   order to reduce usage burden while attempting to preserve discovery value.
+The owned [storage example](../examples/repository/storage.py) writes bytes to a
+temporary file, flushes and synchronizes them, and replaces the destination.
+The [example contract](../examples/owned-requirements.json) declares expected
+bytes, preservation of the previous destination on failure, exception
+propagation, and cleanup of the temporary file created by that invocation.
 
-The exact current evidence statement is:
+Static inventory can recognize the supported shape. A finite experiment can
+then observe selected exceptional paths. The observed result, not recognition
+alone, determines whether the contract is violated. A candidate repair remains
+limited to that snapshot and those checked conditions.
 
-> In a manual workflow, the developer has observed qualitative improvement. Its
-> effect size, causal contribution, reproducibility, and cost-effectiveness are
-> unmeasured.
+## Source and No Source
 
-It would therefore be inaccurate either to dismiss the approach as wholly
-unobserved or to call it proven. Illustrative counts, multipliers, monetary
-values, or success rates from earlier explanations are not measurements and are
-not carried into this repository.
+`SOURCE` and `NO_SOURCE` are the experiment arm identifiers.
 
-## Learning from accumulated failures
+The ordinary loop records both arms. The `--paired` path gives each arm its own
+loop, candidate history, and reusable results. Both start from the same target
+snapshot and use the declared owner requirements. External failure text is
+supplied to the Source arm; the No Source arm starts without it.
 
-Practices that accumulate medical errors or adverse drug events and use them to
-prevent recurrence were part of the inspiration. The portable idea is to ask
-whether the mechanism behind a failure elsewhere has an analogous form in a
-local system:
+Read initial discoveries, final adoption, executed conditions, and reused
+observations separately. Two arms reaching the same repaired snapshot does not
+show that Source had no effect on exploration. A difference in exploration
+does not automatically show a difference in final repair quality.
 
-```text
-Failure observed elsewhere
-        ↓
-Extract a supported mechanism and its limits
-        ↓
-Map enabling conditions to local evidence
-        ↓
-Test safely, judge independently, and retain verified learning
-```
+## Evidence boundaries
 
-This is not a medical project and makes no claim of equivalence to medicine,
-medical safety, vaccination, or biological immunity. The `immunize` repository
-slug is a working identifier only; metaphor must not determine architecture.
+Keep these statements distinct when reading a run:
 
-## Why incidents are an input, not an oracle
+1. A sentence was found in the supplied Source.
+2. A finite condition was extracted from that sentence.
+3. The selected target exposes a supported binding.
+4. The intended condition was reached during execution.
+5. The observation agrees with or violates the declared contract.
+6. A candidate satisfies the selected repair and confirmation checks.
 
-Incident reports contain evidence gathered under real operational pressure, but
-they can be incomplete, biased toward reportable events, or revised. A report's
-cause statement remains “the cause reported by that source.” The framework may
-derive a failure hypothesis and test it in another target, but symptom similarity
-does not independently establish the original cause.
+The public runtime does not turn that sequence into independent proof of the
+original incident's cause. Uncertainty about meaning and missing runtime
+evidence remain visible in the result.
 
-Incident-derived exploration therefore complements rather than replaces normal
-testing, design review, generic chaos techniques, and property-based testing.
-It also admits valid `NOT_APPLICABLE` and `INSUFFICIENT_INFORMATION` mappings.
+## Reading order
 
-## Naming remains open
-
-The working title and repository slug are not a product-name decision. Naming,
-trademark research, and package-name acquisition are outside the current design
-task. Future naming should follow validated scope and audience needs instead of
-introducing metaphor-driven components.
+Continue with [Architecture](architecture.md) for component boundaries,
+[Getting started](getting-started.md) for commands, or [Results](results.md)
+for status interpretation. The [documentation index](README.md) lists all pages.

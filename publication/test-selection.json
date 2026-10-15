@@ -1,0 +1,98 @@
+{
+  "schema_version": "reqlox.public-test-selection.v1",
+  "omitted_out_of_scope": [
+    {
+      "file": "test_reliability_modular_flow.py",
+      "test": "test_late_atomic_write_sentence_is_reached_after_irrelevant_text_with_exact_span",
+      "reason": "Acquisition campaign outside public runtime"
+    },
+    {
+      "file": "test_reliability_modular_flow.py",
+      "test": "test_large_irrelevant_document_proves_lexical_absence_within_declared_bounds",
+      "reason": "Acquisition campaign outside public runtime"
+    },
+    {
+      "file": "test_reliability_modular_flow.py",
+      "test": "test_sentence_role_distance_denial_and_cross_sentence_holds_are_preserved",
+      "reason": "Acquisition campaign outside public runtime"
+    },
+    {
+      "file": "test_reliability_modular_flow.py",
+      "test": "test_atomic_sentence_capacity_and_total_sentence_capacity_remain_fail_closed",
+      "reason": "Acquisition campaign outside public runtime"
+    },
+    {
+      "file": "test_reliability_modular_flow.py",
+      "test": "test_unicode_offsets_and_document_byte_bound_are_reproducible",
+      "reason": "Acquisition campaign outside public runtime"
+    },
+    {
+      "file": "test_reliability_modular_flow.py",
+      "test": "test_optional_policy_is_part_of_the_frozen_population_identity",
+      "reason": "Acquisition campaign outside public runtime"
+    },
+    {
+      "file": "test_reliability_modular_flow.py",
+      "class_name": "RoleSentenceCampaignTests",
+      "reason": "Acquisition campaign outside public runtime"
+    },
+    {
+      "file": "test_reliability_natural_conditions.py",
+      "test": "test_metadata_selection_holds_known_duplicate_and_capacity_without_import",
+      "reason": "Acquisition campaign outside public runtime"
+    },
+    {
+      "file": "test_reliability_natural_conditions.py",
+      "test": "test_metadata_selection_rejects_download_redirect_and_native_only_candidate",
+      "reason": "Acquisition campaign outside public runtime"
+    },
+    {
+      "file": "test_reliability_serialized_flow.py",
+      "test": "test_serialized_name_scope_keeps_known_exclusion_and_lexical_role_gate",
+      "reason": "Acquisition campaign outside public runtime"
+    },
+    {
+      "file": "test_reliability_serialized_flow.py",
+      "test": "test_resealed_name_scope_cannot_switch_the_frozen_population",
+      "reason": "Acquisition campaign outside public runtime"
+    },
+    {
+      "file": "test_reliability_serialized_flow.py",
+      "test": "test_token_name_roles_reject_substrings_and_keep_finite_compound_roles",
+      "reason": "Acquisition campaign outside public runtime"
+    },
+    {
+      "file": "test_reliability_serialized_flow.py",
+      "test": "test_token_scope_projection_has_no_metadata_or_semantic_authority",
+      "reason": "Acquisition campaign outside public runtime"
+    },
+    {
+      "file": "test_reqlox_demo.py",
+      "test": "test_fresh_model_failure_stops_paid_successor",
+      "reason": "Private adapter replaced by public cloud terminal tests"
+    }
+  ],
+  "native_opt_in_classes": [
+    {
+      "file": "test_reliability_condition_programs.py",
+      "class_name": "ConditionProgramTests"
+    },
+    {
+      "file": "test_reliability_context_lifecycle.py",
+      "class_name": "NativeContextLoopTests"
+    },
+    {
+      "file": "test_reliability_improvement_loop.py",
+      "class_name": "FiniteLoopTests"
+    },
+    {
+      "file": "test_reliability_reuse.py",
+      "class_name": "NativeAndReuseTests"
+    },
+    {
+      "file": "test_reliability_selective_reuse.py",
+      "class_name": "NativeSelectiveReuseTests"
+    }
+  ],
+  "default_provider_calls": 0
+}

@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/reqlox/pattern-occurrence.v0.1.schema.json",
+  "title": "REQLOX PatternOccurrence v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "contract_type",
+    "contract_version",
+    "revision_id",
+    "created_at",
+    "pattern_id",
+    "incident_id",
+    "matched_event_ids",
+    "match",
+    "similarity",
+    "evidence_strength",
+    "jev_judgment_id",
+    "provenance_refs",
+    "limitations"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^po_[a-f0-9]{20}$"
+    },
+    "contract_type": {
+      "const": "PatternOccurrence"
+    },
+    "contract_version": {
+      "const": "0.1.0"
+    },
+    "revision_id": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/revisionId"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "pattern_id": {
+      "type": "string",
+      "pattern": "^fp_[a-f0-9]{20}$"
+    },
+    "incident_id": {
+      "type": "string",
+      "pattern": "^inc_[a-f0-9]{20}$"
+    },
+    "matched_event_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^fe_[a-f0-9]{20}$"
+      }
+    },
+    "match": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "exact",
+            "structural",
+            "semantic",
+            "partial"
+          ]
+        }
+      }
+    },
+    "similarity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "structural",
+        "semantic"
+      ],
+      "properties": {
+        "structural": {
+          "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/probability"
+        },
+        "semantic": {
+          "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/probability"
+        }
+      }
+    },
+    "evidence_strength": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/probability"
+    },
+    "jev_judgment_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^jev_[a-f0-9]{20}$"
+    },
+    "provenance_refs": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/provenanceRefs"
+    },
+    "limitations": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/limitations"
+    }
+  }
+}

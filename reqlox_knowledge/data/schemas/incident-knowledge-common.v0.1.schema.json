@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json",
+  "title": "REQLOX Incident Knowledge Model common definitions v0.1",
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "revisionId": {
+      "type": "string",
+      "pattern": "^rev_[0-9]{8}T[0-9]{6}Z_[a-f0-9]{12}$"
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{1,79}$"
+    },
+    "probability": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "provenanceRefs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^prov_[a-f0-9]{20}$"
+      }
+    },
+    "entityRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entity_type",
+        "entity_id"
+      ],
+      "properties": {
+        "entity_type": {
+          "enum": [
+            "source_document",
+            "evidence_span",
+            "incident_occurrence",
+            "failure_event",
+            "causal_edge",
+            "failure_pattern",
+            "pattern_occurrence",
+            "pattern_statistics",
+            "jev_judgment",
+            "embedding",
+            "fault_injection_candidate"
+          ]
+        },
+        "entity_id": {
+          "type": "string",
+          "minLength": 3
+        },
+        "revision_id": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/revisionId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "processingBoundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "visibility",
+        "external_model_disclosure_allowed",
+        "publication_allowed"
+      ],
+      "properties": {
+        "visibility": {
+          "enum": [
+            "LOCAL_PRIVATE",
+            "INTERNAL",
+            "PUBLIC_DERIVED"
+          ]
+        },
+        "external_model_disclosure_allowed": {
+          "type": "boolean"
+        },
+        "publication_allowed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "nullableDateTime": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "reqlox.public-native-evidence-validation.v1",
+  "validation": "Selected offline regression only; no Target execution",
+  "tests_passed": 44,
+  "native_campaigns_executed": 0,
+  "native_result_certified": false,
+  "test_patterns": [
+    "test_native_evidence.py",
+    "test_target_path_context.py",
+    "test_evaluation_scope.py"
+  ],
+  "code_and_test_sha256": {
+    "reqlox/native_evidence.py": "42cf311d352d35b6219badae630ca3e2798f6dfc6f3c8dff810476d9741678ea",
+    "reqlox_core/run_reliability_path_context.py": "e1fbd6ef0ef1142cd1ed28f038211820ef9c40374d1d878b35361cbaa7995f17",
+    "tests/test_native_evidence.py": "11584a4acba08c55e878eb32d3ed2e306a5da7a05a98305c11d6eba033984042"
+  },
+  "scope": "Persistent evidence storage and required launch callback; synthetic files and mocked subprocess creation",
+  "limitations": [
+    "No live native retention exercise",
+    "No independent Target, probability calibration or Source contribution qualification"
+  ]
+}

@@ -1,288 +1,120 @@
-# Evaluation Plan
+# Evaluation
 
-## Status and evidence position
+The public runtime has a bounded validation snapshot. Product effectiveness,
+Source contribution, and independent generalization remain separate evaluation
+questions.
 
-This is a prospective plan. No controlled result, benchmark, effect size,
-discovery rate, miss rate, cost reduction, or statistical significance is
-reported.
+## Current implementation checks
 
-The motivating evidence is narrower: a developer observed qualitative
-improvement in a manual incident-assisted workflow. Its causal contribution,
-reproducibility, magnitude, and economics remain unmeasured. The evaluation is
-designed to test that observation without denying it or promoting it into a
-proven result.
+The [test and coverage guide](testing.md) describes the current portable suite,
+critical-file thresholds, and separate runtime overview. The
+[coverage validation](../publication/coverage-validation.json) records 501
+discovered tests, including 29 native skips, and the measured source hashes.
+These checks establish unit behavior and coverage, not native repair qualification.
 
-## Hypotheses
+The [current UI validation](../publication/ui-validation.json) covers the two
+browser workspaces and their packaged runtime. The preceding
+[evaluation implementation validation](../publication/evaluation-validation.json)
+reports portable tests, installation from a code-only wheel, English interface
+checks, and bounded execution of owned controls before the UI extension.
+Its file hashes are historical. No private model records,
+incident text, acquired OSS bundle, or development journal is included.
 
-### H1 — incident-derived discovery
+The public `study` interface checks local dependency capsules, documented caller
+preparation, equal-budget Source comparisons, and frozen calibration diagnostics.
+Its illustrative datasets are synthetic. Supplied probability rows do not
+authenticate natural forecasts or native labels; their calibration review
+remains `HELD` and the serving configuration remains `RAW`.
 
-Under common execution and verification conditions, adding knowledge derived
-from real incident reports improves discovery of target-applicable weaknesses
-that were not exercised by a frozen baseline test set, compared with free
-reasoning or generic fault knowledge alone.
+## Earlier runtime validation
 
-“Previously untested” is relative to a fixed target snapshot and baseline test
-set. It does not mean globally novel, first discovered, or absent from model
-training data.
+[`publication/validation.json`](../publication/validation.json) records the
+earlier 2026-10-11 JST check with Python 3.14.4. Its scope was:
 
-### H2 — structured reuse efficiency
-
-Relative to the current manual workflow that provides incident material for
-fresh interpretation, structured failure knowledge and mapping reuse can retain
-useful discovery and hardening while reducing one or more of model use,
-experimental cost, human effort, elapsed time, and repeated work.
-
-Initial knowledge-creation cost, per-target mapping cost, reuse cost, and
-invalidation/update cost are measured separately.
-
-### H3 — generalization without overfitting
-
-Hardening produced for one confirmed condition improves behavior under related
-holdout conditions not used to design the change. Separately, when a mechanism
-is mapped to another target, the workflow correctly distinguishes
-`APPLICABLE`, `NOT_APPLICABLE`, and `INSUFFICIENT_INFORMATION`.
-
-H1, H2, and H3 are not bundled acceptance criteria. Any combination of supported
-and unsupported results is admissible, including higher discovery with higher
-cost, lower cost with lower discovery, or benefit limited to one target.
-
-## Comparison conditions
-
-| Condition | Additional knowledge and workflow |
+| Check | Recorded result |
 | --- | --- |
-| A — Free reasoning | Target code/configuration, `SystemContract`, frozen baseline tests, and common harness; no added incident material or generic fault catalogue. |
-| B — Generic chaos knowledge | A plus a versioned generic fault catalogue and testing considerations. |
-| C — Current manual workflow | B plus target-relevant incident reports/postmortems, freshly interpreted and applied in each independent run. |
-| D — Structured workflow | The framework's versioned incident/failure knowledge, mappings, candidate generation, and permitted reuse. |
+| Portable unit suite | 264 discovered; 236 passed; 28 native integration tests skipped; no failures or errors. |
+| Distribution | A wheel was built and installed in a separate virtual environment. |
+| Installed interfaces | Static inventory, condition preparation, zero-campaign refusal, and audit of a held result passed. |
+| Local HTTP interface | Assets and four negative/unknown runs passed; no target experiments occurred in those runs. |
+| Healthy workers | Gold, baseline, and candidate workers ran for both known demo controls in isolated namespaces. |
+| Optional model adapter | Mock transport and bounded-call terminal tests passed. |
 
-Condition C must be a faithful, practical version of the workflow that motivated
-the project, not an intentionally weak prompt. Condition D's reuse is declared
-and costed rather than hidden.
+The healthy worker check injected no faults and did not qualify a repair. Live
+model connectivity, native fault and re-injection campaigns, and cloud
+deployment were not tested in that snapshot.
 
-All conditions receive equivalent ability to inspect the target, propose
-changes, use the common experiment harness, collect evidence, and run the same
-verification classes within their authority and budget. Condition A is not
-restricted to prose while later conditions receive execution tools.
+The [test selection record](../publication/test-selection.json) identifies the
+public test scope and opt-in classes. These counts are for the public package,
+not the full development workspace.
 
-The historical progression—from free reasoning, to harness ideas, to fault
-injection, to incident material—is development context, not a controlled
-comparison. The A–D experiment isolates knowledge/workflow contributions under a
-new frozen protocol.
+## Running the available checks
 
-## Evaluation units and sampling
+From an installed repository checkout:
 
-An evaluation unit binds:
-
-- one target code/configuration/dependency snapshot;
-- one baseline test snapshot and `SystemContract`;
-- one condition and independent run context;
-- a common maximum budget and common tool/authority surface;
-- candidate, execution, result, and review records; and
-- a case-selection stratum.
-
-The initial study should remain small enough to audit, then expand only when the
-protocol is stable. Case selection includes:
-
-- incident mechanisms expected to be applicable;
-- mechanisms expected to be not applicable;
-- cases where available evidence is intentionally insufficient;
-- targets already well defended by baseline tests; and
-- unsuccessful as well as successful historical examples.
-
-Near-duplicate reports or restatements of one cause are grouped so they cannot be
-counted as independent discoveries. Selection and grouping are fixed before
-condition outcomes are reviewed where feasible.
-
-## Common controls
-
-Hold these constant where possible and record every deviation:
-
-- target code, configuration, dependency, and environment snapshot;
-- baseline test set;
-- experiment, observation, and verification harness;
-- model and reasoning settings;
-- available tools, permissions, and network access;
-- isolated environment and workload;
-- `SystemContract`, oracle, and scoring rules;
-- maximum model, experiment, elapsed-time, and human-review budgets; and
-- review instructions and adjudication process.
-
-Additional knowledge necessarily changes input volume. The plan therefore does
-not claim identical consumption across conditions. It applies common upper
-bounds, measures actual use, and explains which input and reuse differences are
-being tested.
-
-If a material outcome could be explained by context length alone, add a limited
-length-matched control containing similarly sized but non-incident or
-non-relevant material. This is an optional follow-up, not a requirement that
-makes the initial protocol unmanageably complex.
-
-## Leakage prevention
-
-- Begin each condition in an independent conversation/run context.
-- Do not carry candidates, patches, reviewer feedback, or outcomes across
-  conditions except the reuse explicitly defined for D.
-- When evaluating historical target snapshots, prevent access to future fixes,
-  tests, commit messages, issue text, branches, and repository history.
-- Record exactly which D artifacts were created before the case and are eligible
-  for reuse.
-- Freeze source/case selection before outcome review where practical.
-- Keep condition labels hidden from weakness adjudicators where the artifacts
-  can be meaningfully blinded.
-- Record run order and randomize or counterbalance it where practical.
-- Repeat runs when model or system behavior is variable.
-- Record available seeds. If a provider seed or model internals are unavailable,
-  record `not_observed`; do not claim they were fixed.
-
-## Candidate lifecycle and denominators
-
-Each generated candidate is assigned one terminal or current state without
-collapsing distinct causes:
-
-- `APPLICABLE`, `NOT_APPLICABLE`, or `INSUFFICIENT_INFORMATION` mapping;
-- `NOT_RUN` due to budget, duplication, risk, or prioritization;
-- `REJECTED` by the safety gate;
-- `EXPERIMENT_INVALID` because prerequisites or injection failed;
-- `EVIDENCE_INSUFFICIENT`;
-- `NO_WEAKNESS_CONFIRMED` under a valid experiment; or
-- `WEAKNESS_CONFIRMED` and independently adjudicated.
-
-If “precision” is reported, the report must name its denominator, ground-truth
-or adjudication rule, and treatment of unexecuted and inconclusive candidates.
-Because the total number of real weaknesses is normally unknown, the study does
-not report whole-system recall or coverage of the unknown failure universe.
-
-## Primary outcomes
-
-### 1. Independently confirmed weaknesses
-
-Count deduplicated weaknesses that:
-
-- have an applicable, evidence-grounded mapping;
-- were established by a valid experiment;
-- violate a predeclared functional, safety, recovery, or performance condition;
-  and
-- pass independent review of evidence and duplicate grouping.
-
-Candidate count, document count, experiment count, and stop count are not
-substitutes.
-
-### 2. Incremental weaknesses beyond baseline tests
-
-Count confirmed weaknesses not exercised by the frozen baseline test set. This
-is an incremental value relative to that snapshot, not a claim of global
-novelty.
-
-### 3. Candidate disposition
-
-Report counts and rates for every mapping, run, validity, verdict, and attribution
-state. This exposes wasted candidates, safety rejections, harness limitations,
-and evidence gaps rather than hiding them in one success rate.
-
-### 4. Hardening outcomes
-
-For each accepted hardening candidate, separately report:
-
-- same-condition re-test;
-- related holdout conditions not used to design the fix;
-- normal functional tests;
-- normal-load performance effects; and
-- regressions, side effects, and unresolved scope.
-
-An exact replay that repeatedly passes supports regression protection. It does
-not by itself support H3.
-
-## Cost and effort outcomes
-
-Measure when observable:
-
-- model/tool utilization exposed by the platform;
-- experimental infrastructure time and direct cost;
-- wall-clock elapsed time;
-- human review, correction, and setup time;
-- cost per independently confirmed weakness; and
-- cost per accepted, verified improvement.
-
-A hosted agent's weekly/product allowance is not interchangeable with API token
-counts or billed currency. Metrics use their native units. Unobserved values are
-`not_observed` or `null`, never estimated without an explicit method.
-
-If zero weaknesses or improvements are confirmed, cost per result is undefined
-and reported as `null` with the zero denominator, not as zero.
-
-For structured reuse, report:
-
-```text
-total cost
-  = initial knowledge extraction and validation
-  + per-target mapping
-  + experiment and verdict
-  + update and invalidation handling
-  + human review
+```bash
+env -u REQLOX_RUN_NATIVE_TESTS .venv/bin/python scripts/check.py
+.venv/bin/reqlox check
 ```
 
-Report first-use and later reuse cohorts separately. Include the cost and harm of
-incorrect reuse, stale mappings, and unnecessary revalidation rather than only
-cache savings.
+The first command runs the portable suite with native campaigns disabled. The
+second probes isolation with `/usr/bin/true`; it runs no target experiment.
 
-## Safety and harness evaluation
+[`scripts/healthy_smoke.py`](../scripts/healthy_smoke.py) checks only healthy
+stages for the known controls. It can acquire the pinned distributions and
+start isolated workers. Optional native integration tests can be enabled with
+`REQLOX_RUN_NATIVE_TESTS=1` only on an authorized disposable execution host.
+They include real fault and cancellation paths.
 
-Safety is tested with declared negative cases, not inferred from observing zero
-incidents. The harness evaluation includes whether it:
+## What a finite result establishes
 
-- rejects an unallowlisted target and prohibited operation;
-- rejects excessive duration, intensity, concurrency, or cost;
-- detects target-identity or contract drift immediately before execution;
-- stops or refuses a verdict when mandatory observation is absent;
-- distinguishes injection failure from target success;
-- distinguishes harness/infrastructure failure from target failure;
-- invokes cleanup after normal completion, abort, and harness error;
-- verifies cleanup rather than equating a stop request with reversal; and
-- prevents state from one experiment contaminating the next.
+Inspect the target snapshot, owner contract, selected condition, observed
+outcome, candidate identity, and confirmation record together. A completed
+worker alone is insufficient. Missing observations and conditions that were not
+reached remain visible.
 
-These are design-time test cases. Safety is not validated until the implemented
-controls and failure paths are exercised in an isolated environment.
+For a repair, report normal behavior, discovery of the original counterexample,
+same-condition re-injection, and fresh confirmation separately. A successful
+known-control case is a finite result for that case. It is not an unused-target
+evaluation or a calibrated probability estimate.
 
-## Review and adjudication
+## Source contribution
 
-At least one reviewer not responsible for generating the candidate examines the
-mapping, experiment validity, evidence, contract verdict, duplicate grouping,
-and hardening scope. Disagreements and changed verdicts are retained.
+The `--paired` path provides separate Source and No Source loops. Compare:
 
-Where expert labels are uncertain, use multiple reviewers or an explicit
-adjudication step and report agreement. Reviewer time is part of cost.
+- initial fault discoveries and conditions reached;
+- final adopted members and rejected or held outcomes;
+- executed campaigns and historical observations reused;
+- Source conditions that are new relative to the fixed owner grid; and
+- elapsed time, human effort, and observed costs where recorded.
 
-## Analysis
+Use the same initial target, owner requirements, execution bounds, and scoring
+scope. Record run order and every changed input. A Source condition duplicating
+an existing condition is not a newly discovered failure mechanism.
 
-Begin with per-condition counts, rates with denominators, run-level distributions,
-paired case comparisons, and uncertainty intervals. With repeated runs nested
-within cases and targets, analysis must account for that dependence rather than
-treat every candidate as independent.
+The current owned comparison exercises Source and source-blind paths. Zero
+additional Source adoptions remain zero; these controls do not establish
+natural Source benefit. Neither unit-test counts nor healthy-worker results
+establish that effect. See [Portable evaluation](portable-evaluation.md) for the
+shared exploration and confirmation contract.
 
-For small or sparse samples, emphasize exact descriptive results, case-level
-paired/permutation methods where appropriate, and confidence/credible intervals
-rather than asymptotic claims. Predeclare the primary outcome and duplicate
-grouping before the main comparison. Select any later mixed-effects or
-hierarchical model only when sample size and structure support it.
+## Effort and cost
 
-No statistical significance, accuracy, savings target, or expected multiplier is
-asserted before measurement.
+The package includes helpers for workflow effort and discovery metrics. Their
+presence does not establish measured savings. Keep elapsed time, human active
+time, wait time, retries, and model/execution consumption separate.
 
-## Interpretation matrix
+Reserved, estimated, and invoiced amounts describe different observations.
+Unknown amounts remain unknown. A local cloud reservation is bookkeeping based
+on supplied per-call values; it is not a verified billing cap.
 
-| Observation | Supported interpretation | Not supported automatically |
-| --- | --- | --- |
-| C > A/B in confirmed weaknesses | incident material may add discovery value under this protocol | D is efficient or generalizes |
-| D ≈ C with lower measured burden | structured reuse may support H2 for tested cases | H1 or cross-target validity |
-| D < C | structure/reuse may be losing useful context | manual workflow is universally superior |
-| Same-condition pass only | known weakness did not recur in exact tested condition | H3 generalization |
-| Correct non-applicable decisions | mapping can avoid some unnecessary experiments | whole-system coverage or recall |
-| Safety negatives pass | tested controls behaved as specified | safety in untested environments or production |
+## Further evaluation
 
-## Reporting checklist
+Further studies may measure discovery beyond frozen baseline tests, correctness
+on previously unused targets, reuse invalidation, and total effort. Those are
+prospective studies, not results reported by this public release. Record held,
+failed, unexecuted, and inconclusive cases in their denominators alongside
+successful cases.
 
-Every evaluation report identifies target and baseline versions, conditions,
-budgets and actual consumption, candidate denominators, invalid experiments,
-missing data, duplicate decisions, same-condition versus holdout outcomes,
-reviewer process, and limitations. Negative and inconclusive results are retained
-alongside favorable results.
+See [Results](results.md) for field-level interpretation and
+[Public scope](minimal-implementation-plan.md) for remaining work.

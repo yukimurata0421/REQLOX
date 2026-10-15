@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/reqlox/target-evidence.v0.1.schema.json",
+  "title": "REQLOX TargetEvidence v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "contract_type",
+    "contract_version",
+    "created_at",
+    "source_manifest_id",
+    "source_file",
+    "locator",
+    "content_sha256",
+    "origin",
+    "extraction",
+    "verification"
+  ],
+  "properties": {
+    "id": {"type": "string", "pattern": "^tev_[a-f0-9]{20}$"},
+    "contract_type": {"const": "TargetEvidence"},
+    "contract_version": {"const": "0.1.0"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "source_manifest_id": {"type": "string", "pattern": "^tsm_[a-f0-9]{20}$"},
+    "source_file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "pattern": "^[A-Za-z0-9._/@-]+$"},
+        "sha256": {"$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/sha256"}
+      }
+    },
+    "locator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "value"],
+      "properties": {
+        "kind": {"enum": ["JSON_POINTER", "WHOLE_FILE"]},
+        "value": {"type": "string", "minLength": 1}
+      }
+    },
+    "content_sha256": {"$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/sha256"},
+    "origin": {"const": "SOURCE_OBSERVED"},
+    "extraction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "tool", "input_sha256"],
+      "properties": {
+        "method": {"enum": ["DETERMINISTIC_JSON_POINTER", "RAW_FILE_SNAPSHOT"]},
+        "tool": {"type": "string", "minLength": 1},
+        "input_sha256": {"$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/sha256"}
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "method"],
+      "properties": {
+        "status": {"const": "AUTO_VERIFIED"},
+        "method": {"enum": ["HASH_AND_POINTER_MATCH", "HASH_MATCH"]}
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"locator": {"properties": {"kind": {"const": "JSON_POINTER"}}}}},
+      "then": {
+        "properties": {
+          "locator": {"properties": {"value": {"pattern": "^/"}}},
+          "extraction": {"properties": {"method": {"const": "DETERMINISTIC_JSON_POINTER"}}},
+          "verification": {"properties": {"method": {"const": "HASH_AND_POINTER_MATCH"}}}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"locator": {"properties": {"kind": {"const": "WHOLE_FILE"}}}}},
+      "then": {
+        "properties": {
+          "locator": {"properties": {"value": {"const": "WHOLE_FILE"}}},
+          "extraction": {"properties": {"method": {"const": "RAW_FILE_SNAPSHOT"}}},
+          "verification": {"properties": {"method": {"const": "HASH_MATCH"}}}
+        }
+      }
+    }
+  ]
+}

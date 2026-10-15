@@ -1,0 +1,256 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/reqlox/system-ir.v0.1.schema.json",
+  "title": "REQLOX SystemIR v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "contract_type",
+    "contract_version",
+    "revision_id",
+    "created_at",
+    "target",
+    "review",
+    "architecture",
+    "failure_surfaces",
+    "target_specific_context",
+    "runtime_state",
+    "coverage",
+    "execution_boundary",
+    "evidence_ids",
+    "limitations"
+  ],
+  "$defs": {
+    "stringArray": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "evidenceIds": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^tev_[a-f0-9]{20}$"}},
+    "unitTemplates": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "oneOf": [
+          {"type": "string", "minLength": 1},
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["template", "definition"],
+            "properties": {
+              "template": {"type": "string", "minLength": 1},
+              "definition": {"type": "string", "minLength": 1}
+            }
+          }
+        ]
+      }
+    },
+    "failurePolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_loss_domain", "current_sut_state", "soak_impact", "breach_domain"],
+      "properties": {
+        "evidence_loss_domain": {"type": "string", "minLength": 1},
+        "current_sut_state": {"type": "string", "minLength": 1},
+        "soak_impact": {"type": "string", "minLength": 1},
+        "breach_domain": {"type": "string", "minLength": 1}
+      }
+    }
+  },
+  "properties": {
+    "$schema": {"type": "string"},
+    "id": {"type": "string", "pattern": "^sir_[a-f0-9]{20}$"},
+    "contract_type": {"const": "SystemIR"},
+    "contract_version": {"const": "0.1.0"},
+    "revision_id": {"$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/revisionId"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "kind", "source_manifest_id"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^target_[a-z][a-z0-9_]{1,79}$"},
+        "name": {"type": "string", "minLength": 1},
+        "kind": {"enum": ["DISTRIBUTED_CONTROL_PLANE", "SERVICE", "LIBRARY", "CLI"]},
+        "source_manifest_id": {"type": "string", "pattern": "^tsm_[a-f0-9]{20}$"}
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "human_reviewed", "jev_required", "jev_judgment_ids"],
+      "properties": {
+        "status": {"enum": ["SOURCE_DERIVED_REVIEW_REQUIRED", "HUMAN_ACCEPTED", "REJECTED"]},
+        "human_reviewed": {"type": "boolean"},
+        "jev_required": {"type": "boolean"},
+        "jev_judgment_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}
+      }
+    },
+    "architecture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hosts", "layers", "components", "dependencies", "restart_domains"],
+      "properties": {
+        "hosts": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "expected_identity", "role", "authority", "evidence_ids"],
+            "properties": {
+              "id": {"type": "string", "minLength": 1},
+              "expected_identity": {"type": "string", "minLength": 1},
+              "role": {"type": "string", "minLength": 1},
+              "authority": {"type": "string", "minLength": 1},
+              "evidence_ids": {"$ref": "#/$defs/evidenceIds"}
+            }
+          }
+        },
+        "layers": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "label", "order", "evidence_ids"],
+            "properties": {
+              "id": {"type": "string", "minLength": 1},
+              "label": {"type": "string", "minLength": 1},
+              "order": {"type": "integer", "minimum": 0},
+              "evidence_ids": {"$ref": "#/$defs/evidenceIds"}
+            }
+          }
+        },
+        "components": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "name", "component_type", "layer", "host", "authority", "failure_domain", "source_refs", "implementation_refs", "unit_templates", "identity_attributes", "freshness_attributes", "current_value_policy", "evidence_ids"],
+            "properties": {
+              "id": {"type": "string", "minLength": 1},
+              "name": {"type": "string", "minLength": 1},
+              "component_type": {"type": "string", "minLength": 1},
+              "layer": {"type": "string", "minLength": 1},
+              "host": {"type": "string", "minLength": 1},
+              "authority": {"type": "string", "minLength": 1},
+              "failure_domain": {"type": "string", "minLength": 1},
+              "source_refs": {"$ref": "#/$defs/stringArray"},
+              "implementation_refs": {"$ref": "#/$defs/stringArray"},
+              "unit_templates": {"$ref": "#/$defs/unitTemplates"},
+              "identity_attributes": {"$ref": "#/$defs/stringArray"},
+              "freshness_attributes": {"$ref": "#/$defs/stringArray"},
+              "current_value_policy": {"type": "string", "minLength": 1},
+              "evidence_ids": {"$ref": "#/$defs/evidenceIds"}
+            }
+          }
+        },
+        "dependencies": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "from_component_id", "to_component_id", "relationship", "mode", "evidence_description", "required_bindings", "assertion", "failure_policy", "source_refs", "evidence_ids"],
+            "properties": {
+              "id": {"type": "string", "minLength": 1},
+              "from_component_id": {"type": "string", "minLength": 1},
+              "to_component_id": {"type": "string", "minLength": 1},
+              "relationship": {"type": "string", "minLength": 1},
+              "mode": {"type": "string", "minLength": 1},
+              "evidence_description": {"type": "string", "minLength": 1},
+              "required_bindings": {"$ref": "#/$defs/stringArray"},
+              "assertion": {"type": "string", "minLength": 1},
+              "failure_policy": {"$ref": "#/$defs/failurePolicy"},
+              "source_refs": {"$ref": "#/$defs/stringArray"},
+              "evidence_ids": {"$ref": "#/$defs/evidenceIds"}
+            }
+          }
+        },
+        "restart_domains": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "label", "component_ids", "event", "identity_changes", "must_preserve", "observed_by_dependency_ids", "observation_sources", "normal_meaning", "qualification_rule", "new_epoch_when", "evidence_ids"],
+            "properties": {
+              "id": {"type": "string", "minLength": 1},
+              "label": {"type": "string", "minLength": 1},
+              "component_ids": {"$ref": "#/$defs/stringArray"},
+              "event": {"type": "string", "minLength": 1},
+              "identity_changes": {"$ref": "#/$defs/stringArray"},
+              "must_preserve": {"$ref": "#/$defs/stringArray"},
+              "observed_by_dependency_ids": {"$ref": "#/$defs/stringArray"},
+              "observation_sources": {"$ref": "#/$defs/stringArray"},
+              "normal_meaning": {"type": "string", "minLength": 1},
+              "qualification_rule": {"type": "string", "minLength": 1},
+              "new_epoch_when": {"$ref": "#/$defs/stringArray"},
+              "evidence_ids": {"$ref": "#/$defs/evidenceIds"}
+            }
+          }
+        }
+      }
+    },
+    "failure_surfaces": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "trigger", "affected_component_ids", "dependency_ids", "restart_domain_ids", "source_refs", "detector_refs", "oracle_refs", "sequence_test_refs", "evidence_absence_domain", "formal_rule", "required_qualification", "evidence_ids"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "trigger": {"type": "string", "minLength": 1},
+          "affected_component_ids": {"$ref": "#/$defs/stringArray"},
+          "dependency_ids": {"$ref": "#/$defs/stringArray"},
+          "restart_domain_ids": {"$ref": "#/$defs/stringArray"},
+          "source_refs": {"$ref": "#/$defs/stringArray"},
+          "detector_refs": {"$ref": "#/$defs/stringArray"},
+          "oracle_refs": {"$ref": "#/$defs/stringArray"},
+          "sequence_test_refs": {"$ref": "#/$defs/stringArray"},
+          "evidence_absence_domain": {"type": "string", "minLength": 1},
+          "formal_rule": {"type": "string", "minLength": 1},
+          "required_qualification": {"$ref": "#/$defs/stringArray"},
+          "evidence_ids": {"$ref": "#/$defs/evidenceIds"}
+        }
+      }
+    },
+    "target_specific_context": {"type": "object"},
+    "runtime_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "live_evidence_included", "running_release_verified", "environment_ir_required"],
+      "properties": {
+        "status": {"const": "NOT_OBSERVED_SOURCE_ONLY"},
+        "live_evidence_included": {"const": false},
+        "running_release_verified": {"const": false},
+        "environment_ir_required": {"const": true}
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_counts", "projected_counts", "id_set_sha256", "complete_source_projection"],
+      "properties": {
+        "source_counts": {"type": "object"},
+        "projected_counts": {"type": "object"},
+        "id_set_sha256": {"$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/sha256"},
+        "complete_source_projection": {"const": true}
+      }
+    },
+    "execution_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "mutation_authority", "production_fault_injection_allowed", "experiment_generation_authorized"],
+      "properties": {
+        "state": {"const": "NON_EXECUTABLE_ANALYSIS_ONLY"},
+        "mutation_authority": {"const": "NONE"},
+        "production_fault_injection_allowed": {"const": false},
+        "experiment_generation_authorized": {"const": false}
+      }
+    },
+    "evidence_ids": {"$ref": "#/$defs/evidenceIds"},
+    "limitations": {"$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/limitations"}
+  }
+}

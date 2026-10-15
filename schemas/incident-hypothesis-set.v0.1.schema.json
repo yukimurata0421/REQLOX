@@ -1,0 +1,188 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/reqlox/incident-hypothesis-set.v0.1.schema.json",
+  "title": "REQLOX IncidentHypothesisSet v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "id", "contract_type", "contract_version", "created_at",
+    "status", "source", "evidence_spans", "observed_assertions",
+    "attribute_assertions", "event_hypotheses", "relation_hypotheses",
+    "authority", "limitations", "record_sha256"
+  ],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "evidenceId": {"type": "string", "pattern": "^ev_[a-f0-9]{20}$"},
+    "assertionId": {"type": "string", "pattern": "^oas_[a-f0-9]{20}$"},
+    "attributeId": {"type": "string", "pattern": "^aas_[a-f0-9]{20}$"},
+    "eventId": {"type": "string", "pattern": "^evh_[a-f0-9]{20}$"},
+    "relationId": {"type": "string", "pattern": "^rlh_[a-f0-9]{20}$"},
+    "groupId": {"type": "string", "pattern": "^hgrp_[a-f0-9]{20}$"},
+    "argument": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "value"],
+      "properties": {
+        "role": {"type": "string", "pattern": "^[a-z][a-z0-9_]{0,79}$"},
+        "value": {"type": "string", "minLength": 1, "maxLength": 500}
+      }
+    }
+  },
+  "properties": {
+    "schema_version": {"const": "reqlox.incident-hypothesis-set.v0.1"},
+    "id": {"type": "string", "pattern": "^irhs_[a-f0-9]{20}$"},
+    "contract_type": {"const": "IncidentHypothesisSet"},
+    "contract_version": {"const": "0.1.0"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "status": {"const": "SILVER_CANDIDATE"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_manifest_id", "source_record_id", "task_id", "incident_key",
+        "source_document_sha256"
+      ],
+      "properties": {
+        "source_manifest_id": {"type": "string", "minLength": 1},
+        "source_record_id": {"type": "string", "minLength": 1},
+        "task_id": {"type": "string", "minLength": 1},
+        "incident_key": {"type": "string", "minLength": 1},
+        "source_document_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "evidence_spans": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["evidence_id", "start_char", "end_char", "content_hash", "text"],
+        "properties": {
+          "evidence_id": {"$ref": "#/$defs/evidenceId"},
+          "start_char": {"type": "integer", "minimum": 0},
+          "end_char": {"type": "integer", "minimum": 1},
+          "content_hash": {"$ref": "#/$defs/sha256"},
+          "text": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "observed_assertions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["assertion_id", "statement", "predicate", "arguments", "evidence_ids"],
+        "properties": {
+          "assertion_id": {"$ref": "#/$defs/assertionId"},
+          "statement": {"type": "string", "minLength": 1, "maxLength": 1000},
+          "predicate": {"type": "string", "pattern": "^[a-z][a-z0-9_]{0,99}$"},
+          "arguments": {
+            "type": "array", "minItems": 1, "uniqueItems": true,
+            "items": {"$ref": "#/$defs/argument"}
+          },
+          "evidence_ids": {
+            "type": "array", "minItems": 1, "uniqueItems": true,
+            "items": {"$ref": "#/$defs/evidenceId"}
+          }
+        }
+      }
+    },
+    "attribute_assertions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "attribute_id", "field", "value", "declared_origin",
+          "base_assertion_ids", "evidence_ids"
+        ],
+        "properties": {
+          "attribute_id": {"$ref": "#/$defs/attributeId"},
+          "field": {"type": "string", "pattern": "^[a-z][a-z0-9_]{0,99}$"},
+          "value": {"type": ["string", "number", "boolean", "null"]},
+          "declared_origin": {"enum": ["SOURCE_ENTAILED", "MODEL_INFERENCE", "UNKNOWN"]},
+          "base_assertion_ids": {
+            "type": "array", "minItems": 1, "uniqueItems": true,
+            "items": {"$ref": "#/$defs/assertionId"}
+          },
+          "evidence_ids": {
+            "type": "array", "minItems": 1, "uniqueItems": true,
+            "items": {"$ref": "#/$defs/evidenceId"}
+          }
+        }
+      }
+    },
+    "event_hypotheses": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "event_hypothesis_id", "hypothesis_group_id", "alternative_index",
+          "assertion_ids", "attribute_ids"
+        ],
+        "properties": {
+          "event_hypothesis_id": {"$ref": "#/$defs/eventId"},
+          "hypothesis_group_id": {"$ref": "#/$defs/groupId"},
+          "alternative_index": {"type": "integer", "minimum": 0, "maximum": 9},
+          "assertion_ids": {
+            "type": "array", "minItems": 1, "uniqueItems": true,
+            "items": {"$ref": "#/$defs/assertionId"}
+          },
+          "attribute_ids": {
+            "type": "array", "uniqueItems": true,
+            "items": {"$ref": "#/$defs/attributeId"}
+          }
+        }
+      }
+    },
+    "relation_hypotheses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "relation_hypothesis_id", "hypothesis_group_id", "alternative_index",
+          "from_event_hypothesis_id", "to_event_hypothesis_id",
+          "from_assertion_id", "to_assertion_id", "relation",
+          "declared_origin", "evidence_ids"
+        ],
+        "properties": {
+          "relation_hypothesis_id": {"$ref": "#/$defs/relationId"},
+          "hypothesis_group_id": {"$ref": "#/$defs/groupId"},
+          "alternative_index": {"type": "integer", "minimum": 0, "maximum": 9},
+          "from_event_hypothesis_id": {"$ref": "#/$defs/eventId"},
+          "to_event_hypothesis_id": {"$ref": "#/$defs/eventId"},
+          "from_assertion_id": {"$ref": "#/$defs/assertionId"},
+          "to_assertion_id": {"$ref": "#/$defs/assertionId"},
+          "relation": {
+            "enum": [
+              "causes", "contributes_to", "triggers", "precedes",
+              "correlated_with", "mitigates"
+            ]
+          },
+          "declared_origin": {"enum": ["SOURCE_ENTAILED", "MODEL_INFERENCE", "UNKNOWN"]},
+          "evidence_ids": {
+            "type": "array", "minItems": 1, "uniqueItems": true,
+            "items": {"$ref": "#/$defs/evidenceId"}
+          }
+        }
+      }
+    },
+    "authority": {
+      "const": {
+        "dataset_tier": "SILVER_CANDIDATE",
+        "gold_truth": false,
+        "canonicalization_authorized": false,
+        "fault_injection_authorized": false,
+        "target_mutation_authorized": false
+      }
+    },
+    "limitations": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/limitations"
+    },
+    "record_sha256": {"$ref": "#/$defs/sha256"}
+  }
+}

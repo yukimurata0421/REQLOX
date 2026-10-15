@@ -1,0 +1,8 @@
+[
+  {
+    "url": "https://example.org/owned-lock-report",
+    "title": "Owned lock control",
+    "publisher": "REQLOX owned example",
+    "text": "The primary worker renewed the lock. A second worker waited."
+  }
+]

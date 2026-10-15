@@ -1,0 +1,22 @@
+include LICENSE README.md pyproject.toml
+include .coveragerc coverage-policy.json requirements-test.txt
+recursive-include docs *.md
+recursive-include reqlox *.py *.json
+recursive-include reqlox_core *.py
+recursive-include reqlox_knowledge *.py *.json *.sql
+recursive-include reqlox_system *.py *.json
+recursive-include reqlox_demo *.py *.html *.css *.js *.json
+recursive-include tests *.py
+recursive-include examples *.py *.json
+recursive-include scripts *.py *.sh
+include scripts/reqlox
+recursive-include infra *.tf *.tftpl *.py *.hcl
+recursive-include infra Dockerfile *.mjs
+include infra/gcp/.terraform.lock.hcl
+recursive-include schemas *.json
+recursive-include publication *.json
+global-exclude *.py[cod] *.log *.tfstate *.tfstate.* *.tfplan *.tfvars *.tfvars.json
+prune corpus
+prune targets
+prune database
+prune .venv

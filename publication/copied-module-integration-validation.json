@@ -1,0 +1,49 @@
+{
+  "schema": "reqlox.copied-module-integration-offline-validation.v1",
+  "status": "OFFLINE_VERIFIED_NATIVE_PENDING",
+  "verified_at_jst": "2026-10-12T19:14:11.250287+09:00",
+  "public_offline_tests": 67,
+  "failures": 0,
+  "errors": 0,
+  "new_native_campaigns": 0,
+  "new_model_calls": 0,
+  "target_imported": false,
+  "development_public_runtime_and_test_parity": true,
+  "cumulative_native_campaigns": 12,
+  "cumulative_charged_seconds": 42,
+  "conditional_maximum_native_campaigns": 15,
+  "conditional_maximum_new_campaigns": 3,
+  "reserved_window_seconds_at_future_first_dispatch": 20,
+  "approval_to_finish_seconds": 300,
+  "final_execution_approval_recorded": false,
+  "held_atomic_bindings": 4,
+  "temppath_repair_performed": false,
+  "whole_service_integration_verified": false,
+  "independent_generalization": false,
+  "probability_calibration": false,
+  "source_added_value": false,
+  "checks": [
+    "Final approval denial before process creation",
+    "Failed dispatch consumes its reserved attempt",
+    "Shared continuation fence prevents output and run resets",
+    "Deadline and child boundary validation",
+    "Stage-gated candidate comparison and fresh confirmation",
+    "Persistent evidence inventory and read-only audit",
+    "Receipt root, source, plan and method drift rejection",
+    "Synthetic async exception and cancellation caller checks",
+    "Read-only CLI preparation and inspection"
+  ],
+  "runtime_sha256": {
+    "reqlox/target_integration.py": "80bc18767de5cdb621418675517d65e384d1786935eca9ad9fdf2f3c466124a5",
+    "reqlox/integration_worker.py": "0f32107ffd636a766ff77f076925888c3b5f84a024cddfa4e5dceba6b5b8255a",
+    "reqlox/integration_cli.py": "0ee71b3653adca496e4ab388df06f58e7a7a53b66d944c7eccc9864dc0278745",
+    "tests/test_target_integration.py": "db3f8197352a079c6dabf31f05af8ac4729bfd9c3dfcd16bbd866a6a6dba7061",
+    "tests/test_integration_caller.py": "97393a0e4c139c3a8f6e631e456e813ba04271e0b7a63277ae52c3a618141d91",
+    "scripts/verify_offline.py": "e8ec84c44da0b33c6a6bd9b6f98a8ce3820622fcafa849a50a8a30a0c68da1b3"
+  },
+  "limitations": [
+    "Selected offline checks only; no copied Target execution",
+    "Future native receipts must establish actual isolation and outcomes",
+    "Historical missing raw evidence remains unrecovered"
+  ]
+}

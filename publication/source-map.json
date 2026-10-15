@@ -1,0 +1,548 @@
+{
+  "schema_version": "reqlox.public-source-map.v1",
+  "source_revision": "16687981efab921a543442ada1ce8bee5fd5bf90",
+  "files": [
+    {
+      "source": "reqlox_demo/__init__.py",
+      "path": "reqlox_demo/__init__.py",
+      "source_sha256": "c1f5c9d72ac8b673e3f8831b5b1bd7bf9461fa2a98dedde42545a67659d29e89",
+      "initial_sha256": "c1f5c9d72ac8b673e3f8831b5b1bd7bf9461fa2a98dedde42545a67659d29e89",
+      "public_sha256": "c1f5c9d72ac8b673e3f8831b5b1bd7bf9461fa2a98dedde42545a67659d29e89"
+    },
+    {
+      "source": "reqlox_demo/__main__.py",
+      "path": "reqlox_demo/__main__.py",
+      "source_sha256": "a0252060a07ec74b9745af70984a509603c2dd84c1db04774bcc663fee9b0992",
+      "initial_sha256": "a0252060a07ec74b9745af70984a509603c2dd84c1db04774bcc663fee9b0992",
+      "public_sha256": "1010f08264a8d0ee151e023bee8d282826b27f20d37fcb6099e3e67f70066886"
+    },
+    {
+      "source": "reqlox_demo/benchmark.py",
+      "path": "reqlox_demo/benchmark.py",
+      "source_sha256": "3b851727bbc3268391beead8b169fb6c02f5decb960b81137c61889a277b7674",
+      "initial_sha256": "3b851727bbc3268391beead8b169fb6c02f5decb960b81137c61889a277b7674",
+      "public_sha256": "3b851727bbc3268391beead8b169fb6c02f5decb960b81137c61889a277b7674"
+    },
+    {
+      "source": "reqlox_demo/contracts.py",
+      "path": "reqlox_demo/contracts.py",
+      "source_sha256": "2cf7c548cd22e7c08ded92dbcd4965564c2a56650e989836c48b8d080b8caaee",
+      "initial_sha256": "2cf7c548cd22e7c08ded92dbcd4965564c2a56650e989836c48b8d080b8caaee",
+      "public_sha256": "2cf7c548cd22e7c08ded92dbcd4965564c2a56650e989836c48b8d080b8caaee"
+    },
+    {
+      "source": "reqlox_demo/data/model-records.json",
+      "path": "reqlox_demo/data/model-records.json",
+      "source_sha256": "fd3bfc1f829c929edc6f7da2278fd248c92744d89d4df8b8a55655138eb4f16a",
+      "initial_sha256": "fd3bfc1f829c929edc6f7da2278fd248c92744d89d4df8b8a55655138eb4f16a",
+      "public_sha256": "fd3bfc1f829c929edc6f7da2278fd248c92744d89d4df8b8a55655138eb4f16a"
+    },
+    {
+      "source": "reqlox_demo/data/repair-controls.json",
+      "path": "reqlox_demo/data/repair-controls.json",
+      "source_sha256": "cfbc40f6c2cfbc2335f79949ee976364960290bf5c8fd010b16d8830b49dd649",
+      "initial_sha256": "cfbc40f6c2cfbc2335f79949ee976364960290bf5c8fd010b16d8830b49dd649",
+      "public_sha256": "cfbc40f6c2cfbc2335f79949ee976364960290bf5c8fd010b16d8830b49dd649"
+    },
+    {
+      "source": "reqlox_demo/data/repair-records.json",
+      "path": "reqlox_demo/data/repair-records.json",
+      "source_sha256": "852b1b4edf5a20cc6b9cc90b0a1675c7c6e0a51c36b4a3ef69583a42a044be27",
+      "initial_sha256": "852b1b4edf5a20cc6b9cc90b0a1675c7c6e0a51c36b4a3ef69583a42a044be27",
+      "public_sha256": "852b1b4edf5a20cc6b9cc90b0a1675c7c6e0a51c36b4a3ef69583a42a044be27"
+    },
+    {
+      "source": "reqlox_demo/engine.py",
+      "path": "reqlox_demo/engine.py",
+      "source_sha256": "cbe8bc97b95bfaccf066caa8308d7d12c519fdc939ca8d2f10a437537a8cc2b9",
+      "initial_sha256": "eec4c30ef0f4ca83d577c17e0e97f940f729ebf3287b83135465711e0be5ec0a",
+      "public_sha256": "eec4c30ef0f4ca83d577c17e0e97f940f729ebf3287b83135465711e0be5ec0a"
+    },
+    {
+      "source": "reqlox_demo/isolation.py",
+      "path": "reqlox_demo/isolation.py",
+      "source_sha256": "e6ad1d82f5e2a91eae5598b7dc9e6daaa2ef972fb0b97ec9273cef4e3fe5c7d5",
+      "initial_sha256": "eecd8864e90a8b2b405e8645088350e3b424107a3570c62ed0f6f78134dac7ef",
+      "public_sha256": "cc5d8244fe50406a9e400d74eb404ea2638affc98098be6c38e31eae5e7ea794"
+    },
+    {
+      "source": "reqlox_demo/model.py",
+      "path": "reqlox_demo/model.py",
+      "source_sha256": "8c9c0ef3698fb42927044d81ea8314970131b7491618de2ef809b6a258399af6",
+      "initial_sha256": "fc17de105a23e84320af1b07235d2c68aa09ee2a75b98c268be8625c910ed454",
+      "public_sha256": "fc17de105a23e84320af1b07235d2c68aa09ee2a75b98c268be8625c910ed454"
+    },
+    {
+      "source": "reqlox_demo/oracle_worker.py",
+      "path": "reqlox_demo/oracle_worker.py",
+      "source_sha256": "a52857b848fb011f563006a46b5db44bbe22b2cdab40fc9f62450b727f736c59",
+      "initial_sha256": "a52857b848fb011f563006a46b5db44bbe22b2cdab40fc9f62450b727f736c59",
+      "public_sha256": "1eb7caff0a27f8ef410f3fe0430f700f665f484b7e979b2069f9ba96409aa138"
+    },
+    {
+      "source": "reqlox_demo/portable.py",
+      "path": "reqlox_demo/portable.py",
+      "source_sha256": "38f67f6f504fc1ab82eec8829520e5c9ec238c018eda7a57167999295e082167",
+      "initial_sha256": "38f67f6f504fc1ab82eec8829520e5c9ec238c018eda7a57167999295e082167",
+      "public_sha256": "38f67f6f504fc1ab82eec8829520e5c9ec238c018eda7a57167999295e082167"
+    },
+    {
+      "source": "reqlox_demo/portable_worker.py",
+      "path": "reqlox_demo/portable_worker.py",
+      "source_sha256": "b0783f73b326ef126cfec72fbe999cd573bd8f527aaacc8c8a82d2ffc078ef77",
+      "initial_sha256": "b0783f73b326ef126cfec72fbe999cd573bd8f527aaacc8c8a82d2ffc078ef77",
+      "public_sha256": "34e851c1b6b539a0568d896df51195ba5f1d399721ec7c277897908bb31cae71"
+    },
+    {
+      "source": "reqlox_demo/repair.py",
+      "path": "reqlox_demo/repair.py",
+      "source_sha256": "488e5e576e4e04fae5d1d1b12755472a95e86b90f131a8e2fa3422fcc9fd5a65",
+      "initial_sha256": "488e5e576e4e04fae5d1d1b12755472a95e86b90f131a8e2fa3422fcc9fd5a65",
+      "public_sha256": "488e5e576e4e04fae5d1d1b12755472a95e86b90f131a8e2fa3422fcc9fd5a65"
+    },
+    {
+      "source": "reqlox_demo/repair_benchmark.py",
+      "path": "reqlox_demo/repair_benchmark.py",
+      "source_sha256": "c4bb43c22bb5889ef548ee313730c7f4e0a4de80929a81c61943e09a254e7010",
+      "initial_sha256": "c4bb43c22bb5889ef548ee313730c7f4e0a4de80929a81c61943e09a254e7010",
+      "public_sha256": "c4bb43c22bb5889ef548ee313730c7f4e0a4de80929a81c61943e09a254e7010"
+    },
+    {
+      "source": "reqlox_demo/repair_contract.py",
+      "path": "reqlox_demo/repair_contract.py",
+      "source_sha256": "44abd550d9a7f3f6fc2f88e2281a6e16dc89c3e0060b9d09d14687e19e96acec",
+      "initial_sha256": "44abd550d9a7f3f6fc2f88e2281a6e16dc89c3e0060b9d09d14687e19e96acec",
+      "public_sha256": "44abd550d9a7f3f6fc2f88e2281a6e16dc89c3e0060b9d09d14687e19e96acec"
+    },
+    {
+      "source": "reqlox_demo/repair_model.py",
+      "path": "reqlox_demo/repair_model.py",
+      "source_sha256": "7ed542de599967d6075bf100ed96774c72aab90a6e71ae2a0f3bf3801fd41082",
+      "initial_sha256": "57399fcbeb33ddd09bf43de5e10506b4de8c3368aeb1c21afb1576a53f482773",
+      "public_sha256": "57399fcbeb33ddd09bf43de5e10506b4de8c3368aeb1c21afb1576a53f482773"
+    },
+    {
+      "source": "reqlox_demo/repair_worker.py",
+      "path": "reqlox_demo/repair_worker.py",
+      "source_sha256": "e9eaf70d3a46540084c5ac7ee68ce02d30f230eff181e6f7e64808ac628577ba",
+      "initial_sha256": "e9eaf70d3a46540084c5ac7ee68ce02d30f230eff181e6f7e64808ac628577ba",
+      "public_sha256": "161c7899af243c0a016753f5c529aefaa12506989fe0d1cef93d0ff9b11bd888"
+    },
+    {
+      "source": "reqlox_demo/server.py",
+      "path": "reqlox_demo/server.py",
+      "source_sha256": "20343ac2d8fd3f1ff38da5354b3098087b1175615ec09ce690913ee31027b908",
+      "initial_sha256": "20343ac2d8fd3f1ff38da5354b3098087b1175615ec09ce690913ee31027b908",
+      "public_sha256": "123a2ca622af95a440087cbeb106f29bcbacb786ce3a1cb654de60b8252980b0"
+    },
+    {
+      "source": "reqlox_demo/static/app.js",
+      "path": "reqlox_demo/static/app.js",
+      "source_sha256": "9e91d8d2886d313b27a70b6c6bf57456068394e6190ca81cd5d15f25e6230732",
+      "initial_sha256": "9e91d8d2886d313b27a70b6c6bf57456068394e6190ca81cd5d15f25e6230732",
+      "public_sha256": "9e91d8d2886d313b27a70b6c6bf57456068394e6190ca81cd5d15f25e6230732"
+    },
+    {
+      "source": "reqlox_demo/static/index.html",
+      "path": "reqlox_demo/static/index.html",
+      "source_sha256": "2af4de464b8e123347c3e069946f8695d2b096729dad19a92ea5d442ed467540",
+      "initial_sha256": "2af4de464b8e123347c3e069946f8695d2b096729dad19a92ea5d442ed467540",
+      "public_sha256": "2af4de464b8e123347c3e069946f8695d2b096729dad19a92ea5d442ed467540"
+    },
+    {
+      "source": "reqlox_demo/static/style.css",
+      "path": "reqlox_demo/static/style.css",
+      "source_sha256": "23023eb149494c19ac9ee7eedb03797d69ee9c118414bac9e70d5dfc70a48c8d",
+      "initial_sha256": "23023eb149494c19ac9ee7eedb03797d69ee9c118414bac9e70d5dfc70a48c8d",
+      "public_sha256": "23023eb149494c19ac9ee7eedb03797d69ee9c118414bac9e70d5dfc70a48c8d"
+    },
+    {
+      "source": "reqlox_demo/targets.py",
+      "path": "reqlox_demo/targets.py",
+      "source_sha256": "b699e8be729f336b38ecabc3d952ecb4224b56b1332dca2b3b4414ac52940233",
+      "initial_sha256": "b699e8be729f336b38ecabc3d952ecb4224b56b1332dca2b3b4414ac52940233",
+      "public_sha256": "b699e8be729f336b38ecabc3d952ecb4224b56b1332dca2b3b4414ac52940233"
+    },
+    {
+      "source": "schemas/evidence-span.v0.1.schema.json",
+      "path": "schemas/evidence-span.v0.1.schema.json",
+      "source_sha256": "f4b95811cea804faed6d7d41e12811f5b23415c394e63d235e060f33d246215e",
+      "initial_sha256": "f4b95811cea804faed6d7d41e12811f5b23415c394e63d235e060f33d246215e",
+      "public_sha256": "f4b95811cea804faed6d7d41e12811f5b23415c394e63d235e060f33d246215e"
+    },
+    {
+      "source": "schemas/incident-hypothesis-set.v0.1.schema.json",
+      "path": "schemas/incident-hypothesis-set.v0.1.schema.json",
+      "source_sha256": "078e558ef5f70777a45e70eb5a748aabf5ec5dfa7859cd4ddbc7cb3319f1cac5",
+      "initial_sha256": "078e558ef5f70777a45e70eb5a748aabf5ec5dfa7859cd4ddbc7cb3319f1cac5",
+      "public_sha256": "078e558ef5f70777a45e70eb5a748aabf5ec5dfa7859cd4ddbc7cb3319f1cac5"
+    },
+    {
+      "source": "schemas/system-contract.v0.1.schema.json",
+      "path": "schemas/system-contract.v0.1.schema.json",
+      "source_sha256": "3a3d6b4deb38056eedb3eb769ed7aede08f082989597782721f572d27b9cc3a6",
+      "initial_sha256": "3a3d6b4deb38056eedb3eb769ed7aede08f082989597782721f572d27b9cc3a6",
+      "public_sha256": "3a3d6b4deb38056eedb3eb769ed7aede08f082989597782721f572d27b9cc3a6"
+    },
+    {
+      "source": "schemas/workflow-policy.v1.schema.json",
+      "path": "schemas/workflow-policy.v1.schema.json",
+      "source_sha256": "7ab53b89f1535ca1a5dc1e4f20ea50490d5e9eeb4262558fc289adf6c6bddceb",
+      "initial_sha256": "7ab53b89f1535ca1a5dc1e4f20ea50490d5e9eeb4262558fc289adf6c6bddceb",
+      "public_sha256": "7ab53b89f1535ca1a5dc1e4f20ea50490d5e9eeb4262558fc289adf6c6bddceb"
+    },
+    {
+      "source": "tests/test_reliability_async_shapes.py",
+      "path": "tests/test_reliability_async_shapes.py",
+      "source_sha256": "e2bb1ee8daecde8124508ef74c7d617c687548cdb6d38a266a9d961f12ff05d4",
+      "initial_sha256": "4929eb61e451b6a2207fcb9f8af34c07e0915eda1d8c0867085f6174db488865",
+      "public_sha256": "4929eb61e451b6a2207fcb9f8af34c07e0915eda1d8c0867085f6174db488865"
+    },
+    {
+      "source": "tests/test_reliability_condition_programs.py",
+      "path": "tests/test_reliability_condition_programs.py",
+      "source_sha256": "4da1857fc4c0a5f07e129144548c6c01b5da96a0a5956ee29977bd4562b9c46c",
+      "initial_sha256": "538482b11cda93dbeff4bedfa0b2290fd9029f862166d67bd916914ca7c3349a",
+      "public_sha256": "49e4aa0a332630cf10ce9a8fc1d8707c6f1f2b86c719d69c91be9a4b6879455f"
+    },
+    {
+      "source": "tests/test_reliability_context_lifecycle.py",
+      "path": "tests/test_reliability_context_lifecycle.py",
+      "source_sha256": "747bcc53fcece1a6cf79b5ca91fe8db1e6fc8e50380b2cfbc5845dcddb8fc2b2",
+      "initial_sha256": "496a3a3e8be80e148c4103e20f41204ce76fb6d06bdd0675dca9ae19db55e110",
+      "public_sha256": "f829df40ab632dc93f9477d30fa440a703d7a0d7a181fa1647ed2f33f3e7e63a"
+    },
+    {
+      "source": "tests/test_reliability_delegated_context.py",
+      "path": "tests/test_reliability_delegated_context.py",
+      "source_sha256": "7321e70766feca7c2f30502e029cdc055f56386ccaab642aaab4bc7acf40439e",
+      "initial_sha256": "c0480c9398ee4a329b63b9cf344cba24012d95acfc293318650bb8aa2ff73c39",
+      "public_sha256": "c0480c9398ee4a329b63b9cf344cba24012d95acfc293318650bb8aa2ff73c39"
+    },
+    {
+      "source": "tests/test_reliability_improvement_loop.py",
+      "path": "tests/test_reliability_improvement_loop.py",
+      "source_sha256": "143554e735b69bc05358af449ee1c8255ab185ecc8b27f32bd25457414e71bed",
+      "initial_sha256": "aee19e7be37cd36862b3fe06f474f9622c2bcc0d3bae620b2c29989d3be8b1a7",
+      "public_sha256": "103258532f57f8e1988368a7570a74effeb47dac4c691db72da6bdabb2603756"
+    },
+    {
+      "source": "tests/test_reliability_instance_closure.py",
+      "path": "tests/test_reliability_instance_closure.py",
+      "source_sha256": "f7e7c52c6ddb2fbd97f1a7c22d4b43c5669a40880c64c1f58582fdba48c3ceda",
+      "initial_sha256": "35bb1864ba070483ccb16a3e53f747c7e48a9667e4320d841a459c59a730a833",
+      "public_sha256": "35bb1864ba070483ccb16a3e53f747c7e48a9667e4320d841a459c59a730a833"
+    },
+    {
+      "source": "tests/test_reliability_modular_flow.py",
+      "path": "tests/test_reliability_modular_flow.py",
+      "source_sha256": "327572fda168e3b78a75c03fbb6fd11dc8a1d8eaaaf930123dd4d74849aba178",
+      "initial_sha256": "57d231697ab6edf7e9fc8e4fa1f5452f42ad5c7f1322522271335c23fd595194",
+      "public_sha256": "0df46d3d884fe2bf2fa43464c1e17cbeaae33657f8d04a2e5644ce553afff5bf"
+    },
+    {
+      "source": "tests/test_reliability_natural_conditions.py",
+      "path": "tests/test_reliability_natural_conditions.py",
+      "source_sha256": "2b93022a93e6f0a164117edc0bb7cf26a72a73111d3a69f580506cf4d3feef76",
+      "initial_sha256": "b11e93041a8a917408f5a53e2161a5f6fde91a8c892ddcf6da40a854cfd7af6a",
+      "public_sha256": "e07025978807551af959a1a5c8afe25a1c5ea13e6e91bac18ce8e33446396f0d"
+    },
+    {
+      "source": "tests/test_reliability_requirement_experiment.py",
+      "path": "tests/test_reliability_requirement_experiment.py",
+      "source_sha256": "e77e22c54ead57534f52646c3badc47cc1a67fb8b1ea2d1a83cbb33b373703b1",
+      "initial_sha256": "4555ed50bf72e5cad834d275a9ac2c9b76e6e8fb98892aed128d7aff3ec19ec1",
+      "public_sha256": "4555ed50bf72e5cad834d275a9ac2c9b76e6e8fb98892aed128d7aff3ec19ec1"
+    },
+    {
+      "source": "tests/test_reliability_reuse.py",
+      "path": "tests/test_reliability_reuse.py",
+      "source_sha256": "a5e7a9a856f081d3487f510ce9bd8ce76721930297edfb38af2d2b367ce3b637",
+      "initial_sha256": "f9fdc4a6619bee254acd82882ceae9484874e30f6ee7f1f66f9aaf04740cf160",
+      "public_sha256": "7a5e151522ffcdd24506e8e11ae362b1dfacb2631ff2d8bb74dd9f7a3ebf76ac"
+    },
+    {
+      "source": "tests/test_reliability_selective_reuse.py",
+      "path": "tests/test_reliability_selective_reuse.py",
+      "source_sha256": "569b9887788dfdaedfca05902d3be255aa05dd40fe4f3775d11be6bbaef534eb",
+      "initial_sha256": "627fb745ace313493467bac93debfbabadbe91ab4e11cbaf37d52e832f26b167",
+      "public_sha256": "45ebced819a7f18971ed7ca79a7473113986adced205511975225d6160fc0363"
+    },
+    {
+      "source": "tests/test_reliability_serialized_flow.py",
+      "path": "tests/test_reliability_serialized_flow.py",
+      "source_sha256": "9f1f84a281fd0ec648f4978fc31690ed6ed0d791d5af9d381b2e8cc28b346a23",
+      "initial_sha256": "3d14f3dcc96c5e248fef6db353d0d4bf1b42b7437264dfc55a1d611a9a1a1dc7",
+      "public_sha256": "bbd2dbeab9c2bbb0a0f85ba50df093277a3250e0bba24c9699a645b94f381dd5"
+    },
+    {
+      "source": "tests/test_reqlox_demo.py",
+      "path": "tests/test_reqlox_demo.py",
+      "source_sha256": "d6a663a8ce9335604dd06b71334ecb4ffe97b8842ee2a7a8864a52c3429cc439",
+      "initial_sha256": "d6a663a8ce9335604dd06b71334ecb4ffe97b8842ee2a7a8864a52c3429cc439",
+      "public_sha256": "3692da189dfdaac064e32103af89b8e673643b55fb7c03bb9e4f005073f00b11"
+    },
+    {
+      "source": "tests/test_reqlox_demo_portable.py",
+      "path": "tests/test_reqlox_demo_portable.py",
+      "source_sha256": "8ad597d6de82f37022557396f94420f77243af3740712d6c55851accbcd89fad",
+      "initial_sha256": "8ad597d6de82f37022557396f94420f77243af3740712d6c55851accbcd89fad",
+      "public_sha256": "8ad597d6de82f37022557396f94420f77243af3740712d6c55851accbcd89fad"
+    },
+    {
+      "source": "tests/test_reqlox_demo_repair.py",
+      "path": "tests/test_reqlox_demo_repair.py",
+      "source_sha256": "7bf8e4ccd352231757962de38ad2e0f181863ee7c3cd96a1a7bd60ff6a2f6288",
+      "initial_sha256": "7bf8e4ccd352231757962de38ad2e0f181863ee7c3cd96a1a7bd60ff6a2f6288",
+      "public_sha256": "5c5131caac5374c9b6dad2a17d8b870b121f4fcf2de7f6ad62ac470364228c2d"
+    },
+    {
+      "source": "tests/test_source_discovery_effort.py",
+      "path": "tests/test_source_discovery_effort.py",
+      "source_sha256": "c2ce87b7192c81ffc111ecfb2f375df0f60d589d4e8e200e27469ffbf63900c7",
+      "initial_sha256": "cd147b810eaede46d111fd775bd9d16cd641f7212feed002c4370c5efe1722e8",
+      "public_sha256": "cd147b810eaede46d111fd775bd9d16cd641f7212feed002c4370c5efe1722e8"
+    },
+    {
+      "source": "tests/test_source_discovery_metrics.py",
+      "path": "tests/test_source_discovery_metrics.py",
+      "source_sha256": "2fbf89c732e72cb863720bf47243cb541345fb845bdb376c33f048f215159771",
+      "initial_sha256": "a7af9f19d103d3a2161eff3bb96335bc5ef361b3a9aa0b07130c70bc8df60376",
+      "public_sha256": "a7af9f19d103d3a2161eff3bb96335bc5ef361b3a9aa0b07130c70bc8df60376"
+    },
+    {
+      "source": "tests/test_workflow_effort.py",
+      "path": "tests/test_workflow_effort.py",
+      "source_sha256": "481005933745af703e3ba850e675861cec2daf0d721d4a438b2ed76a1d51315c",
+      "initial_sha256": "1f2bcbcf665bc91d1667401e35e1b9abcc555bbea53ba88ce14d72477f2e2718",
+      "public_sha256": "1f2bcbcf665bc91d1667401e35e1b9abcc555bbea53ba88ce14d72477f2e2718"
+    },
+    {
+      "source": "tools/audit_reliability_reuse.py",
+      "path": "reqlox_core/audit_reliability_reuse.py",
+      "source_sha256": "9b4c613ae5f7aa271dc3de312d5c3335a86b5d2af8872b8afa950aa419ca37a9",
+      "initial_sha256": "9b4c613ae5f7aa271dc3de312d5c3335a86b5d2af8872b8afa950aa419ca37a9",
+      "public_sha256": "13445e0da3ef16ffa22a73c309f8ff4406a3c2a73ca126076dfc63f2cdb6e04c"
+    },
+    {
+      "source": "tools/incident_reference.py",
+      "path": "reqlox_core/incident_reference.py",
+      "source_sha256": "bf1704e17014c74dc38880205b884bc866fcdf51a0b708b8ea77c0858013457c",
+      "initial_sha256": "bf1704e17014c74dc38880205b884bc866fcdf51a0b708b8ea77c0858013457c",
+      "public_sha256": "bf1704e17014c74dc38880205b884bc866fcdf51a0b708b8ea77c0858013457c"
+    },
+    {
+      "source": "tools/qualification_adapters_v2.py",
+      "path": "reqlox_core/qualification_adapters_v2.py",
+      "source_sha256": "13a73508eb2d60c68b14181501353e1df3569c5e9f5657501b011455d1589c34",
+      "initial_sha256": "13a73508eb2d60c68b14181501353e1df3569c5e9f5657501b011455d1589c34",
+      "public_sha256": "13a73508eb2d60c68b14181501353e1df3569c5e9f5657501b011455d1589c34"
+    },
+    {
+      "source": "tools/qualification_context_gold.py",
+      "path": "reqlox_core/qualification_context_gold.py",
+      "source_sha256": "2289e3e8e87f9da498a3b18fd2ccd6e636341fa3c105759e88619368296d3c5f",
+      "initial_sha256": "2289e3e8e87f9da498a3b18fd2ccd6e636341fa3c105759e88619368296d3c5f",
+      "public_sha256": "2289e3e8e87f9da498a3b18fd2ccd6e636341fa3c105759e88619368296d3c5f"
+    },
+    {
+      "source": "tools/qualification_context_oracle_log.py",
+      "path": "reqlox_core/qualification_context_oracle_log.py",
+      "source_sha256": "062c1c91ec7fc8fd109dc5c1062d6f7e346750dda4e08c42b708bb52b0794a96",
+      "initial_sha256": "062c1c91ec7fc8fd109dc5c1062d6f7e346750dda4e08c42b708bb52b0794a96",
+      "public_sha256": "062c1c91ec7fc8fd109dc5c1062d6f7e346750dda4e08c42b708bb52b0794a96"
+    },
+    {
+      "source": "tools/qualification_context_protocol.py",
+      "path": "reqlox_core/qualification_context_protocol.py",
+      "source_sha256": "2ddf7e69676e6ce9793b6bc7f3902dee85be212e90b6bf563041acecc19fe8ab",
+      "initial_sha256": "2ddf7e69676e6ce9793b6bc7f3902dee85be212e90b6bf563041acecc19fe8ab",
+      "public_sha256": "2ddf7e69676e6ce9793b6bc7f3902dee85be212e90b6bf563041acecc19fe8ab"
+    },
+    {
+      "source": "tools/qualification_context_sync.py",
+      "path": "reqlox_core/qualification_context_sync.py",
+      "source_sha256": "e14f04807bb3af524e0be41d371f8ba0e0381867c8885bb2404409adabfd1c55",
+      "initial_sha256": "e14f04807bb3af524e0be41d371f8ba0e0381867c8885bb2404409adabfd1c55",
+      "public_sha256": "e14f04807bb3af524e0be41d371f8ba0e0381867c8885bb2404409adabfd1c55"
+    },
+    {
+      "source": "tools/qualification_context_sync_worker.py",
+      "path": "reqlox_core/qualification_context_sync_worker.py",
+      "source_sha256": "d11bc34ddbc3f6b578f47eedfcb46c6ffbc1638e5f0f306334e69ff3b9efff08",
+      "initial_sha256": "0f3729b42f03f10d3d57861ff9ac9dba42448b43e9129f874726d9f815e11e6b",
+      "public_sha256": "0f3729b42f03f10d3d57861ff9ac9dba42448b43e9129f874726d9f815e11e6b"
+    },
+    {
+      "source": "tools/qualification_context_worker.py",
+      "path": "reqlox_core/qualification_context_worker.py",
+      "source_sha256": "406ecc9243317dc8b516055f39ccffd0030f67719e6a753071dd405738d3f8a9",
+      "initial_sha256": "7d8a6a6369aad4c760c5595da9aa7467d531e6902a1dd8ebc7289feafe58f5a1",
+      "public_sha256": "7d8a6a6369aad4c760c5595da9aa7467d531e6902a1dd8ebc7289feafe58f5a1"
+    },
+    {
+      "source": "tools/qualification_probability.py",
+      "path": "reqlox_core/qualification_probability.py",
+      "source_sha256": "6552751ff88ad532acabd71aec5b0445520bb03e4797c245fa91b1ac5458e798",
+      "initial_sha256": "6552751ff88ad532acabd71aec5b0445520bb03e4797c245fa91b1ac5458e798",
+      "public_sha256": "6552751ff88ad532acabd71aec5b0445520bb03e4797c245fa91b1ac5458e798"
+    },
+    {
+      "source": "tools/reliability_conditions.py",
+      "path": "reqlox_core/reliability_conditions.py",
+      "source_sha256": "c6dad702315824bb391c5f095c27fe1da1c1942948c8b11431ac796f01661886",
+      "initial_sha256": "c6dad702315824bb391c5f095c27fe1da1c1942948c8b11431ac796f01661886",
+      "public_sha256": "c6dad702315824bb391c5f095c27fe1da1c1942948c8b11431ac796f01661886"
+    },
+    {
+      "source": "tools/reliability_context.py",
+      "path": "reqlox_core/reliability_context.py",
+      "source_sha256": "e36608a8cd8eb0d6e97c735ed071fb338e74f421417ab1d21231c740d88b2066",
+      "initial_sha256": "e36608a8cd8eb0d6e97c735ed071fb338e74f421417ab1d21231c740d88b2066",
+      "public_sha256": "e36608a8cd8eb0d6e97c735ed071fb338e74f421417ab1d21231c740d88b2066"
+    },
+    {
+      "source": "tools/reliability_delegated_context.py",
+      "path": "reqlox_core/reliability_delegated_context.py",
+      "source_sha256": "5b9ec2b2de84338e3caaee68f6366d176d48f397ee8ac2be9061534eec36ac71",
+      "initial_sha256": "5b9ec2b2de84338e3caaee68f6366d176d48f397ee8ac2be9061534eec36ac71",
+      "public_sha256": "5b9ec2b2de84338e3caaee68f6366d176d48f397ee8ac2be9061534eec36ac71"
+    },
+    {
+      "source": "tools/reliability_instance.py",
+      "path": "reqlox_core/reliability_instance.py",
+      "source_sha256": "eab2c3e5f4d9f77882f4e98745d625983082e7019d392f7925604c9a0c8c118d",
+      "initial_sha256": "eab2c3e5f4d9f77882f4e98745d625983082e7019d392f7925604c9a0c8c118d",
+      "public_sha256": "eab2c3e5f4d9f77882f4e98745d625983082e7019d392f7925604c9a0c8c118d"
+    },
+    {
+      "source": "tools/reliability_module_graph.py",
+      "path": "reqlox_core/reliability_module_graph.py",
+      "source_sha256": "02c8e2806a29eb2692a1035aedd621919d6efa86c7655709e0871739fe591c64",
+      "initial_sha256": "02c8e2806a29eb2692a1035aedd621919d6efa86c7655709e0871739fe591c64",
+      "public_sha256": "02c8e2806a29eb2692a1035aedd621919d6efa86c7655709e0871739fe591c64"
+    },
+    {
+      "source": "tools/reliability_requirement_experiment.py",
+      "path": "reqlox_core/reliability_requirement_experiment.py",
+      "source_sha256": "5b5a03d2c609efc2ee71aad95c445c2910eab6abf32fbc3816c3396adcd18be2",
+      "initial_sha256": "5b5a03d2c609efc2ee71aad95c445c2910eab6abf32fbc3816c3396adcd18be2",
+      "public_sha256": "5b5a03d2c609efc2ee71aad95c445c2910eab6abf32fbc3816c3396adcd18be2"
+    },
+    {
+      "source": "tools/reliability_reuse.py",
+      "path": "reqlox_core/reliability_reuse.py",
+      "source_sha256": "83577ad37ce6bd6c5c5769c15e3db7c3e2dd19962a25116ff0571a3f59adb5df",
+      "initial_sha256": "83577ad37ce6bd6c5c5769c15e3db7c3e2dd19962a25116ff0571a3f59adb5df",
+      "public_sha256": "83577ad37ce6bd6c5c5769c15e3db7c3e2dd19962a25116ff0571a3f59adb5df"
+    },
+    {
+      "source": "tools/reliability_reuse_cache.py",
+      "path": "reqlox_core/reliability_reuse_cache.py",
+      "source_sha256": "849aece9f3cd93f3ad722233ea1efa004ea79b8b7da43cc09fab2a7b3a48cd24",
+      "initial_sha256": "849aece9f3cd93f3ad722233ea1efa004ea79b8b7da43cc09fab2a7b3a48cd24",
+      "public_sha256": "849aece9f3cd93f3ad722233ea1efa004ea79b8b7da43cc09fab2a7b3a48cd24"
+    },
+    {
+      "source": "tools/reliability_reuse_worker.py",
+      "path": "reqlox_core/reliability_reuse_worker.py",
+      "source_sha256": "212611be0aa7027f6241cc9a21338d47416b93c26d1c2a83685d0c633f7a32e3",
+      "initial_sha256": "212611be0aa7027f6241cc9a21338d47416b93c26d1c2a83685d0c633f7a32e3",
+      "public_sha256": "212611be0aa7027f6241cc9a21338d47416b93c26d1c2a83685d0c633f7a32e3"
+    },
+    {
+      "source": "tools/reliability_serialized_flow.py",
+      "path": "reqlox_core/reliability_serialized_flow.py",
+      "source_sha256": "028a4e0ceaa55fe76138e48b6f318294dc68b2dc7b8478b390e19798cf1b9254",
+      "initial_sha256": "028a4e0ceaa55fe76138e48b6f318294dc68b2dc7b8478b390e19798cf1b9254",
+      "public_sha256": "028a4e0ceaa55fe76138e48b6f318294dc68b2dc7b8478b390e19798cf1b9254"
+    },
+    {
+      "source": "tools/reliability_source_conditions.py",
+      "path": "reqlox_core/reliability_source_conditions.py",
+      "source_sha256": "1f04c8d5847def2a9af4e7f7de48da51e1e51e3224541f1b7d64252f7362d716",
+      "initial_sha256": "1f04c8d5847def2a9af4e7f7de48da51e1e51e3224541f1b7d64252f7362d716",
+      "public_sha256": "1f04c8d5847def2a9af4e7f7de48da51e1e51e3224541f1b7d64252f7362d716"
+    },
+    {
+      "source": "tools/reliability_specifications.py",
+      "path": "reqlox_core/reliability_specifications.py",
+      "source_sha256": "42928a2523984d8a0ebc986e3b2e0c76fe83fab225fd276343372b0b84fc8faa",
+      "initial_sha256": "42928a2523984d8a0ebc986e3b2e0c76fe83fab225fd276343372b0b84fc8faa",
+      "public_sha256": "42928a2523984d8a0ebc986e3b2e0c76fe83fab225fd276343372b0b84fc8faa"
+    },
+    {
+      "source": "tools/repository_atomic_worker.py",
+      "path": "reqlox_core/repository_atomic_worker.py",
+      "source_sha256": "8d41bd120b48eafa64f17e35689928d1cfc6d5c007bf93eff067f43a4af27006",
+      "initial_sha256": "8d41bd120b48eafa64f17e35689928d1cfc6d5c007bf93eff067f43a4af27006",
+      "public_sha256": "8d41bd120b48eafa64f17e35689928d1cfc6d5c007bf93eff067f43a4af27006"
+    },
+    {
+      "source": "tools/repository_atomic_write.py",
+      "path": "reqlox_core/repository_atomic_write.py",
+      "source_sha256": "fbedfa80f71b535514c09dfab3cd60f39b0aa76cd1855c595354dbae9d3742d9",
+      "initial_sha256": "fbedfa80f71b535514c09dfab3cd60f39b0aa76cd1855c595354dbae9d3742d9",
+      "public_sha256": "fbedfa80f71b535514c09dfab3cd60f39b0aa76cd1855c595354dbae9d3742d9"
+    },
+    {
+      "source": "tools/run_reliability_improvement_loop.py",
+      "path": "reqlox_core/run_reliability_improvement_loop.py",
+      "source_sha256": "6cd930bbb8a51a79795132931c0881d02256415d9c3f8c2ff943d7a279930c36",
+      "initial_sha256": "be7689364e713c28c31d28ece24e9debb6cc1fad2354eb16a756e0f20c4522a0",
+      "public_sha256": "be7689364e713c28c31d28ece24e9debb6cc1fad2354eb16a756e0f20c4522a0"
+    },
+    {
+      "source": "tools/run_reliability_paired.py",
+      "path": "reqlox_core/run_reliability_paired.py",
+      "source_sha256": "f56f2d26e033fde79e14367980a79e41ecee2a49fba4394d239a4fcf98f83aa5",
+      "initial_sha256": "fb69e419d379940bf19c5156708716de5106ef48164fa951080d2d6d85939aab",
+      "public_sha256": "fb69e419d379940bf19c5156708716de5106ef48164fa951080d2d6d85939aab"
+    },
+    {
+      "source": "tools/run_reliability_reuse.py",
+      "path": "reqlox_core/run_reliability_reuse.py",
+      "source_sha256": "1049dc1e0d396e00652fdb1c7280b3513fa8fbfd77a7bad0252479ff4fdef743",
+      "initial_sha256": "ace1ad9c67b445ff6fe0cca2dc908fb4e112e9b5f50540d5c7075f1a48bab1b3",
+      "public_sha256": "662d863bc3c33b16c7261a80e15fac1e66e36b204d0ed45746b461391e895e6a"
+    },
+    {
+      "source": "tools/source_discovery_effort.py",
+      "path": "reqlox_core/source_discovery_effort.py",
+      "source_sha256": "b57a31ccb01e15e6af42ed53bda75a7aa9b2d37a853e70c61a1b221db76a972f",
+      "initial_sha256": "b57a31ccb01e15e6af42ed53bda75a7aa9b2d37a853e70c61a1b221db76a972f",
+      "public_sha256": "b57a31ccb01e15e6af42ed53bda75a7aa9b2d37a853e70c61a1b221db76a972f"
+    },
+    {
+      "source": "tools/source_discovery_metrics.py",
+      "path": "reqlox_core/source_discovery_metrics.py",
+      "source_sha256": "8f46ab501cba2d6222f98cb6f25cb2139eb8151de4bbdd23b7d59465f68f25ca",
+      "initial_sha256": "8f46ab501cba2d6222f98cb6f25cb2139eb8151de4bbdd23b7d59465f68f25ca",
+      "public_sha256": "8f46ab501cba2d6222f98cb6f25cb2139eb8151de4bbdd23b7d59465f68f25ca"
+    },
+    {
+      "source": "tools/workflow_effort.py",
+      "path": "reqlox_core/workflow_effort.py",
+      "source_sha256": "5e9a1d085b73657cd9edee8511c05fce8f8480165d77b86af386cab3f3744695",
+      "initial_sha256": "5e9a1d085b73657cd9edee8511c05fce8f8480165d77b86af386cab3f3744695",
+      "public_sha256": "5e9a1d085b73657cd9edee8511c05fce8f8480165d77b86af386cab3f3744695"
+    },
+    {
+      "source": "tools/prepare_reliability_reuse.py",
+      "path": "reqlox_core/prepare_reliability_reuse.py",
+      "source_sha256": "dac323a05041409a2d66519210d92b56148b9371f00d14906af32d6e54cb612e",
+      "initial_sha256": "74d622ab8bebeb87daf096ef4853289cd1b9ff8094c8437615de57a1866b7899",
+      "selection": "Provided-condition preparation only; private corpus search excluded",
+      "public_sha256": "67ee3eeb3579701519a9f7f0b8eab9543948878a49cbe4c41779b7fdb8f0ba65"
+    }
+  ],
+  "raw_evidence_included": false,
+  "private_data_included": false,
+  "public_adaptations": [
+    "Portable reqlox_core package and CLI",
+    "User-owned runtime state outside installed code",
+    "Self-contained optional cloud model adapter",
+    "Public-runtime unit tests; native integration opt-in",
+    "No private corpus, provider credentials or raw execution evidence"
+  ]
+}

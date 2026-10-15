@@ -1,0 +1,218 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/immunize/embedding-record.v1.schema.json",
+  "title": "Immunize EmbeddingRecord v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "contract_type",
+    "contract_version",
+    "revision_id",
+    "created_at",
+    "source_ref",
+    "document_ref",
+    "chunk",
+    "embedding",
+    "document_facets",
+    "semantic_tags",
+    "storage",
+    "limitations"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^emb_[a-f0-9]{20}$"
+    },
+    "contract_type": {
+      "const": "EmbeddingRecord"
+    },
+    "contract_version": {
+      "const": "1.0.0"
+    },
+    "revision_id": {
+      "type": "string",
+      "pattern": "^rev_[0-9]{8}T[0-9]{6}Z_[a-f0-9]{12}$"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "revision_id",
+        "canonical_url"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^src_"
+        },
+        "revision_id": {
+          "type": "string",
+          "pattern": "^rev_"
+        },
+        "canonical_url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        }
+      }
+    },
+    "document_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "revision_id",
+        "text_sha256"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^doc_"
+        },
+        "revision_id": {
+          "type": "string",
+          "pattern": "^rev_"
+        },
+        "text_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "chunk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "start_offset",
+        "end_offset",
+        "characters",
+        "sha256",
+        "claim_categories"
+      ],
+      "properties": {
+        "kind": {
+          "const": "TEXT_WINDOW"
+        },
+        "start_offset": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end_offset": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "characters": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "claim_categories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "embedding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "model_id",
+        "model_version",
+        "dimension",
+        "dtype",
+        "normalized",
+        "vector_index"
+      ],
+      "properties": {
+        "model_id": {
+          "const": "local-hashed-tfidf-facet"
+        },
+        "model_version": {
+          "const": "1.0.0"
+        },
+        "dimension": {
+          "type": "integer",
+          "minimum": 64
+        },
+        "dtype": {
+          "const": "float32"
+        },
+        "normalized": {
+          "const": true
+        },
+        "vector_index": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "semantic_tags": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "uniqueItems": true
+      }
+    },
+    "document_facets": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "uniqueItems": true
+      }
+    },
+    "storage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "classification",
+        "rights_status",
+        "external_model_disclosure_allowed",
+        "publication_allowed",
+        "rebuildable_derived_artifact"
+      ],
+      "properties": {
+        "classification": {
+          "const": "LOCAL_PRIVATE_DERIVED_INDEX"
+        },
+        "rights_status": {
+          "const": "UNKNOWN_NOT_REVIEWED"
+        },
+        "external_model_disclosure_allowed": {
+          "const": false
+        },
+        "publication_allowed": {
+          "const": false
+        },
+        "rebuildable_derived_artifact": {
+          "const": true
+        }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "schema": "reqlox.copied-module-integration-native-result.v1",
+  "status": "EXECUTED_AUDITED_BROWSER_VERIFIED_CLOSED",
+  "new_native_campaigns": 3,
+  "prior_native_campaigns": 12,
+  "cumulative_native_campaigns": 15,
+  "maximum_native_campaigns": 15,
+  "prior_charged_seconds": 42,
+  "charged_new_window_seconds": 20,
+  "cumulative_charged_seconds": 62,
+  "maximum_experiment_seconds": 120,
+  "observed_new_window_seconds": 2.6055291816592216,
+  "original": {
+    "fault_passed": 0,
+    "fault_total": 5,
+    "normal_passed": 4,
+    "normal_total": 4,
+    "ownership_boundary_passed": 0,
+    "ownership_boundary_total": 1
+  },
+  "candidate": {
+    "passed": 10,
+    "total": 10
+  },
+  "fresh_confirmation": {
+    "passed": 10,
+    "total": 10
+  },
+  "adoption": "EXISTING_API_WORKER_CANDIDATE_IN_ISOLATED_COMPOSED_CALLER_ONLY",
+  "new_repair_generated": false,
+  "held_atomic_bindings": 4,
+  "temppath_repair_performed": false,
+  "historical_missing_raw_evidence_preserved": true,
+  "old_ledgers_and_stops_preserved": true,
+  "original_copies_and_prior_candidate_snapshots_unchanged": true,
+  "child_limits_verified": {
+    "cpu_seconds": 2,
+    "wall_seconds": 5,
+    "memory_bytes": 134217728,
+    "output_bytes": 131072,
+    "core_bytes": 0
+  },
+  "native_execution_finished_within_20_seconds": true,
+  "native_and_browser_verification_finished_within_conservative_approval_deadline": true,
+  "administrative_record_and_ui_server_cleanup_after_deadline": true,
+  "raw_result_audit": "LOCAL_HASH_AUDIT",
+  "browser_verified": true,
+  "browser_widths": [
+    1440,
+    800,
+    390
+  ],
+  "ui_offline_tests_passed": 6,
+  "additional_native_execution_enabled": false,
+  "stop_reason": "Cumulative campaign maximum reached; fresh confirmation passed",
+  "service_mutations": 0,
+  "model_calls": 0,
+  "cloud_operations": 0,
+  "independent_generalization": false,
+  "probability_calibration": false,
+  "source_added_value": false,
+  "limitations": [
+    "Known owned function examples and a known library; not service-wide integration",
+    "Dependency-boundary exceptions and task cancellation; not physical disk faults",
+    "Historical missing native evidence remains unrecovered",
+    "Administrative finalization and UI server cleanup happened after the conservative approval deadline"
+  ]
+}

@@ -1,0 +1,220 @@
+{
+  "schema": "reqlox.hosted-ui-record-history.v1",
+  "status": "VERIFIED_HOSTED_OFFLINE_UI",
+  "verified_jst": "2026-10-14T21:59:26.781854+09:00",
+  "url": "https://reqlox.yukimurata0421.dev",
+  "records_url": "https://reqlox.yukimurata0421.dev/records",
+  "runtime_release_sha256": "9d5d858fd14877081bb3e99ef455e398e3c6ceb6daefd217b6ee9d178a2a5907",
+  "gateway_revision": "reqlox-web-gateway-00003-jlt",
+  "gateway_image": "asia-northeast1-docker.pkg.dev/reqlox/reqlox-web/gateway@sha256:47acc7b5af01feef0f4627e754987200b18ea948da002f9085be77762881b6b3",
+  "continuous_hosting": true,
+  "same_vm_state_disk_authentication_and_secret_versions": true,
+  "hosting_auto_stop_disabled": true,
+  "new_native_campaigns": 0,
+  "new_model_calls": 0,
+  "ledger": {
+    "cumulative_campaigns": 15,
+    "maximum_campaigns": 15,
+    "charged_seconds": 62,
+    "maximum_seconds": 120,
+    "remaining_campaigns": 0,
+    "reset_performed": false
+  },
+  "execution_mode": "OFFLINE_RECORDS_ONLY",
+  "browser_checks": {
+    "new_release_and_home_execution_stop": true,
+    "top_screen_to_record": true,
+    "four_records_input_detection_repair_confirmation_adoption": true,
+    "record_and_stage_restored_on_reload": true,
+    "three_execution_endpoints_rejected_before_dispatch": true,
+    "owned_guided_draft_restored_on_reload": true,
+    "retained_private_history_opened": true,
+    "all_five_screens_share_execution_stop_and_ledger": true,
+    "five_mobile_screens_fit": true
+  },
+  "new_browser_checks": {
+    "new_release_and_home_execution_stop": true,
+    "new_browser_restores_saved_bundled_input": true,
+    "legacy_private_history_summary_restored_in_new_browser": true
+  },
+  "disabled_endpoints": [
+    {
+      "path": "/api/run",
+      "status": 403,
+      "body": {
+        "error": "UI_EXECUTION_DISABLED",
+        "execution_policy": {
+          "additional_execution_authorized": false,
+          "charged_seconds": 62,
+          "cumulative_campaigns": 15,
+          "ledger_kind": "ARCHIVED_SCOPE_LEDGER",
+          "maximum_campaigns": 15,
+          "maximum_seconds": 120,
+          "mode": "OFFLINE_RECORDS_ONLY",
+          "model_calls_enabled": false,
+          "native_execution_enabled": false,
+          "reason": "UI_EXECUTION_DISABLED",
+          "remaining_campaigns": 0,
+          "scope": "COPIED_TARGET_LOCAL_20261012",
+          "source_fetch_enabled": false
+        }
+      }
+    },
+    {
+      "path": "/api/targets/run",
+      "status": 403,
+      "body": {
+        "error": "UI_EXECUTION_DISABLED",
+        "execution_policy": {
+          "additional_execution_authorized": false,
+          "charged_seconds": 62,
+          "cumulative_campaigns": 15,
+          "ledger_kind": "ARCHIVED_SCOPE_LEDGER",
+          "maximum_campaigns": 15,
+          "maximum_seconds": 120,
+          "mode": "OFFLINE_RECORDS_ONLY",
+          "model_calls_enabled": false,
+          "native_execution_enabled": false,
+          "reason": "UI_EXECUTION_DISABLED",
+          "remaining_campaigns": 0,
+          "scope": "COPIED_TARGET_LOCAL_20261012",
+          "source_fetch_enabled": false
+        }
+      }
+    },
+    {
+      "path": "/api/study/compare-run",
+      "status": 403,
+      "body": {
+        "error": "UI_EXECUTION_DISABLED",
+        "execution_policy": {
+          "additional_execution_authorized": false,
+          "charged_seconds": 62,
+          "cumulative_campaigns": 15,
+          "ledger_kind": "ARCHIVED_SCOPE_LEDGER",
+          "maximum_campaigns": 15,
+          "maximum_seconds": 120,
+          "mode": "OFFLINE_RECORDS_ONLY",
+          "model_calls_enabled": false,
+          "native_execution_enabled": false,
+          "reason": "UI_EXECUTION_DISABLED",
+          "remaining_campaigns": 0,
+          "scope": "COPIED_TARGET_LOCAL_20261012",
+          "source_fetch_enabled": false
+        }
+      }
+    }
+  ],
+  "desktop_width": 1440,
+  "mobile_width": 390,
+  "javascript_exceptions": 0,
+  "private_history_summaries_opened": true,
+  "private_history_records_after_deployment": 37,
+  "browser_reload_and_new_process_restore": true,
+  "remote_service_restart_for_restore_check": false,
+  "previous_offline_server_restart_verification_retained": true,
+  "temppath": {
+    "record": "temppath-readme-v01",
+    "counterexample_found": false,
+    "held_atomic_bindings": 4,
+    "repair_performed": false,
+    "decision": "NO_REPAIR_ADOPTED",
+    "unchanged_code_confirmation_is_not_repair_reinjection": true
+  },
+  "assets": [
+    {
+      "name": "index.html",
+      "sha256": "fd576a488bf4a85feb95927f41576d574f303c273cd2b618787a461ddac408fd",
+      "bytes": 16843
+    },
+    {
+      "name": "study.html",
+      "sha256": "81bb2241ae96038908cce5423f4c3669f5fad359593e96cb33113e300853096a",
+      "bytes": 14831
+    },
+    {
+      "name": "knowledge.html",
+      "sha256": "41c287bc792d11cf0073eb2064fcedb8f040c26d2a7c61486af7eb3d127b294d",
+      "bytes": 8001
+    },
+    {
+      "name": "app.js",
+      "sha256": "c0017b053dc1fa2141f369e983684e0535f3acaa15155008b075754cd8b45685",
+      "bytes": 37353
+    },
+    {
+      "name": "study.js",
+      "sha256": "49541e47b89e693b924223595d9be633565bc362ed509e737bb3abb6a23fe72e",
+      "bytes": 25489
+    },
+    {
+      "name": "knowledge.js",
+      "sha256": "44527b0012df82cf432d2e0298970bb03ba9382bb59e1c8ba59ee75a262c4f33",
+      "bytes": 10083
+    },
+    {
+      "name": "style.css",
+      "sha256": "cbf9d115c54491d7c7ffef21369b6199e497052b070cf1f43cafb144491b36c4",
+      "bytes": 24918
+    },
+    {
+      "name": "targets.html",
+      "sha256": "c8fb94cef189532f8621f36ccf5e9f7d5f281ee473798430b806bedbf6fa05a0",
+      "bytes": 6410
+    },
+    {
+      "name": "targets.js",
+      "sha256": "085e2a1a8d45625957036d11d22d9325922e5b1c29b56493b51279c310a1d7f3",
+      "bytes": 11627
+    },
+    {
+      "name": "targets.css",
+      "sha256": "bcda4267b24e633663e8030fad96bf47cb7b710b4fade9e20d52d6b0543145d2",
+      "bytes": 721
+    },
+    {
+      "name": "records.html",
+      "sha256": "89d14c56d66a75bc0285e595d9e75c3fb1cb822116463698177e59aad6f40139",
+      "bytes": 3123
+    },
+    {
+      "name": "records.js",
+      "sha256": "999511e88523072a156f1d193ab323b92b9f8723267cc457e1ee629473186a6b",
+      "bytes": 5916
+    },
+    {
+      "name": "workspace.js",
+      "sha256": "e9c6f6f612d6eada760740ef9a791d1894710720fc7f885f72a2e6628d731e8e",
+      "bytes": 2724
+    },
+    {
+      "name": "workspace.css",
+      "sha256": "e3a5ce58cf1005f5290d54bf06148f99e3026249f263fb81051de098ea359639",
+      "bytes": 26170
+    }
+  ],
+  "asset_count": 14,
+  "domain_non_html_assets_match": 9,
+  "cloudflare_html_analytics_injection_blocked_by_csp": true,
+  "anonymous_http_status": 401,
+  "wrong_origin_http_status": 403,
+  "historical_private_evidence_files_rechecked": 836,
+  "private_raw_evidence_uploaded": false,
+  "copied_targets_uploaded": false,
+  "private_drafts_uploaded_as_static_assets": false,
+  "verifier_corrections_retained_privately": true,
+  "tests": {
+    "cloud_runtime": 11,
+    "cloud_web": 11,
+    "runtime_rollout": 6,
+    "terraform_syntax_valid": true
+  },
+  "claim_limits": {
+    "new_live_repair_experiment": false,
+    "independent_unused_oss_generalization": false,
+    "probability_calibration": false,
+    "natural_source_added_value": false,
+    "historical_missing_raw_evidence_recovered": false
+  },
+  "commit_or_push": false
+}

@@ -1,0 +1,348 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/reqlox/source-document.v0.1.schema.json",
+  "title": "REQLOX SourceDocument v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "contract_type",
+    "contract_version",
+    "revision_id",
+    "created_at",
+    "lifecycle_status",
+    "source",
+    "content",
+    "integrity",
+    "rights",
+    "dedup",
+    "legacy_refs",
+    "provenance_refs",
+    "processing_boundary",
+    "limitations"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^srcdoc_[a-f0-9]{20}$"
+    },
+    "contract_type": {
+      "const": "SourceDocument"
+    },
+    "contract_version": {
+      "const": "0.1.0"
+    },
+    "revision_id": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/revisionId"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "lifecycle_status": {
+      "enum": [
+        "ACTIVE",
+        "SUPERSEDED",
+        "INVALID",
+        "RIGHTS_RESTRICTED"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "organization",
+        "publisher",
+        "url",
+        "canonical_url",
+        "source_type",
+        "published_at",
+        "retrieved_at"
+      ],
+      "properties": {
+        "organization": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "publisher": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "canonical_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "source_type": {
+          "enum": [
+            "postmortem",
+            "incident_report",
+            "status_report",
+            "issue",
+            "public_inquiry",
+            "other"
+          ]
+        },
+        "published_at": {
+          "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/nullableDateTime"
+        },
+        "retrieved_at": {
+          "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/nullableDateTime"
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "language",
+        "raw_sha256",
+        "normalized_sha256",
+        "raw_location",
+        "normalized_text_location",
+        "raw_retention"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "language": {
+          "type": "string",
+          "pattern": "^[a-z]{2,3}(?:-[A-Z]{2})?$"
+        },
+        "raw_sha256": {
+          "oneOf": [
+            {
+              "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "normalized_sha256": {
+          "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/sha256"
+        },
+        "raw_location": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "normalized_text_location": {
+          "type": "string",
+          "minLength": 1
+        },
+        "raw_retention": {
+          "enum": [
+            "RETAINED",
+            "HASH_ONLY_RIGHTS_RESTRICTED",
+            "LEGACY_NOT_RETAINED"
+          ]
+        }
+      }
+    },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fetch_status",
+        "immutable",
+        "normalization_version"
+      ],
+      "properties": {
+        "fetch_status": {
+          "enum": [
+            "OK",
+            "PARTIAL",
+            "IMPORTED"
+          ]
+        },
+        "immutable": {
+          "const": true
+        },
+        "normalization_version": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "rights": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "license",
+        "redistribution_allowed",
+        "external_model_disclosure_allowed",
+        "decision_status",
+        "decision_ref"
+      ],
+      "properties": {
+        "license": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "redistribution_allowed": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "external_model_disclosure_allowed": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "decision_status": {
+          "enum": [
+            "UNKNOWN_NOT_REVIEWED",
+            "ALLOWED",
+            "RESTRICTED"
+          ]
+        },
+        "decision_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "dedup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "exact_duplicate_of",
+        "near_duplicate_cluster_id"
+      ],
+      "properties": {
+        "exact_duplicate_of": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^srcdoc_"
+        },
+        "near_duplicate_cluster_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^ndoc_"
+        }
+      }
+    },
+    "legacy_refs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_record",
+        "retrieved_document"
+      ],
+      "properties": {
+        "source_record": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "retrieved_document": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "provenance_refs": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/provenanceRefs"
+    },
+    "processing_boundary": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/processingBoundary"
+    },
+    "limitations": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/limitations"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "content": {
+            "properties": {
+              "raw_retention": {
+                "const": "RETAINED"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "content": {
+            "properties": {
+              "raw_sha256": {
+                "type": "string"
+              },
+              "raw_location": {
+                "type": "string"
+              }
+            }
+          },
+          "source": {
+            "properties": {
+              "retrieved_at": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "content": {
+            "properties": {
+              "raw_location": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "content": {
+            "properties": {
+              "raw_retention": {
+                "const": "HASH_ONLY_RIGHTS_RESTRICTED"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "content": {
+            "properties": {
+              "raw_sha256": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

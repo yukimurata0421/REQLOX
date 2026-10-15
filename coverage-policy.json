@@ -1,0 +1,34 @@
+{
+  "schema": "reqlox.coverage-policy.v1",
+  "source_directories": [
+    "reqlox",
+    "reqlox_core",
+    "reqlox_demo",
+    "reqlox_knowledge"
+  ],
+  "unit_test_roots": [
+    "tests"
+  ],
+  "critical_test_modules": [
+    "test_reqlox_cli_boundaries",
+    "test_target_audit_io_boundaries",
+    "test_workflow_effort_replay_boundaries",
+    "test_portable_binding_boundaries",
+    "test_portable_execution_protocol",
+    "test_coverage_gate",
+    "test_workflow_effort",
+    "test_reqlox_demo_portable",
+    "test_target_workspace",
+    "test_target_preparation_audit",
+    "test_public_cli_execution_boundaries"
+  ],
+  "minimum_line_percent": 95,
+  "minimum_branch_percent": 90,
+  "critical_files": [
+    "reqlox/__init__.py",
+    "reqlox/cli.py",
+    "reqlox/target_audit.py",
+    "reqlox_demo/portable.py",
+    "reqlox_core/workflow_effort.py"
+  ]
+}

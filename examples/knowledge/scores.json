@@ -1,0 +1,25 @@
+{
+  "categories": [
+    "PASS",
+    "FAIL"
+  ],
+  "rows": [
+    {
+      "id": "owned-1",
+      "probabilities": {
+        "PASS": 0.8,
+        "FAIL": 0.2
+      },
+      "label": "PASS",
+      "label_authority": "CONSTRUCTED_FINITE_ORACLE",
+      "dependency_component": "owned-a"
+    },
+    {
+      "id": "owned-2",
+      "probabilities": null,
+      "label": null,
+      "label_authority": "UNKNOWN",
+      "dependency_component": "owned-b"
+    }
+  ]
+}

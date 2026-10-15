@@ -1,0 +1,252 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/immunize/retrieved-document.v1.schema.json",
+  "title": "Immunize RetrievedDocument v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "contract_type",
+    "contract_version",
+    "revision_id",
+    "created_at",
+    "source_ref",
+    "acquisition",
+    "extraction",
+    "storage",
+    "integrity",
+    "limitations"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^doc_[a-f0-9]{20}$"
+    },
+    "contract_type": {
+      "const": "RetrievedDocument"
+    },
+    "contract_version": {
+      "const": "1.0.0"
+    },
+    "revision_id": {
+      "type": "string",
+      "pattern": "^rev_[0-9]{8}T[0-9]{6}Z_[a-f0-9]{12}$"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "revision_id",
+        "canonical_url"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "revision_id": {
+          "type": "string"
+        },
+        "canonical_url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        }
+      }
+    },
+    "input_text_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "revision_id",
+        "text_sha256",
+        "text_path"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^stx_[a-f0-9]{20}$"
+        },
+        "revision_id": {
+          "type": "string",
+          "pattern": "^rev_"
+        },
+        "text_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "text_path": {
+          "type": "string",
+          "pattern": "^quarantine/source-texts/"
+        }
+      }
+    },
+    "acquisition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "method",
+        "retrieved_at",
+        "final_url",
+        "http_status",
+        "content_type",
+        "response_bytes",
+        "response_sha256"
+      ],
+      "properties": {
+        "status": {
+          "const": "SUCCESS"
+        },
+        "method": {
+          "enum": [
+            "LOCAL_EXISTING_COPY",
+            "HTTP_GET"
+          ]
+        },
+        "retrieved_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "final_url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        },
+        "http_status": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 200,
+          "maximum": 299
+        },
+        "content_type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "response_bytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "response_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "extraction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "quality",
+        "text_characters",
+        "text_bytes",
+        "text_lines"
+      ],
+      "properties": {
+        "method": {
+          "enum": [
+            "existing-text.v1",
+            "html-visible-text.v1",
+            "plain-text.v1",
+            "structured-json-text.v1"
+          ]
+        },
+        "quality": {
+          "enum": [
+            "USABLE",
+            "SHORT",
+            "BLOCKED_OR_NOISE"
+          ]
+        },
+        "text_characters": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "text_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "text_lines": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "storage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "classification",
+        "text_path",
+        "raw_response_retained",
+        "rights_status",
+        "external_model_disclosure_allowed",
+        "publication_allowed",
+        "human_review_required"
+      ],
+      "properties": {
+        "classification": {
+          "const": "LOCAL_PRIVATE_QUARANTINE"
+        },
+        "text_path": {
+          "type": "string",
+          "pattern": "^quarantine/documents/"
+        },
+        "raw_response_retained": {
+          "const": false
+        },
+        "rights_status": {
+          "const": "UNKNOWN_NOT_REVIEWED"
+        },
+        "external_model_disclosure_allowed": {
+          "const": false
+        },
+        "publication_allowed": {
+          "const": false
+        },
+        "human_review_required": {
+          "const": true
+        }
+      }
+    },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text_sha256"
+      ],
+      "properties": {
+        "text_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  }
+}

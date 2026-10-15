@@ -1,0 +1,83 @@
+{
+  "event": "OWNED_SYNTHETIC_FORECAST_EVENT_V1",
+  "predictor_revision": "owned-example-predictor-v1",
+  "natural_oss": false,
+  "rows": [
+    {
+      "id": "train-0",
+      "event": "OWNED_SYNTHETIC_FORECAST_EVENT_V1",
+      "method_revision": "owned-example-predictor-v1",
+      "source_group": "train-source-0",
+      "target_group": "train-project-0",
+      "mechanism_group": "train-mechanism-0",
+      "dependency_component": "train-dependency-0",
+      "answer": {
+        "choice": "PASS",
+        "probabilities": {
+          "PASS": 0.9,
+          "FAIL": 0.09999999999999998
+        }
+      },
+      "label": "FAIL",
+      "label_authority": "CONSTRUCTED_FINITE_ORACLE",
+      "origin": "OWNED_SYNTHETIC_EXAMPLE"
+    },
+    {
+      "id": "train-1",
+      "event": "OWNED_SYNTHETIC_FORECAST_EVENT_V1",
+      "method_revision": "owned-example-predictor-v1",
+      "source_group": "train-source-1",
+      "target_group": "train-project-1",
+      "mechanism_group": "train-mechanism-1",
+      "dependency_component": "train-dependency-1",
+      "answer": {
+        "choice": "PASS",
+        "probabilities": {
+          "PASS": 0.8,
+          "FAIL": 0.19999999999999996
+        }
+      },
+      "label": "PASS",
+      "label_authority": "CONSTRUCTED_FINITE_ORACLE",
+      "origin": "OWNED_SYNTHETIC_EXAMPLE"
+    },
+    {
+      "id": "train-2",
+      "event": "OWNED_SYNTHETIC_FORECAST_EVENT_V1",
+      "method_revision": "owned-example-predictor-v1",
+      "source_group": "train-source-2",
+      "target_group": "train-project-2",
+      "mechanism_group": "train-mechanism-2",
+      "dependency_component": "train-dependency-2",
+      "answer": {
+        "choice": "FAIL",
+        "probabilities": {
+          "PASS": 0.2,
+          "FAIL": 0.8
+        }
+      },
+      "label": "FAIL",
+      "label_authority": "CONSTRUCTED_FINITE_ORACLE",
+      "origin": "OWNED_SYNTHETIC_EXAMPLE"
+    },
+    {
+      "id": "train-3",
+      "event": "OWNED_SYNTHETIC_FORECAST_EVENT_V1",
+      "method_revision": "owned-example-predictor-v1",
+      "source_group": "train-source-3",
+      "target_group": "train-project-3",
+      "mechanism_group": "train-mechanism-3",
+      "dependency_component": "train-dependency-3",
+      "answer": {
+        "choice": "FAIL",
+        "probabilities": {
+          "PASS": 0.1,
+          "FAIL": 0.9
+        }
+      },
+      "label": "PASS",
+      "label_authority": "CONSTRUCTED_FINITE_ORACLE",
+      "origin": "OWNED_SYNTHETIC_EXAMPLE"
+    }
+  ]
+}

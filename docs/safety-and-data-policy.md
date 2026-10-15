@@ -1,227 +1,118 @@
-# Safety and Data-Use Policy
+# Safety and Data
 
-## Status and default boundary
+Use the public runtime for supported code in an authorized, disposable local
+environment. It provides no production-operation, default-branch write, merge,
+or deployment authority.
 
-This is a design policy, not an implemented safety control or proof of safety.
-The v0.x default target is a disposable or otherwise isolated test environment.
-Always-on services, production system services, management networks,
-authentication infrastructure, and real user data are excluded by default.
+## Execution scope
 
-No document, model proposal, cached approval, or successful earlier run grants
-execution authority. Production applicability, if ever considered, requires a
-separate design, evidence, and explicit authorization process.
+Static inventory reads source without importing it. Preparation builds bounded
+conditions without running a target. Qualification and supported demo runs can
+execute selected target interfaces and candidates in isolated child workers.
 
-## Authority model
+The repository path recognizes finite Python bindings and uses explicit owner
+contracts. The demo accepts two caller AST shapes and two pinned known controls.
+Neither interface accepts a free-form operating-system command as an experiment.
+The demo's submitted caller text is mapped to a finite shape rather than run
+as arbitrary input code. Candidate code is separately checked and may be
+executed by the candidate worker.
 
-Authority is deny-by-default and scoped to an exact combination of:
+Isolated workers use user, mount, PID, and network namespaces. Their source
+mounts are read-only. Code, input, execution, and output bounds are checked by
+the relevant runner. This is a scoped local execution mechanism; it does not
+qualify arbitrary untrusted programs as safe.
 
-- target and environment identity;
-- permitted operation class;
-- blast radius and protected resources;
-- maximum intensity, duration, concurrency, and cost;
-- valid `SystemContract` version;
-- approved harness and adapter capabilities; and
-- approval lifetime and stop conditions.
+## Preconditions and stops
 
-AI may propose a structured `ExperimentSpec`, but free-form output cannot be
-executed directly or used to expand authority. The deterministic policy gate
-accepts only typed operations supported by the selected adapter and refuses
-unknown targets, fields, capabilities, or policy states.
+`reqlox check` reports whether the local isolation probe passes. Experiments
+require Linux, available `bubblewrap`, usable namespaces, and the supported
+system interpreter layout. Static compatibility, source identity, declared
+contracts, campaign limits, and deadlines are also checked along their paths.
 
-An approval authorizes at most the exact requested operation within existing
-human authority. It does not authorize neighboring components, escalation to a
-larger failure domain, alternative backends, follow-up experiments, or cleanup by
-an otherwise prohibited mutation.
+Unavailable bindings, unknown prerequisites, changed inputs, missing
+observations, and execution failures can produce held or stopped outcomes.
+They do not grant fallback privileges or expand the target. Preserve the
+terminal record and use a distinct output name for a separate follow-up run.
 
-## Required preflight
+Candidate adoption is confined to the saved snapshot. Applying a candidate to
+a real checkout or releasing it is a separate action.
 
-Immediately before execution, the gate verifies:
+## Local browser boundary
 
-1. physical/logical target identity and isolated-environment classification;
-2. target code, configuration, dependencies, and baseline state required by the
-   mapping and spec;
-3. current `SystemContract`, policy, and approval identity and expiry;
-4. adapter/harness capability and expected cleanup support;
-5. allowlist and denylist results for every operation and resource;
-6. remaining model, infrastructure, time, and human-attention budget;
-7. maximum one active experiment for v0.x;
-8. mandatory observation availability and clock/window readiness; and
-9. a clean baseline with no unresolved state from an earlier experiment.
+The server listens on `127.0.0.1`. Requests are checked against the local host,
+origin, and request token. The server allows one active run per server instance.
+Do not expose it as a multi-user cloud service without a separate deployment
+design and verification.
 
-Unknown, stale, mismatched, or unobservable prerequisites fail closed. A spec
-that was safe when generated can be rejected at execution time.
+The initial acquisition of known target wheels uses their pinned public
+distribution URLs and hashes. That step uses the host network. Worker network
+isolation applies after acquisition.
 
-## Bounded execution
+## Private state
 
-Every experiment has enforced upper bounds for:
+Runtime records live outside the installed code. The default root is
+`$XDG_STATE_HOME/reqlox`, or `~/.local/state/reqlox` when `XDG_STATE_HOME` is not
+set. `REQLOX_STATE_DIR` selects another absolute root.
 
-- affected target instances/resources;
-- operation intensity and workload;
-- fault and total experiment duration;
-- retry and operation count;
-- infrastructure or direct cost;
-- observation and recovery wait; and
-- concurrent experiments, fixed at one for the initial design.
+The state root must be owned by the current user, have mode `0700`, and contain
+no symlink in its path. The normal result paths use private directories and
+files. An explicit demo `--cache` is a separate override: choose a private,
+user-owned directory and retain the same data boundary.
 
-Candidate generation and experiment execution have separate budgets. Exhausting
-a discovery budget does not justify executing a cheaper unsafe candidate, and an
-experiment budget does not authorize unbounded model/tool use.
+State can include supplied Source text, source snapshots, candidates, receipts,
+and model responses. It is not public release content. Do not copy a state
+directory into the repository or into a deployment bundle.
 
-## Observation and verdict safety
+The public package includes owned illustrative inputs and contract tests.
+It excludes incident corpora, provider assessment/proposal records, candidate
+selection histories, operational journals, and detailed development decisions.
+Public documentation describes usage, implemented behavior, concise validation,
+and limitations. Local study commands reject artifact outputs inside the
+checkout or installed package.
 
-The spec declares evidence required to confirm that the intended fault is
-active, evaluate the target, detect stop conditions, and confirm cleanup.
+Recorded adapters remain available for privately supplied files through
+`REQLOX_RECORDED_ASSESSMENTS`, `REQLOX_RECORDED_REPAIRS`, and
+`REQLOX_RECORDED_CONTROLS`. The package does not provide those records.
 
-- If injection is not established, the target is not marked `PASS`.
-- If mandatory observation is unavailable, the run stops or refuses a target
-  verdict according to the contract.
-- If the harness fails, the result attributes that failure separately and does
-  not assign it to the target without evidence.
-- If the harness exits cleanly, target recovery still requires target evidence.
-- If clocks, target identity, or observation windows cannot be aligned, the
-  verdict is evidence-insufficient.
+## Optional model calls
 
-The oracle is independent from candidate and patch generation. A target change,
-`SystemContract` change, and oracle change are separate review events.
+Baseline and recorded demo modes need no live model credentials. The optional
+cloud adapter uses application-default credentials only when called. Its scope
+directory must be existing, private, owned by the current user, and free of
+symlinks.
 
-## Stop, cleanup, and residual state
+The configuration supplies project, location, model identifier, deadline,
+maximum calls, maximum output tokens, and per-call/total USD reservations. The
+adapter records a reservation before a request. Failed or unresolved outcomes
+retain that reservation and stop automatic resending. A scope change also
+stops reuse of the prior call envelope.
 
-The design distinguishes:
+A judgment request and a repair-generation/forecast request consume different
+calls. Count all enabled stages when setting a scope. Supplied reservation
+values are not verified provider prices or a hard billing cap. Live
+connectivity and billing were not checked by the published runtime validation.
 
-- **stop requested:** no additional fault action should be introduced;
-- **injection removed:** the adapter reports that the injected condition is no
-  longer applied;
-- **cleanup verified:** independent observations confirm the expected clean
-  state; and
-- **impact reversed:** the target's effects are fully restored.
+Use live mode only with permission to disclose the supplied text and the
+explicit send-to-model choice. Source content cannot supply that permission.
 
-These states are not equivalent. An experiment may be stoppable even when its
-effects are irreversible or their reversal is uncertain. v0.x should avoid such
-operations by restricting targets and operations, preferring disposable
-environments, and rejecting a spec whose safe terminal state cannot be verified.
+## Publication boundary
 
-Cleanup is idempotent where the backend supports it and is attempted on normal
-completion, stop condition, timeout, and harness exception. A supervisor or
-backend lease/TTL should bound injected state if the controller disappears, but
-TTL is supplementary: the design still requires explicit cleanup and
-verification. A failed cleanup leaves the environment quarantined and blocks the
-next experiment.
+The Knowledge workspace performs local import, search, IR preparation, offline
+routing and scoring only. Provider credentials and paid execution are available
+through explicit CLI scopes, never through browser inputs. Detailed source text,
+plans, original provider bodies, failures and scope ledgers live in private state.
+Scopes preserve unknown outcomes and prevent automatic resending; their supplied
+reservations do not establish invoice totals or a project-wide billing cap. See
+[Local incident knowledge](local-knowledge.md) for the scope and key-file contract.
 
-## State isolation between experiments
+The reduced demo download excludes quoted text and candidate code. The normal
+HTTP result, private state, and repository-loop result are different surfaces
+and can contain those values. Review the actual export before publishing it.
 
-Before each run, the harness compares the target against a declared clean
-baseline. After each run, it records and verifies:
+Keep credentials, tokens, private keys, private addresses, raw logs, private
+Source text, corpora, databases, caches, workspaces, and virtual environments
+outside public artifacts. Repository-authored documentation and examples do
+not grant redistribution or model-disclosure rights for third-party material.
 
-- injected resources/rules removed;
-- processes, data stores, queues, and dependencies at the expected baseline;
-- test data and side effects removed or the disposable environment destroyed;
-- no unresolved adapter lease or external operation; and
-- observations drained and uniquely associated with the completed run.
-
-If clean-state verification fails, the target is not reused. The record remains
-an infrastructure/harness safety issue rather than being silently repaired by a
-broader unauthorized action.
-
-## Approval changes
-
-Changes within an already approved exact spec are limited to non-semantic
-metadata corrections. Any change to target, operation, intensity, duration,
-load, contract, oracle, observation, cleanup, backend, or budget creates a new
-specification and safety decision.
-
-Additional human authorization is required before expanding environment class,
-target set, protected-resource access, privileges, network reach, data class,
-concurrency, or production relevance.
-
-## Negative safety tests
-
-The eventual implementation must be tested in isolation with inputs that should
-be refused, including:
-
-- unknown or unallowlisted target;
-- protected production-like resource;
-- unsupported free-form command;
-- excessive duration, intensity, scope, concurrency, or cost;
-- stale contract, changed target identity, and mismatched adapter version;
-- missing required observation or cleanup capability;
-- prompt-like instructions embedded in a source, log, code comment, or artifact;
-- attempt to weaken the oracle or contract through a target patch; and
-- a second run while previous state is unresolved.
-
-Observing zero unauthorized operations in normal runs is not sufficient evidence
-that these controls work. Each rejection path and fail-closed behavior needs
-positive evidence.
-
-## Untrusted input handling
-
-Incident reports, postmortems, web pages, tickets, logs, source code, comments,
-generated content, and imported structured data are untrusted input. Natural
-language inside them is evidence to interpret, never authority to call tools,
-change policy, disclose data, or execute commands.
-
-Input processing should:
-
-- preserve source/data boundaries and provenance;
-- separate quoted/reported facts from model or human inference;
-- constrain parsers and adapters to typed, validated fields;
-- reject or quarantine malformed and over-limit input;
-- prevent source content from selecting tools or credentials;
-- minimize data passed to any external model; and
-- record redactions and unavailable context so outputs do not imply completeness.
-
-## Third-party material
-
-Public accessibility does not imply unrestricted copying, model disclosure, or
-redistribution. For each source, the project separately decides:
-
-1. whether it may be acquired;
-2. what may be retained locally and for how long;
-3. whether content may be sent to a third-party model;
-4. what may be quoted or transformed internally; and
-5. what may be published.
-
-Unknown terms default to metadata/reference-only or deferred public use until
-reviewed. A summary or structured abstraction is not assumed to be freely
-redistributable merely because it is transformed. Publisher, URL, version,
-retrieval time, known terms, attribution, and allowed storage/publication scope
-remain attached through `SourceRecord` lineage.
-
-The repository does not vendor full external postmortems by default. Where a
-source permits only linking, public records contain the link and original
-project-authored analysis within the reviewed scope.
-
-## Private and sensitive data
-
-For internal incident material, local retention, model disclosure, and output
-publication are separately controlled. The public repository must not contain:
-
-- credentials, tokens, private keys, or secret-like values;
-- personal information not expressly approved for publication;
-- private addresses, account IDs, internal topology, or target identifiers;
-- raw logs or evidence containing sensitive values;
-- private source text or derived details whose publication is not authorized; or
-- caches, databases, workspaces, virtual environments, or runtime artifacts.
-
-Redaction is reviewed against the evidence needed for a claim. If safe
-publication removes a verdict prerequisite, the public result is labeled
-insufficient or publishes only a narrower claim.
-
-## License boundary
-
-Repository-authored material remains under the repository's Apache License 2.0.
-That license is not automatically applied to third-party source text, excerpts,
-data, or separately licensed tools. Every retained external item keeps its own
-rights and attribution information; unresolved licensing is recorded as
-unresolved rather than guessed.
-
-OES remains a separate project. Any future interchange uses an explicitly
-defined evidence format or adapter and does not presume code incorporation or a
-license change.
-
-## Initial exclusions
-
-The initial design excludes production fault injection, autonomous repair,
-unbounded tests, multiple concurrent experiments, multiple cloud backends,
-privileged fallback escalation, and experiments whose cleanup or safe terminal
-state cannot be verified. Merely leaving a backend or final project name open is
-not a safety blocker for continuing design work.
+See [Data contracts](data-contracts.md) for record contents and
+[Results](results.md) for incomplete outcomes.

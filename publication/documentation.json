@@ -1,0 +1,47 @@
+{
+  "schema_version": "reqlox.public-documentation.v1",
+  "observed_at_jst": "2026-10-11T06:27:20+09:00",
+  "language": "en",
+  "scope": "Current public documentation; runtime implementation unchanged",
+  "source_revision": "16687981efab921a543442ada1ce8bee5fd5bf90",
+  "runtime_validation": {
+    "path": "publication/validation.json",
+    "sha256": "e233876037fe37b56e76b872f19a61260d51c21a0949098aa511940ed861fb9a",
+    "recorded_runtime_files_unchanged": 96
+  },
+  "checks": {
+    "documents": 11,
+    "local_links": 83,
+    "missing_links": 0,
+    "non_english_prose": 0,
+    "unbalanced_fences": 0,
+    "whitespace_issues": 0,
+    "documented_command_examples": {
+      "status": "PASS",
+      "installed_package": true,
+      "documented_commands_checked": 10,
+      "api_examples_checked": 2,
+      "prepared_hypotheses": 1,
+      "held_conditions": 0,
+      "demo_statuses": [
+        "NOT_SUPPORTED",
+        "INSUFFICIENT_INFORMATION"
+      ],
+      "native_campaigns": 0,
+      "live_provider_calls": 0
+    }
+  },
+  "documents": {
+    "README.md": "8a351ea715d4106e587ebbda700247ab0d299e9a5fd4543443aab44959bb7856",
+    "docs/README.md": "fc37e83b64a6d1b85e181271f0e01f2241faf4055d15d3fd3309a5a9847f7b58",
+    "docs/adr/0001-incident-derived-resilience-hardening.md": "4e0763542331afbef838ba2b9e3b2dd60345fe17216ad17c654a41d73920a2d8",
+    "docs/architecture.md": "58959d523265fb4b4af31c281edec47d417584af39b7dc14788e1d840b213980",
+    "docs/concepts.md": "b41a191c5465fccb0337ad6884774a27392182bd6950f2e447a61a102db29777",
+    "docs/data-contracts.md": "d7bed5db7e648083decfcd63e9167fa28987011afc77713989966168bc4f005a",
+    "docs/evaluation-plan.md": "7ca8285393748f0b64285d0a093004e505f6d0da0d6bafe29820ddbfb0c1412a",
+    "docs/getting-started.md": "f4b895078a891ab52dcc8a5a937c360f04bb9ce56201fe798b8ff0e4064fcada",
+    "docs/minimal-implementation-plan.md": "7848bec01fb1e3a6d09255fd35367752f0c9820a97327c78748e28afbbfb0f96",
+    "docs/results.md": "b140ab6fdafe0c6cad63d0fb262d152ba5e4764f772df6240461b6ed26c2ec17",
+    "docs/safety-and-data-policy.md": "f92ed8f209fc2b16a629634d68e6c3c3bb978b22992ec5b6ff61d4ef85e0e8d2"
+  }
+}

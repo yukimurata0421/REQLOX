@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "REQLOX named repository Target",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "name",
+    "repositories"
+  ],
+  "properties": {
+    "schema": {
+      "const": "reqlox.target.v1"
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$"
+    },
+    "repositories": {
+      "type": "object",
+      "maxProperties": 16,
+      "propertyNames": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "configuration"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "configuration": {
+            "type": "string",
+            "minLength": 1
+          },
+          "dependency": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "authorization": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Required single-use continuation record; CLI and UI cannot omit or override it."
+    },
+    "snapshot_receipt": {
+      "type": "string",
+      "pattern": "(^|/)snapshot\\.json$",
+      "description": "Receipt of a private Target copy; prepared manifests preserve this binding."
+    }
+  }
+}

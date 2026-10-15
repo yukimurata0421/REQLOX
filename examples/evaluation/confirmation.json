@@ -1,0 +1,64 @@
+{
+  "event": "OWNED_SYNTHETIC_FORECAST_EVENT_V1",
+  "predictor_revision": "owned-example-predictor-v1",
+  "natural_oss": false,
+  "rows": [
+    {
+      "id": "confirm-0",
+      "event": "OWNED_SYNTHETIC_FORECAST_EVENT_V1",
+      "method_revision": "owned-example-predictor-v1",
+      "source_group": "confirm-source-0",
+      "target_group": "confirm-project-0",
+      "mechanism_group": "confirm-mechanism-0",
+      "dependency_component": "confirm-dependency-0",
+      "answer": {
+        "choice": "PASS",
+        "probabilities": {
+          "PASS": 0.85,
+          "FAIL": 0.15000000000000002
+        }
+      },
+      "label": "PASS",
+      "label_authority": "CONSTRUCTED_FINITE_ORACLE",
+      "origin": "OWNED_SYNTHETIC_EXAMPLE"
+    },
+    {
+      "id": "confirm-1",
+      "event": "OWNED_SYNTHETIC_FORECAST_EVENT_V1",
+      "method_revision": "owned-example-predictor-v1",
+      "source_group": "confirm-source-1",
+      "target_group": "confirm-project-1",
+      "mechanism_group": "confirm-mechanism-1",
+      "dependency_component": "confirm-dependency-1",
+      "answer": {
+        "choice": "FAIL",
+        "probabilities": {
+          "PASS": 0.3,
+          "FAIL": 0.7
+        }
+      },
+      "label": "FAIL",
+      "label_authority": "CONSTRUCTED_FINITE_ORACLE",
+      "origin": "OWNED_SYNTHETIC_EXAMPLE"
+    },
+    {
+      "id": "confirm-2",
+      "event": "OWNED_SYNTHETIC_FORECAST_EVENT_V1",
+      "method_revision": "owned-example-predictor-v1",
+      "source_group": "confirm-source-2",
+      "target_group": "confirm-project-2",
+      "mechanism_group": "confirm-mechanism-2",
+      "dependency_component": "confirm-dependency-2",
+      "answer": {
+        "choice": "PASS",
+        "probabilities": {
+          "PASS": 0.5,
+          "FAIL": 0.5
+        }
+      },
+      "label": null,
+      "label_authority": "UNKNOWN",
+      "origin": "OWNED_SYNTHETIC_EXAMPLE"
+    }
+  ]
+}

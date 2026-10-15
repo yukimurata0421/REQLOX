@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reqlox"
+version = "0.1.0"
+description = "Finite incident-derived reliability inspection and isolated repair"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+dependencies = ["jsonschema>=4.23,<5", "packaging>=24,<27"]
+
+[project.optional-dependencies]
+test = ["coverage==7.15.4"]
+cloud = ["google-auth>=2.40,<3", "requests>=2.32,<3"]
+knowledge = ["numpy>=1.26,<3", "beautifulsoup4>=4.12,<5", "requests>=2.32,<3"]
+
+[project.scripts]
+reqlox = "reqlox.cli:main"
+reqlox-demo = "reqlox_demo.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["reqlox", "reqlox_core", "reqlox_demo", "reqlox_knowledge", "reqlox_system"]
+
+[tool.setuptools.package-data]
+reqlox = ["data/*.json"]
+reqlox_demo = ["static/*.html", "static/*.css", "static/*.js", "data/*.json"]
+reqlox_knowledge = ["data/*.sql", "data/schemas/*.json", "data/policies/jev/*.json"]
+reqlox_system = ["data/schemas/*.json"]

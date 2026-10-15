@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/reqlox/pattern-statistics.v0.1.schema.json",
+  "title": "REQLOX PatternStatistics v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "contract_type",
+    "contract_version",
+    "revision_id",
+    "pattern_id",
+    "computed_at",
+    "computation_version",
+    "raw_document_count",
+    "unique_incident_count",
+    "independent_organization_count",
+    "independent_source_count",
+    "environment_count",
+    "first_seen_at",
+    "last_seen_at",
+    "occurrence_by_environment",
+    "occurrence_by_year",
+    "frequency_interpretation",
+    "provenance_refs",
+    "limitations"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^pstats_[a-f0-9]{20}$"
+    },
+    "contract_type": {
+      "const": "PatternStatistics"
+    },
+    "contract_version": {
+      "const": "0.1.0"
+    },
+    "revision_id": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/revisionId"
+    },
+    "pattern_id": {
+      "type": "string",
+      "pattern": "^fp_[a-f0-9]{20}$"
+    },
+    "computed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "computation_version": {
+      "const": "reqlox-pattern-statistics-v1"
+    },
+    "raw_document_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "unique_incident_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "independent_organization_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "independent_source_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "environment_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "first_seen_at": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/nullableDateTime"
+    },
+    "last_seen_at": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/nullableDateTime"
+    },
+    "occurrence_by_environment": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]{1,79}$"
+      },
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "occurrence_by_year": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[0-9]{4}$"
+      },
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "frequency_interpretation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "frequent_in_corpus",
+        "real_world_probability",
+        "reporting_bias_acknowledged"
+      ],
+      "properties": {
+        "frequent_in_corpus": {
+          "type": "boolean"
+        },
+        "real_world_probability": {
+          "type": "null"
+        },
+        "reporting_bias_acknowledged": {
+          "const": true
+        }
+      }
+    },
+    "provenance_refs": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/provenanceRefs"
+    },
+    "limitations": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/limitations"
+    }
+  }
+}

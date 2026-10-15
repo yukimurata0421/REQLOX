@@ -1,0 +1,12 @@
+{
+  "contracts": {
+    "atomic_file": {
+      "id": "owned.atomic-bytes.v1",
+      "basis": "Owner requires atomic bytes, prior destination preservation, exception propagation and cleanup of only this invocation's temporary file.",
+      "scope": "The explicitly selected owned repository snapshot only"
+    }
+  },
+  "maximum_probes": 3,
+  "source_texts": {},
+  "hypotheses": []
+}

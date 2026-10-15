@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head><script src="/workspace.js" defer></script>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#14243a">
+  <title>REQLOX — Incident library</title>
+  <link rel="stylesheet" href="/workspace.css"><script src="/knowledge.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="REQLOX home"><span class="brand-mark">↻</span>REQLOX</a>
+    <nav class="workspace-nav" aria-label="Workspaces"><a href="/targets">Targets</a><a href="/">Guided check</a><a href="/knowledge" aria-current="page">Incident library</a><a href="/study">Evaluation lab</a></nav>
+    <span class="environment"><span class="dot"></span>PRIVATE WORKSPACE</span>
+  </header>
+  <main id="main" class="study-main">
+    <section class="intro"><div><p class="eyebrow">INCIDENT LIBRARY</p><h1>Find the detail that<br>makes a failure testable.</h1><p class="lead">Add a report, search its text, and take a relevant quotation into a check. Start with the included example or paste your own report.</p></div>
+      <div class="scope"><div><strong>Supplied text, searchable evidence</strong><p>No web fetch or model call.<br>Detailed records stay in private workspace state.</p></div></div></section>
+    <div class="purpose-strip"><div><strong>1 · Add</strong><span>Supply a report you can use</span></div><div><strong>2 · Find</strong><span>Search for the failure condition</span></div><div><strong>3 · Check</strong><span>Bring the quotation to a supported check</span></div></div>
+    <p id="knowledge-status" class="knowledge-status" role="status" aria-live="polite">Loading the included example…</p>
+    <div class="library-layout">
+      <section class="panel"><div class="section-heading"><span class="number">1</span><h2>Add an incident report</h2></div>
+        <button id="knowledge-load-example" class="text-button knowledge-action" type="button" disabled>Restore the included example</button>
+        <label for="knowledge-report-title">Report title</label><input id="knowledge-report-title" maxlength="200" autocomplete="off">
+        <label for="knowledge-report-url">Source URL</label><input id="knowledge-report-url" type="url" maxlength="2000" autocomplete="off" placeholder="https://example.org/incident">
+        <p class="small muted">This identifies the supplied text. REQLOX does not open or fetch this URL.</p>
+        <label for="knowledge-report-text">What happened?</label><textarea id="knowledge-report-text" rows="9" maxlength="64000" spellcheck="false" placeholder="Paste the report, including the failure conditions and observed behavior."></textarea>
+        <details class="input-details"><summary>Add several reports with JSON</summary>
+          <label class="consent"><input id="knowledge-use-json" type="checkbox">Use the document list below instead of the form</label>
+          <label for="knowledge-documents">Document list</label><textarea id="knowledge-documents" class="code-input" rows="6" spellcheck="false"></textarea>
+        </details>
+        <p class="small muted">Supply text you have permission to use. Its rights and factual accuracy are not verified by indexing.</p>
+        <button id="knowledge-import" class="primary knowledge-action" type="button" disabled>Add and build search index <span aria-hidden="true">→</span></button>
+      </section>
+      <section class="panel library-results"><div class="section-heading"><span class="number">2</span><h2>Find a useful quotation</h2></div>
+        <p class="muted">Search the reports you added. A quotation preserves the source wording; it is evidence to assess, rather than a verified failure.</p>
+        <label for="knowledge-query">Look for a condition or symptom</label><div class="search-row"><input id="knowledge-query" value="worker lock" placeholder="timeout, cleanup, lock…"><button id="knowledge-search" class="secondary knowledge-action" type="button" disabled>Search</button></div>
+        <div id="knowledge-results" aria-live="polite"><div class="empty-result">Build the index to begin. Matching passages will appear here.</div></div>
+        <div class="boundary"><strong>What happens next?</strong><p>“Use excerpt in a check” opens the Guided check with that text. The guided example supports lock cleanup; another mechanism may remain unresolved. Use the Evaluation lab to prepare other supported Python callers.</p></div>
+      </section>
+    </div>
+    <details class="advanced-workspace"><summary>Advanced · Review structured incident knowledge and forecasts</summary>
+      <p class="pane-explanation">These tools review supplied structured candidates and probabilities. Adding or searching a report above does not generate a candidate. The initial candidate below is a separate, explicitly owned example.</p>
+      <div class="workspace">
+        <section class="panel"><div class="section-heading"><span class="number">A</span><h2>Freeze and review IR</h2></div>
+          <p class="small muted">Incident IR is a structured claim tied to exact source quotations. Validation freezes the review questions; it does not certify the claim.</p>
+          <label for="knowledge-candidate">Structured incident candidate (JSON)</label><textarea id="knowledge-candidate" class="code-input" rows="8" spellcheck="false"></textarea>
+          <label for="knowledge-source-texts">Source IDs → exact source text (JSON)</label><textarea id="knowledge-source-texts" class="code-input" rows="3" spellcheck="false"></textarea>
+          <button id="knowledge-prepare" class="secondary knowledge-action" type="button" disabled>Validate quotes and freeze questions</button>
+          <label for="knowledge-judgments">Request IDs → supplied answers (JSON)</label><textarea id="knowledge-judgments" class="code-input" rows="3" spellcheck="false">{}</textarea>
+          <p class="small muted">An empty map retains UNKNOWN for every judgment. This page makes no paid review calls.</p>
+          <button id="knowledge-route" class="secondary knowledge-action" type="button" disabled>Review supplied judgments</button>
+          <p id="knowledge-review-summary" class="review-summary" aria-live="polite">No structured candidate reviewed.</p>
+          <details><summary>Inspect the structured review result</summary><pre id="knowledge-ir-result" class="small"></pre></details>
+        </section>
+        <section class="panel"><div class="section-heading"><span class="number">B</span><h2>Keep missing outcomes visible</h2></div>
+          <p class="small muted">Score the rows you supply, including missing forecasts or labels. A score for observed rows does not validate population calibration.</p>
+          <label for="knowledge-scores">Probability rows and categories (JSON)</label><textarea id="knowledge-scores" class="code-input" rows="7" spellcheck="false"></textarea>
+          <button id="knowledge-score" class="secondary knowledge-action" type="button" disabled>Calculate partial score bounds</button>
+          <p id="knowledge-score-summary" class="review-summary" aria-live="polite">No rows scored.</p>
+          <details><summary>Inspect scores and unknown bounds</summary><pre id="knowledge-score-result" class="small"></pre></details>
+        </section>
+      </div>
+      <div class="boundary"><strong>What these numbers mean</strong><p>Search ranking is not a probability. Quote fidelity does not certify cause or incident membership. Missing outcomes remain in the attempted denominator; these diagnostics do not establish independent generalization.</p></div>
+    </details>
+    <footer><span>REQLOX · Learn from incidents. Check the behavior.</span><a class="text-link" href="/">Return to Guided check →</a></footer>
+  </main>
+</body>
+</html>

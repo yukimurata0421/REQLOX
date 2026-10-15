@@ -1,0 +1,44 @@
+{
+  "schema_version": "reqlox.public-evaluation-settings.v1",
+  "language": "en",
+  "preparation": {
+    "input": "LOCAL_ORIGINAL_SNAPSHOT_OR_PINNED_PURE_PYTHON_WHEELS",
+    "package_code_imported": false,
+    "maximum_wheels": 8,
+    "missing_dependency": "HOLD_BEFORE_FORECAST",
+    "supported_extras": false,
+    "supported_binary_extensions": false
+  },
+  "source_comparison": {
+    "baseline": "TARGET_GUIDED_SOURCE_BLIND_V1",
+    "maximum_discovery_campaigns_per_arm": 4,
+    "common_confirmation_envelope": true,
+    "same_caller_oracle_and_repairer": true,
+    "maximum_native_campaigns": 32,
+    "maximum_wall_seconds": 600
+  },
+  "calibration": {
+    "scope": "CROSS_GROUP_DIAGNOSTIC",
+    "method": "FROZEN_MONOTONE_SIGMOID",
+    "minimum_natural_scored_rows": 20,
+    "minimum_natural_projects": 10,
+    "minimum_dependency_components": 5,
+    "minimum_pass_labels": 5,
+    "minimum_fail_labels": 5,
+    "minimum_label_coverage": 0.8,
+    "minimum_selection_coverage": 0.5,
+    "maximum_empirical_ece": 0.1,
+    "minimum_brier_improvement": 0.005,
+    "counts_are_engineering_gates_not_statistical_proof": true,
+    "public_row_input_is_not_natural_provenance": true
+  },
+  "serving": {
+    "mode": "RAW",
+    "threshold": 0.85,
+    "postprocessor_sha256": null
+  },
+  "automatic_activation": false,
+  "probability_calibration_certified": false,
+  "independent_generalization_certified": false,
+  "execution_authority": false
+}

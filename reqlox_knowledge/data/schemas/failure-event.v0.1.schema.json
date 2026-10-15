@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/reqlox/failure-event.v0.1.schema.json",
+  "title": "REQLOX FailureEvent v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "contract_type",
+    "contract_version",
+    "revision_id",
+    "created_at",
+    "incident_id",
+    "sequence",
+    "layer",
+    "fault_family",
+    "primitive",
+    "subtype",
+    "component",
+    "state",
+    "observation",
+    "evidence_ids",
+    "jev_judgment_ids",
+    "confidence",
+    "provenance_refs",
+    "limitations"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^fe_[a-f0-9]{20}$"
+    },
+    "contract_type": {
+      "const": "FailureEvent"
+    },
+    "contract_version": {
+      "const": "0.1.0"
+    },
+    "revision_id": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/revisionId"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "incident_id": {
+      "type": "string",
+      "pattern": "^inc_[a-f0-9]{20}$"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "layer": {
+      "enum": [
+        "physical",
+        "network",
+        "compute",
+        "storage",
+        "database",
+        "distributed_system",
+        "application",
+        "configuration",
+        "deployment",
+        "control_plane",
+        "observability",
+        "time",
+        "human",
+        "recovery",
+        "other",
+        "unknown"
+      ]
+    },
+    "fault_family": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{1,79}$"
+    },
+    "primitive": {
+      "type": "string",
+      "pattern": "^(?:[a-z][a-z0-9_]{1,79}|OTHER|UNKNOWN)$"
+    },
+    "subtype": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[a-z][a-z0-9_]{1,79}$"
+    },
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "technology"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "technology": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "severity",
+        "duration_seconds"
+      ],
+      "properties": {
+        "severity": {
+          "enum": [
+            "partial",
+            "total",
+            "degraded",
+            "unknown"
+          ]
+        },
+        "duration_seconds": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        }
+      }
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "observed"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "SOURCE_OBSERVED",
+            "REQLOX_INFERRED",
+            "UNKNOWN"
+          ]
+        },
+        "observed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "evidence_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^ev_[a-f0-9]{20}$"
+      }
+    },
+    "jev_judgment_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^jev_[a-f0-9]{20}$"
+      }
+    },
+    "confidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "extraction",
+        "evidence_support"
+      ],
+      "properties": {
+        "extraction": {
+          "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/probability"
+        },
+        "evidence_support": {
+          "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/probability"
+        }
+      }
+    },
+    "provenance_refs": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/provenanceRefs"
+    },
+    "limitations": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/limitations"
+    }
+  }
+}

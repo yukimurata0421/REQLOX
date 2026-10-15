@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/reqlox/fault-injection-candidate.v0.1.schema.json",
+  "title": "REQLOX FaultInjectionCandidate v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "contract_type",
+    "contract_version",
+    "revision_id",
+    "created_at",
+    "pattern_id",
+    "pattern_occurrence_ids",
+    "target_ref",
+    "applicability_judgment_id",
+    "fault",
+    "priority_signals",
+    "execution_boundary",
+    "provenance_refs",
+    "limitations"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^fic_[a-f0-9]{20}$"
+    },
+    "contract_type": {
+      "const": "FaultInjectionCandidate"
+    },
+    "contract_version": {
+      "const": "0.1.0"
+    },
+    "revision_id": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/revisionId"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "pattern_id": {
+      "type": "string",
+      "pattern": "^fp_[a-f0-9]{20}$"
+    },
+    "pattern_occurrence_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^po_[a-f0-9]{20}$"
+      }
+    },
+    "target_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "system_ir_id",
+        "system_ir_revision",
+        "system_contract_id"
+      ],
+      "properties": {
+        "system_ir_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "system_ir_revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "system_contract_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "applicability_judgment_id": {
+      "type": "string",
+      "pattern": "^jev_[a-f0-9]{20}$"
+    },
+    "fault": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "primitive",
+        "mechanism",
+        "parameters"
+      ],
+      "properties": {
+        "primitive": {
+          "type": "string",
+          "pattern": "^(?:[a-z][a-z0-9_]{1,79}|OTHER|UNKNOWN)$"
+        },
+        "mechanism": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{1,79}$"
+        },
+        "parameters": {
+          "type": "object"
+        }
+      }
+    },
+    "priority_signals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "frequency",
+        "severity",
+        "evidence_strength",
+        "architecture_match",
+        "injectability",
+        "novelty",
+        "composite_score"
+      ],
+      "properties": {
+        "frequency": {
+          "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/probability"
+        },
+        "severity": {
+          "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/probability"
+        },
+        "evidence_strength": {
+          "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/probability"
+        },
+        "architecture_match": {
+          "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/probability"
+        },
+        "injectability": {
+          "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/probability"
+        },
+        "novelty": {
+          "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/probability"
+        },
+        "composite_score": {
+          "type": "null"
+        }
+      }
+    },
+    "execution_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "policy_decision",
+        "authorization_ref"
+      ],
+      "properties": {
+        "state": {
+          "const": "PROPOSED_NON_EXECUTABLE"
+        },
+        "policy_decision": {
+          "const": "BLOCKED_PENDING_EXPERIMENT_POLICY"
+        },
+        "authorization_ref": {
+          "type": "null"
+        }
+      }
+    },
+    "provenance_refs": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/provenanceRefs"
+    },
+    "limitations": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/limitations"
+    }
+  }
+}

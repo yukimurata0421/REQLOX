@@ -1,0 +1,73 @@
+{
+  "schema_version": "reqlox.system-ir-reproduction-validation.v1",
+  "status": "OFFLINE_REPRODUCTION_FIXED_AND_VERIFIED",
+  "supported_adapter": "stream-cra-evidence-lineage-v1",
+  "arbitrary_repository_inference": false,
+  "source_snapshot": {
+    "source_files": 918,
+    "evidence_rows": 929,
+    "source_bytes": 8481723,
+    "system_elements": 133,
+    "archived_ir_reproduced": true,
+    "legacy_source_fidelity_questions_byte_identical": true,
+    "connected_builder_metadata_hash_matches": 10,
+    "native_validator_executed": false,
+    "builder_receipt_dependency": "ARCHIVED_RECEIPT_TEST_DOUBLE"
+  },
+  "offline_cli": {
+    "isolated_environments": 3,
+    "executions": 12,
+    "same_artifact_bytes": true,
+    "installed_wheel": true,
+    "system_fidelity_response_provenance": "OWNED_SYNTHETIC_CONTROL",
+    "owned_control_elements": 6,
+    "same_host_only": true
+  },
+  "saved_real_applicability": {
+    "batches": 5,
+    "judgments": 7,
+    "same_saved_answer_fields_and_routes": true,
+    "insufficient_information": 7,
+    "human_on_exception": 7,
+    "applicable_candidates": 0,
+    "separate_from_system_fidelity": true
+  },
+  "system_fidelity_real_response_archive_found": false,
+  "tests_passed": 95,
+  "fixes": [
+    "Shared projection and source-fidelity questions",
+    "Input-derived element count and identity/evidence closure",
+    "Exact original request binding and private offline replay",
+    "Configured storage avoids unnecessary home lookup",
+    "Completed HTTP operation unlocks before exposing its response"
+  ],
+  "shared_files_matched": 68,
+  "new_model_calls": 0,
+  "new_provider_calls": 0,
+  "new_native_campaigns": 0,
+  "deployment_performed": false,
+  "commit_created": false,
+  "push_performed": false,
+  "preserved_native_accounting": {
+    "campaigns": 15,
+    "maximum_campaigns": 15,
+    "charged_seconds": 62,
+    "maximum_seconds": 120
+  },
+  "held_atomic_bindings": 4,
+  "temppath_repair_performed": false,
+  "raw_evidence_published": false,
+  "canonical_system_ir": false,
+  "execution_authority": false,
+  "probabilities_calibrated": false,
+  "independent_generalization": false,
+  "source_added_value_proven": false,
+  "independent_operator_execution": false,
+  "limitations": [
+    "No fresh source-fidelity provider calls",
+    "Fresh answer repeatability unverified",
+    "No live architecture observation",
+    "Other operating systems or library versions unverified",
+    "Archive provenance is declared, not externally authenticated"
+  ]
+}

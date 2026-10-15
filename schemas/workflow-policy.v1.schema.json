@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/reqlox/workflow-policy.v1.schema.json",
+  "title": "REQLOX WorkflowPolicy v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id", "contract_type", "contract_version", "revision_id", "created_at",
+    "mode", "policy_owner", "exception_owner", "sandbox_scope",
+    "automatic_actions", "budgets", "exception_conditions", "release_gate"
+  ],
+  "properties": {
+    "id": {"type": "string", "pattern": "^workflow_policy_[a-z0-9_-]+$"},
+    "contract_type": {"const": "WorkflowPolicy"},
+    "contract_version": {"const": "1.0.0"},
+    "revision_id": {
+      "type": "string",
+      "pattern": "^rev_[0-9]{8}T[0-9]{6}Z_[a-f0-9]{12}$"
+    },
+    "created_at": {"type": "string", "format": "date-time"},
+    "mode": {"enum": ["CONSERVATIVE", "STANDARD", "AUTONOMOUS"]},
+    "policy_owner": {"type": "string", "minLength": 1},
+    "exception_owner": {"type": "string", "minLength": 1},
+    "sandbox_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target_ref", "worktree_ref", "environment_class",
+        "allowed_resource_refs"
+      ],
+      "properties": {
+        "target_ref": {"type": "string", "minLength": 1},
+        "worktree_ref": {"type": "string", "minLength": 1},
+        "environment_class": {"const": "ISOLATED_DISPOSABLE"},
+        "allowed_resource_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "automatic_actions": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "GENERATE_IR", "ASSESS_APPLICABILITY", "GENERATE_FAULT",
+          "INJECT_SANDBOX", "OBSERVE", "GENERATE_PATCH",
+          "APPLY_PATCH_ISOLATED", "BUILD_TEST", "REGENERATE_SYSTEM_IR",
+          "REINJECT", "RELATED_FAULT_CHALLENGE", "PACKAGE_EVIDENCE"
+        ]
+      }
+    },
+    "budgets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_iterations", "max_elapsed_seconds", "max_api_cost",
+        "max_tokens", "max_patch_files", "max_patch_lines",
+        "max_same_failure_family_iterations"
+      ],
+      "properties": {
+        "max_iterations": {"type": "integer", "minimum": 1},
+        "max_elapsed_seconds": {"type": "integer", "minimum": 1},
+        "max_api_cost": {"type": "number", "minimum": 0},
+        "max_tokens": {"type": "integer", "minimum": 1},
+        "max_patch_files": {"type": "integer", "minimum": 1},
+        "max_patch_lines": {"type": "integer", "minimum": 1},
+        "max_same_failure_family_iterations": {
+          "type": "integer", "minimum": 1
+        }
+      }
+    },
+    "exception_conditions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "min_verification_confidence", "max_performance_degradation_percent",
+        "ir_contradiction", "oracle_inconclusive", "budget_exceeded",
+        "repeated_failure_family", "regression_detected",
+        "performance_degradation", "architecture_change_required",
+        "sandbox_escape_requested", "provenance_incomplete",
+        "reproducibility_failed", "cleanup_unverified",
+        "safety_policy_violation"
+      ],
+      "properties": {
+        "min_verification_confidence": {
+          "type": "number", "minimum": 0, "maximum": 1
+        },
+        "max_performance_degradation_percent": {
+          "type": "number", "minimum": 0
+        },
+        "ir_contradiction": {"const": "ESCALATE"},
+        "oracle_inconclusive": {"const": "ESCALATE"},
+        "budget_exceeded": {"const": "ESCALATE"},
+        "repeated_failure_family": {"const": "ESCALATE"},
+        "regression_detected": {"const": "ESCALATE"},
+        "performance_degradation": {"const": "ESCALATE"},
+        "architecture_change_required": {"const": "ESCALATE"},
+        "sandbox_escape_requested": {"const": "ESCALATE"},
+        "provenance_incomplete": {"const": "ESCALATE"},
+        "reproducibility_failed": {"const": "ESCALATE"},
+        "cleanup_unverified": {"const": "ESCALATE"},
+        "safety_policy_violation": {"const": "ESCALATE"}
+      }
+    },
+    "release_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decision", "protected_destinations"],
+      "properties": {
+        "decision": {"const": "HUMAN_APPROVAL"},
+        "protected_destinations": {
+          "type": "array",
+          "minItems": 4,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "DEFAULT_BRANCH", "RELEASE_ARTIFACT", "PRODUCTION",
+              "EXTERNAL_RESOURCE"
+            ]
+          },
+          "allOf": [
+            {"contains": {"const": "DEFAULT_BRANCH"}},
+            {"contains": {"const": "RELEASE_ARTIFACT"}},
+            {"contains": {"const": "PRODUCTION"}},
+            {"contains": {"const": "EXTERNAL_RESOURCE"}}
+          ]
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"mode": {"const": "STANDARD"}}, "required": ["mode"]},
+      "then": {
+        "properties": {
+          "automatic_actions": {
+            "allOf": [
+              {"contains": {"const": "APPLY_PATCH_ISOLATED"}},
+              {"contains": {"const": "REINJECT"}},
+              {"contains": {"const": "RELATED_FAULT_CHALLENGE"}},
+              {"contains": {"const": "PACKAGE_EVIDENCE"}}
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

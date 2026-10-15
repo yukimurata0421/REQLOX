@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/reqlox/causal-edge.v0.1.schema.json",
+  "title": "REQLOX CausalEdge v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "contract_type",
+    "contract_version",
+    "revision_id",
+    "created_at",
+    "incident_id",
+    "from_event_id",
+    "to_event_id",
+    "relation",
+    "causality",
+    "evidence_ids",
+    "support",
+    "confidence",
+    "jev_judgment_id",
+    "provenance_refs",
+    "limitations"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^edge_[a-f0-9]{20}$"
+    },
+    "contract_type": {
+      "const": "CausalEdge"
+    },
+    "contract_version": {
+      "const": "0.1.0"
+    },
+    "revision_id": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/revisionId"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "incident_id": {
+      "type": "string",
+      "pattern": "^inc_[a-f0-9]{20}$"
+    },
+    "from_event_id": {
+      "type": "string",
+      "pattern": "^fe_[a-f0-9]{20}$"
+    },
+    "to_event_id": {
+      "type": "string",
+      "pattern": "^fe_[a-f0-9]{20}$"
+    },
+    "relation": {
+      "enum": [
+        "causes",
+        "contributes_to",
+        "amplifies",
+        "triggers",
+        "prevents_recovery",
+        "masks",
+        "correlated_with",
+        "unknown"
+      ]
+    },
+    "causality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "direct",
+            "indirect",
+            "contributory",
+            "unknown"
+          ]
+        }
+      }
+    },
+    "evidence_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^ev_[a-f0-9]{20}$"
+      }
+    },
+    "support": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "explicitly_stated",
+        "inferred"
+      ],
+      "properties": {
+        "explicitly_stated": {
+          "type": "boolean"
+        },
+        "inferred": {
+          "type": "boolean"
+        }
+      }
+    },
+    "confidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_support",
+        "causal_relation"
+      ],
+      "properties": {
+        "evidence_support": {
+          "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/probability"
+        },
+        "causal_relation": {
+          "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/probability"
+        }
+      }
+    },
+    "jev_judgment_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^jev_[a-f0-9]{20}$"
+    },
+    "provenance_refs": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/provenanceRefs"
+    },
+    "limitations": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/limitations"
+    }
+  }
+}

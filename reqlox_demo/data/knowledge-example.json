@@ -1,0 +1,107 @@
+{
+  "fixture_kind": "OWNED_SYNTHETIC_CONTROL",
+  "documents": [
+    {
+      "url": "https://example.org/owned-lock-report",
+      "title": "Owned lock control",
+      "publisher": "REQLOX owned example",
+      "text": "The primary worker renewed the lock. A second worker waited."
+    }
+  ],
+  "candidate": {
+    "schema_version": "reqlox.incident-hypothesis-set.v0.1",
+    "id": "irhs_8400d11602e109aed016",
+    "contract_type": "IncidentHypothesisSet",
+    "contract_version": "0.1.0",
+    "created_at": "2026-10-11T00:00:00+00:00",
+    "status": "SILVER_CANDIDATE",
+    "source": {
+      "source_manifest_id": "f3ea2708251d800732e320cf0fcb6795d10c2e90ab883ce93c82ed8dde8e5708",
+      "source_record_id": "owned-lock-report",
+      "task_id": "local-generation-f3ea2708251d800732e3",
+      "incident_key": "UNREVIEWED_SOURCE_SCOPE",
+      "source_document_sha256": "83dd1e1072be8209646b1dba9b6ea99c36994d5f70b56f00bdbc6465dd515bac"
+    },
+    "evidence_spans": [
+      {
+        "evidence_id": "ev_2255a967e856667ddff8",
+        "start_char": 0,
+        "end_char": 36,
+        "content_hash": "6dbcdbc685d5dbc690094aff8a06e7da12753497c6f5d2e3ef113199e85afebb",
+        "text": "The primary worker renewed the lock."
+      }
+    ],
+    "observed_assertions": [
+      {
+        "assertion_id": "oas_11111111111111111111",
+        "statement": "The primary worker renewed the lock.",
+        "predicate": "renewed",
+        "arguments": [
+          {
+            "role": "actor",
+            "value": "primary worker"
+          },
+          {
+            "role": "object",
+            "value": "lock"
+          }
+        ],
+        "evidence_ids": [
+          "ev_2255a967e856667ddff8"
+        ]
+      }
+    ],
+    "attribute_assertions": [],
+    "event_hypotheses": [
+      {
+        "event_hypothesis_id": "evh_22222222222222222222",
+        "hypothesis_group_id": "hgrp_33333333333333333333",
+        "alternative_index": 0,
+        "assertion_ids": [
+          "oas_11111111111111111111"
+        ],
+        "attribute_ids": []
+      }
+    ],
+    "relation_hypotheses": [],
+    "authority": {
+      "dataset_tier": "SILVER_CANDIDATE",
+      "gold_truth": false,
+      "canonicalization_authorized": false,
+      "fault_injection_authorized": false,
+      "target_mutation_authorized": false
+    },
+    "limitations": [
+      "Generated candidate; source entailment, atomicity and incident boundary still require separate review."
+    ],
+    "record_sha256": "092a4149ca79c921e36644e88482633fe29d1e8a6f6d2cd05a723adca3ae6690"
+  },
+  "source_texts": {
+    "owned-lock-report": "The primary worker renewed the lock. A second worker waited."
+  },
+  "scores": {
+    "categories": [
+      "PASS",
+      "FAIL"
+    ],
+    "rows": [
+      {
+        "id": "owned-1",
+        "probabilities": {
+          "PASS": 0.8,
+          "FAIL": 0.2
+        },
+        "label": "PASS",
+        "label_authority": "CONSTRUCTED_FINITE_ORACLE",
+        "dependency_component": "owned-a"
+      },
+      {
+        "id": "owned-2",
+        "probabilities": null,
+        "label": null,
+        "label_authority": "UNKNOWN",
+        "dependency_component": "owned-b"
+      }
+    ]
+  }
+}

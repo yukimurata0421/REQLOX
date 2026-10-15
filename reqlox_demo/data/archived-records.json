@@ -1,0 +1,403 @@
+{
+  "schema": "reqlox.archived-ui-records.v1",
+  "records": [
+    {
+      "id": "api-copy-v01",
+      "title": "api · copied Target repair",
+      "kind": "ARCHIVED_FINITE_OBSERVATIONS",
+      "observed_at_jst": "2026-10-12",
+      "source": {
+        "id": "api-copy-v01-input-summary",
+        "title": "Owned api experiment contract",
+        "kind": "OWNED_CONTRACT_SUMMARY",
+        "text": "Owned API pending-file/replace obligations and injected write, fsync and replace failures.",
+        "text_sha256": "6929bc7be81cec88a94046b2e7d01f9d9947c2a4072c9b1203f37ba73a9006e5",
+        "original_source_available": false,
+        "binding": "CURATED_INPUT_SUMMARY_ONLY",
+        "natural_truth_certified": false
+      },
+      "steps": [
+        {
+          "stage": "input",
+          "status": "ARCHIVED_INPUT",
+          "description": "Owned API pending-file/replace obligations and injected write, fsync and replace failures."
+        },
+        {
+          "stage": "detection",
+          "status": "COUNTEREXAMPLE_OBSERVED",
+          "description": "FSYNC, REPLACE, WRITE: 6 failed finite observations; 4 native campaigns in this record."
+        },
+        {
+          "stage": "repair",
+          "status": "VALIDATED_IN_COPY",
+          "description": "Isolated candidate: storage.py. Original code was preserved."
+        },
+        {
+          "stage": "reinjection",
+          "status": "PASSED_FINITE_CONDITIONS",
+          "description": "Same-fault re-injection 6 passed / 0 failed; normal regression 10 passed / 0 failed; confirmation 6 passed."
+        },
+        {
+          "stage": "decision",
+          "status": "ADOPTED_IN_SNAPSHOT",
+          "description": "Adopted in isolated derived snapshot only; no production adoption."
+        }
+      ],
+      "decision": "ADOPTED_IN_SNAPSHOT",
+      "held_atomic_bindings": 0,
+      "temppath_repair_performed": false,
+      "originals_preserved": true,
+      "limits": "Copied code and finite owned callers only. No service-wide or physical-disk qualification. No independent unused-OSS generalization, probability calibration or natural Source added-value proof.",
+      "evidence_refs": [
+        {
+          "id": "copied-target-execution-v01",
+          "sha256": "43c2eb79f1f61ad9de22ca9babde102a1ca82136016654118f5330ecfb399ddd"
+        }
+      ],
+      "historical_raw_evidence_gap": true,
+      "new_native_campaigns": 0,
+      "provider_calls": 0,
+      "record_sha256": "a55d4bcd4d0a75eca10b8e3ec62a6e8b81d27682700a66add4fd215fcca2f8fd"
+    },
+    {
+      "id": "worker-copy-v01",
+      "title": "worker · copied Target repair",
+      "kind": "ARCHIVED_FINITE_OBSERVATIONS",
+      "observed_at_jst": "2026-10-12",
+      "source": {
+        "id": "worker-copy-v01-input-summary",
+        "title": "Owned worker experiment contract",
+        "kind": "OWNED_CONTRACT_SUMMARY",
+        "text": "Owned worker lock-cleanup obligations under body exception and task cancellation.",
+        "text_sha256": "e0aee1bfc1ea0a63f2f8b6c3d78076b67bc081086a1fac07be5a7cb0159a3293",
+        "original_source_available": false,
+        "binding": "CURATED_INPUT_SUMMARY_ONLY",
+        "natural_truth_certified": false
+      },
+      "steps": [
+        {
+          "stage": "input",
+          "status": "ARCHIVED_INPUT",
+          "description": "Owned worker lock-cleanup obligations under body exception and task cancellation."
+        },
+        {
+          "stage": "detection",
+          "status": "COUNTEREXAMPLE_OBSERVED",
+          "description": "EXCEPTION, TASK_CANCEL: 4 failed finite observations; 4 native campaigns in this record."
+        },
+        {
+          "stage": "repair",
+          "status": "VALIDATED_IN_COPY",
+          "description": "Isolated candidate: resource.py. Original code was preserved."
+        },
+        {
+          "stage": "reinjection",
+          "status": "PASSED_FINITE_CONDITIONS",
+          "description": "Same-fault re-injection 6 passed / 0 failed; normal regression 2 passed / 0 failed; confirmation 6 passed."
+        },
+        {
+          "stage": "decision",
+          "status": "ADOPTED_IN_SNAPSHOT",
+          "description": "Adopted in isolated derived snapshot only; no production adoption."
+        }
+      ],
+      "decision": "ADOPTED_IN_SNAPSHOT",
+      "held_atomic_bindings": 0,
+      "temppath_repair_performed": false,
+      "originals_preserved": true,
+      "limits": "Copied code and finite owned callers only. No service-wide or physical-disk qualification. No independent unused-OSS generalization, probability calibration or natural Source added-value proof.",
+      "evidence_refs": [
+        {
+          "id": "copied-target-execution-v01",
+          "sha256": "43c2eb79f1f61ad9de22ca9babde102a1ca82136016654118f5330ecfb399ddd"
+        }
+      ],
+      "historical_raw_evidence_gap": true,
+      "new_native_campaigns": 0,
+      "provider_calls": 0,
+      "record_sha256": "588ea988eb8bf47245908a400141105475303c5fd7973b65b344e102cbdeaa7a"
+    },
+    {
+      "id": "temppath-readme-v01",
+      "title": "temppath · README context observations",
+      "kind": "ARCHIVED_FINITE_OBSERVATIONS",
+      "observed_at_jst": "2026-10-12",
+      "source": {
+        "id": "temppath-readme-v01-input-summary",
+        "title": "Existing README contract summary",
+        "kind": "README_CONTRACT_SUMMARY",
+        "text": "Existing temppath README context: acquire and release the owned temporary path, preserve unrelated files, and propagate body failures. No atomic deletion-error contract was added.",
+        "text_sha256": "61b0e6c38a96e12dd5205c4732450f437a8208f0c6367bf5e0e10ceacc4a59e0",
+        "original_source_available": false,
+        "binding": "CURATED_INPUT_SUMMARY_ONLY",
+        "natural_truth_certified": false
+      },
+      "steps": [
+        {
+          "stage": "input",
+          "status": "ARCHIVED_INPUT",
+          "description": "Existing temppath README context: acquire and release the owned temporary path, preserve unrelated files, and propagate body failures. No atomic deletion-error contract was added."
+        },
+        {
+          "stage": "detection",
+          "status": "NO_COUNTEREXAMPLE",
+          "description": "Two native campaigns: 4 normal/repeat observations and 8 body-fault/repeat observations passed."
+        },
+        {
+          "stage": "repair",
+          "status": "NOT_PERFORMED",
+          "description": "No repair candidate was generated, applied or adopted."
+        },
+        {
+          "stage": "reinjection",
+          "status": "REPAIR_REINJECTION_NOT_PERFORMED",
+          "description": "Unchanged-code confirmation: 12 observations passed. This was confirmation, not a repaired-code re-injection."
+        },
+        {
+          "stage": "decision",
+          "status": "HELD_4_ATOMIC_BINDINGS",
+          "description": "README context retained NO_COUNTEREXAMPLE. Four atomic bindings remain HELD: INSTANCE_DYNAMIC_PROTOCOL and SERIALIZED_MODULE_IMPORT."
+        }
+      ],
+      "decision": "NO_REPAIR_ADOPTED",
+      "held_atomic_bindings": 4,
+      "temppath_repair_performed": false,
+      "originals_preserved": true,
+      "limits": "Copied code and finite owned callers only. No service-wide or physical-disk qualification. No independent unused-OSS generalization, probability calibration or natural Source added-value proof.",
+      "evidence_refs": [
+        {
+          "id": "temppath-readme-archived-summary",
+          "sha256": "7c81db290b40e519065ad79cd91942bdf9bda843e39ca0ed0b4261d6602f8066"
+        }
+      ],
+      "historical_raw_evidence_gap": true,
+      "new_native_campaigns": 0,
+      "provider_calls": 0,
+      "record_sha256": "d6e2d5443c4d5ac6da550cace26835ee427f2abb4669fe124a28e5ee21842b76"
+    },
+    {
+      "id": "integration-caller-v01",
+      "title": "api + worker + temppath · integrated caller",
+      "kind": "ARCHIVED_FINITE_OBSERVATIONS",
+      "observed_at_jst": "2026-10-12",
+      "source": {
+        "id": "integration-caller-v01-input-summary",
+        "title": "Owned composed-caller contract summary",
+        "kind": "OWNED_CALLER_CONTRACT_SUMMARY",
+        "text": "Owned composed caller connects the copied API write path, worker lock lifecycle and temppath context. An unrelated file witnesses the ownership boundary.",
+        "text_sha256": "ca6aa4069803ddbd1650a5fa2b5d3864dc663f4e8940c0d426526e978b0a6a6f",
+        "original_source_available": false,
+        "binding": "CURATED_INPUT_SUMMARY_ONLY",
+        "natural_truth_certified": false
+      },
+      "steps": [
+        {
+          "stage": "input",
+          "status": "ARCHIVED_INPUT",
+          "description": "Owned composed caller connects the copied API write path, worker lock lifecycle and temppath context. An unrelated file witnesses the ownership boundary."
+        },
+        {
+          "stage": "detection",
+          "status": "COUNTEREXAMPLE_OBSERVED",
+          "description": "Attempt 13: original fault conditions 0/5 passed; normal 4/4; ownership boundary 0/1; lock released 4/10."
+        },
+        {
+          "stage": "repair",
+          "status": "EXISTING_CANDIDATE_VALIDATED",
+          "description": "Attempt 14: existing api/worker candidate, fault 5/5, normal 4/4, boundary 1/1; lock released and scratch removed 10/10."
+        },
+        {
+          "stage": "reinjection",
+          "status": "FRESH_CONFIRMATION_PASSED",
+          "description": "Attempt 15: same conditions confirmed, fault 5/5, normal 4/4, boundary 1/1; lock released and scratch removed 10/10."
+        },
+        {
+          "stage": "decision",
+          "status": "ADOPTED_ISOLATED_COPY",
+          "description": "Existing candidate adopted for the isolated composed caller. Temppath repair not performed; four atomic bindings remain HELD. Historical missing raw evidence remains unrecovered."
+        }
+      ],
+      "decision": "ADOPTED_ISOLATED_COPY",
+      "held_atomic_bindings": 4,
+      "temppath_repair_performed": false,
+      "originals_preserved": true,
+      "limits": "Copied code and finite owned callers only. No service-wide or physical-disk qualification. No independent unused-OSS generalization, probability calibration or natural Source added-value proof.",
+      "evidence_refs": [
+        {
+          "id": "module-integration-completion",
+          "sha256": "1993d860f3258d8799a9e0a5387660728527e713565f420f5f9d46962a3b878e"
+        },
+        {
+          "id": "cumulative-native-ledger-v03",
+          "sha256": "0bc100b95b95540aeef32ccd61528ccc1324643bc578dfd3d95b4482013a36a7"
+        }
+      ],
+      "historical_raw_evidence_gap": true,
+      "new_native_campaigns": 0,
+      "provider_calls": 0,
+      "record_sha256": "d66ae796381651225dc57a86b1ad1d40473474bed535b7ff6b32fd1e5c39f50e"
+    },
+    {
+      "id": "earlier-lock-cleanup",
+      "title": "Earlier demo · Lock cleanup",
+      "kind": "ARCHIVED_FINITE_OBSERVATIONS",
+      "observed_at_jst": "2026-10-08",
+      "source": {
+        "id": "earlier-lock-cleanup-input-summary",
+        "title": "Owned fictional report",
+        "kind": "OWNED_SYNTHETIC_REPORT",
+        "text": "A fictional owner-authored incident report; this is not evidence of transfer from a natural incident.",
+        "text_sha256": "852d4ef0cba0e97cb2391f7b4deaf34b23ec3a793edf9208e87bfbe916252196",
+        "original_source_available": false,
+        "binding": "CURATED_INPUT_SUMMARY_ONLY",
+        "natural_truth_certified": false
+      },
+      "steps": [
+        {
+          "stage": "input",
+          "status": "ARCHIVED_INPUT",
+          "description": "A fictional owner-authored incident report; this is not evidence of transfer from a natural incident. Exceptions and task cancellation while the caller holds a lock."
+        },
+        {
+          "stage": "detection",
+          "status": "ARCHIVED_DEMONSTRATION",
+          "description": "The caller entered manually. An exception could skip release and block the next acquisition."
+        },
+        {
+          "stage": "repair",
+          "status": "ARCHIVED_DEMONSTRATION",
+          "description": "A generated context-cleanup candidate ran work while held, released the lock, and preserved exception propagation."
+        },
+        {
+          "stage": "reinjection",
+          "status": "ARCHIVED_DEMONSTRATION",
+          "description": "12 repair/reinjection condition pairs passed across two known libraries. All four stages matched in 48/48 observations."
+        },
+        {
+          "stage": "decision",
+          "status": "FINITE_ARCHIVED_DEMONSTRATION",
+          "description": "One generated proposal, two known target libraries, and dependent test conditions. The 12 conditions are not 12 independent repair trials. The repair changes the caller, not the upstream libraries. This recorded run qualifies one generated candidate on known targets. It does not isolate the added effect of external knowledge."
+        }
+      ],
+      "decision": "FINITE_ARCHIVED_DEMONSTRATION",
+      "held_atomic_bindings": 0,
+      "temppath_repair_performed": null,
+      "originals_preserved": true,
+      "limits": "One generated proposal, two known target libraries, and dependent test conditions. The 12 conditions are not 12 independent repair trials. The repair changes the caller, not the upstream libraries.",
+      "evidence_refs": [],
+      "historical_raw_evidence_gap": false,
+      "new_native_campaigns": 0,
+      "provider_calls": 0,
+      "original_record_fingerprint": "ebb90a0e2e33915cb0b332ec3e89a9ee080a1460daec0386271ee2f4cc8ab65d",
+      "record_sha256": "7d53231612f116d9175129ed31760699027641cc4168f36126e188524154947f"
+    },
+    {
+      "id": "earlier-elapsed-time-ttl",
+      "title": "Earlier demo · TTL expiry",
+      "kind": "ARCHIVED_FINITE_OBSERVATIONS",
+      "observed_at_jst": "2026-10-09",
+      "source": {
+        "id": "earlier-elapsed-time-ttl-input-summary",
+        "title": "Incident clock knowledge",
+        "kind": "INCIDENT_CLOCK_KNOWLEDGE",
+        "text": "Clock failure knowledge from incident material informed exploration order. The TTL requirement and caller were owner-prepared; semantic transfer was not certified.",
+        "text_sha256": "7503f759f87961d2e2ac79a8ef53e0ba52d5daea2ab08e8214ba8c4f72299eb3",
+        "original_source_available": false,
+        "binding": "CURATED_INPUT_SUMMARY_ONLY",
+        "natural_truth_certified": false
+      },
+      "steps": [
+        {
+          "stage": "input",
+          "status": "ARCHIVED_INPUT",
+          "description": "Clock failure knowledge from incident material informed exploration order. The TTL requirement and caller were owner-prepared; semantic transfer was not certified. Backward, forward, stopped, and fractional clock trajectories inside the worker. The owned contract requires a five-second elapsed-time TTL."
+        },
+        {
+          "stage": "detection",
+          "status": "ARCHIVED_DEMONSTRATION",
+          "description": "The original classes passed normal cases but violated the owned elapsed-time requirement in 22/25 SimpleCache probes and 16/25 ExpiringDict probes."
+        },
+        {
+          "stage": "repair",
+          "status": "ARCHIVED_DEMONSTRATION",
+          "description": "The candidates use the elapsed-time clock. SimpleCache also removes clock rounding that shortened lifetime at fractional times."
+        },
+        {
+          "stage": "reinjection",
+          "status": "ARCHIVED_DEMONSTRATION",
+          "description": "Each final candidate passed all 29 normal and probe cases in both knowledge arms. Re-injection used a different seed; the original wheel files were unchanged."
+        },
+        {
+          "stage": "decision",
+          "status": "FINITE_ARCHIVED_DEMONSTRATION",
+          "description": "Purpose-selected known targets, an owned elapsed-time contract, and fresh instances only. This does not declare an upstream specification violation or certify an unseen-OSS success rate. Stored timestamp migration was not tested. Both knowledge arms found and repaired the same finite failures. The report changed exploration order; all cases were run."
+        }
+      ],
+      "decision": "FINITE_ARCHIVED_DEMONSTRATION",
+      "held_atomic_bindings": 0,
+      "temppath_repair_performed": null,
+      "originals_preserved": true,
+      "limits": "Purpose-selected known targets, an owned elapsed-time contract, and fresh instances only. This does not declare an upstream specification violation or certify an unseen-OSS success rate. Stored timestamp migration was not tested.",
+      "evidence_refs": [],
+      "historical_raw_evidence_gap": false,
+      "new_native_campaigns": 0,
+      "provider_calls": 0,
+      "original_record_fingerprint": "0c55cace73857891722f27c7d12d97844d888ee69ba440a3a51665604b182396",
+      "record_sha256": "f5aca47ef8011cd956cf7be0d0d6f4d74ce8bc86a21ee4e02e39b0e6d33d3173"
+    },
+    {
+      "id": "earlier-temporary-file-cleanup",
+      "title": "Earlier demo · Temporary file cleanup",
+      "kind": "ARCHIVED_FINITE_OBSERVATIONS",
+      "observed_at_jst": "2026-10-11",
+      "source": {
+        "id": "earlier-temporary-file-cleanup-input-summary",
+        "title": "API reference summary",
+        "kind": "API_REFERENCE_SUMMARY",
+        "text": "A supplied API reference summary about deletion errors. The one-time EIO policy is an owned condition, not a natural incident report.",
+        "text_sha256": "43fe5daf22dc0ae2a7448c650ef03c5d0b2009db71ed386778fbc6c587ca9354",
+        "original_source_available": false,
+        "binding": "CURATED_INPUT_SUMMARY_ONLY",
+        "natural_truth_certified": false
+      },
+      "steps": [
+        {
+          "stage": "input",
+          "status": "ARCHIVED_INPUT",
+          "description": "A supplied API reference summary about deletion errors. The one-time EIO policy is an owned condition, not a natural incident report. A single EIO during cleanup deletion. “Fails once, then succeeds” is an owned experiment condition, not a natural incident frequency claim."
+        },
+        {
+          "stage": "detection",
+          "status": "ARCHIVED_DEMONSTRATION",
+          "description": "The original implementation passed the original conditions. Adding the cleanup EIO condition left a temporary resource unreleased and produced FAIL."
+        },
+        {
+          "stage": "repair",
+          "status": "ARCHIVED_DEMONSTRATION",
+          "description": "A private code copy retries deletion once for EIO. Other errors and a persistent EIO are not converted into success."
+        },
+        {
+          "stage": "reinjection",
+          "status": "ARCHIVED_DEMONSTRATION",
+          "description": "The repaired copy passed the original conditions and the added cleanup condition. The repair was adopted only within this private finite experiment; the original distribution was unchanged."
+        },
+        {
+          "stage": "decision",
+          "status": "FINITE_ARCHIVED_DEMONSTRATION",
+          "description": "One already-observed target at repair time, a supplied reference summary, and an owned transient-error policy. Its original prospective PASS and this later repair are distinct evaluations. Neither establishes independent repair generalization or population calibration. The earlier comparison used a narrower baseline. Later full-budget generic exploration found the fault in both arms, with zero additional Source adoptions. Natural incident transfer remains unverified."
+        }
+      ],
+      "decision": "FINITE_ARCHIVED_DEMONSTRATION",
+      "held_atomic_bindings": 0,
+      "temppath_repair_performed": null,
+      "originals_preserved": true,
+      "limits": "One already-observed target at repair time, a supplied reference summary, and an owned transient-error policy. Its original prospective PASS and this later repair are distinct evaluations. Neither establishes independent repair generalization or population calibration.",
+      "evidence_refs": [],
+      "historical_raw_evidence_gap": false,
+      "new_native_campaigns": 0,
+      "provider_calls": 0,
+      "original_record_fingerprint": "aeb6e4ff02335dc52e26f753837542e7e0862e565330fa35ac9186a6da65223d",
+      "record_sha256": "a7134aae32b8e04f2f162c86b5c961a78ee258520dedc15c867fbe9beca5b2f5"
+    }
+  ]
+}

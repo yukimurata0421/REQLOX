@@ -1,0 +1,189 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/reqlox/jev-judgment.v0.1.schema.json",
+  "title": "REQLOX JevJudgment v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "contract_type",
+    "contract_version",
+    "revision_id",
+    "purpose",
+    "subject",
+    "model",
+    "question",
+    "input_sha256",
+    "result",
+    "policy",
+    "created_at",
+    "provenance_refs",
+    "limitations"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^jev_[a-f0-9]{20}$"
+    },
+    "contract_type": {
+      "const": "JevJudgment"
+    },
+    "contract_version": {
+      "const": "0.1.0"
+    },
+    "revision_id": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/revisionId"
+    },
+    "purpose": {
+      "enum": [
+        "failure_family_classification",
+        "primitive_classification",
+        "deployment_context",
+        "same_incident",
+        "same_failure_pattern",
+        "causal_edge_supported",
+        "evidence_support",
+        "injectable",
+        "architecture_applicable"
+      ]
+    },
+    "subject": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/entityRef"
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provider",
+        "model",
+        "version"
+      ],
+      "properties": {
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model": {
+          "const": "jev"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "question": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "instructions",
+        "candidates"
+      ],
+      "properties": {
+        "type": {
+          "const": "choice"
+        },
+        "instructions": {
+          "type": "string",
+          "minLength": 1
+        },
+        "candidates": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "input_sha256": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/sha256"
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "choice",
+        "probabilities",
+        "confidence",
+        "outcome"
+      ],
+      "properties": {
+        "choice": {
+          "type": "string",
+          "minLength": 1
+        },
+        "probabilities": {
+          "type": "object",
+          "minProperties": 2,
+          "additionalProperties": {
+            "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/probability"
+          }
+        },
+        "confidence": {
+          "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/probability"
+        },
+        "outcome": {
+          "enum": [
+            "SUPPORTED",
+            "NOT_SUPPORTED",
+            "INCONCLUSIVE"
+          ]
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "threshold",
+        "accept_choices",
+        "reject_choices",
+        "decision",
+        "policy_version"
+      ],
+      "properties": {
+        "threshold": {
+          "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/probability"
+        },
+        "accept_choices": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "reject_choices": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "decision": {
+          "enum": [
+            "ACCEPT",
+            "REVIEW",
+            "REJECT"
+          ]
+        },
+        "policy_version": {
+          "const": "reqlox-jev-policy-v1"
+        }
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "provenance_refs": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/provenanceRefs"
+    },
+    "limitations": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/limitations"
+    }
+  }
+}

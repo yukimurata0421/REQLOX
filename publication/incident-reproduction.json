@@ -1,0 +1,283 @@
+{
+  "schema": "reqlox.incident-reproduction-validation.v1",
+  "status": "PASS_OFFLINE_REPRODUCTION",
+  "validated_jst": "2026-10-13T23:19:11.852494+09:00",
+  "scope": "Frozen source and saved generation/judge responses; independent runtime copies and installed wheel",
+  "shared_implementation_files": 58,
+  "development_and_public_shared_bytes_identical": true,
+  "validation": {
+    "new_pipeline_tests_each_checkout": 14,
+    "existing_knowledge_tests": 18,
+    "existing_knowledge_ui_tests": 5,
+    "total_executed_tests": 51,
+    "isolated_runtime_environments": [
+      "development-copy",
+      "public-copy",
+      "installed-wheel"
+    ],
+    "same_candidate_review_plan_route_and_result": true,
+    "owned_synthetic_control_used_for_portable_e2e": true,
+    "live_stage_handoff_and_archive_export_tests": "MOCK_TRANSPORT_ONLY",
+    "historical_postmortem_replays": 1,
+    "historical_incident_report_replays": 1,
+    "historical_same_pilot_judge_batches": 12,
+    "historical_same_pilot_judge_questions": 105,
+    "historical_original_candidate_and_routing_objects_matched": true
+  },
+  "boundaries": {
+    "new_provider_calls": 0,
+    "new_native_campaigns": 0,
+    "cloud_mutations": 0,
+    "new_credentials_read": false,
+    "raw_corpus_or_responses_published": false,
+    "live_provider_connectivity_verified": false,
+    "independent_operator_run_verified": false,
+    "identical_fresh_model_outputs_verified": false,
+    "independent_generalization": false,
+    "probability_calibration": false,
+    "source_added_value": false
+  },
+  "original_native_scope": {
+    "campaigns": 15,
+    "maximum_campaigns": 15,
+    "charged_seconds": 62,
+    "maximum_seconds": 120,
+    "ledger_unchanged": true,
+    "held_atomic_bindings": 4,
+    "temppath_repair_performed": false
+  },
+  "implementation": [
+    {
+      "path": "reqlox_knowledge/observed.py",
+      "sha256": "e860858ad20d05fa21c9084fc5d5df46f68cdf054c94d4b0e7b45808c4f21872"
+    },
+    {
+      "path": "reqlox_knowledge/acquisition.py",
+      "sha256": "c96501b0fe9229cfbd8f2f787b5b6a117135e3ec2bcab438d418179b5a6ecd71"
+    },
+    {
+      "path": "reqlox_knowledge/threshold_policy.py",
+      "sha256": "3a0c995dbff9916ecee64c20ac7c6d056db9b2924b7920ed4a8f53fe7486a12f"
+    },
+    {
+      "path": "reqlox_knowledge/ir.py",
+      "sha256": "b5333704573a3c2b2c44363eb0e280c25abf8a309d07ee01bd6f69fc528e25d2"
+    },
+    {
+      "path": "reqlox_knowledge/provider.py",
+      "sha256": "05a82b5af774a801804d032bb85850f78beca3362e1e8bbb5e2eb102a310623a"
+    },
+    {
+      "path": "reqlox_knowledge/identity.py",
+      "sha256": "59d6461cdb9093c82fcbca7c6721bf08ec87241e9d2de851b714cf429581d458"
+    },
+    {
+      "path": "reqlox_knowledge/reference_evaluation.py",
+      "sha256": "c7415645efd6f99b3fe285114a1e7d1b5e84d5d6932f650d148df34d81f5e67e"
+    },
+    {
+      "path": "reqlox_knowledge/index.py",
+      "sha256": "bfbd0245afbbe3ab5519f91ebc3fe9a4cac9b985576a5d49cb7ee2646ac96ced"
+    },
+    {
+      "path": "reqlox_knowledge/provider_scores.py",
+      "sha256": "22e2d39550d105a719d0949d9faaded7d2d102a22f66993ca01b394bf6d0e847"
+    },
+    {
+      "path": "reqlox_knowledge/validator.py",
+      "sha256": "a38fe8fe1491c4c9f4da2559081a2f9f0c38aac3e0b81759ba5ec8ff4831eb8e"
+    },
+    {
+      "path": "reqlox_knowledge/retrieval.py",
+      "sha256": "1bc4f7b50cb70dcfb6adc864851950f9770b6f1791f77f5922f3dd28f32f9d10"
+    },
+    {
+      "path": "reqlox_knowledge/search.py",
+      "sha256": "d48c5ef3190a9928525edb2d6532d0d017d5f5f46d3d75b9d62fe44a26f13575"
+    },
+    {
+      "path": "reqlox_knowledge/reference_questions.py",
+      "sha256": "5a8f380179b62a0f218614ce7c112e8469a064550a2b8bb618cfc9820a58b162"
+    },
+    {
+      "path": "reqlox_knowledge/reference_audit.py",
+      "sha256": "6cb80c7febb2575a154cb876221f04ecf408c48358136d6c0ad35f5fac28bf35"
+    },
+    {
+      "path": "reqlox_knowledge/semantic_response.py",
+      "sha256": "b60ad5ab64c2dcdf27dc64e9012dff745a7b9c09244297ea0e418e848b55e78f"
+    },
+    {
+      "path": "reqlox_knowledge/generator.py",
+      "sha256": "f83832d6ce5c6d72f31da9706371438bd673e842fed401fd9b1e4dffe76ba3ab"
+    },
+    {
+      "path": "reqlox_knowledge/atomic.py",
+      "sha256": "f0e95989bcbf00243c162b959e8036e68df37723de1bf8fd71068e1e91521af0"
+    },
+    {
+      "path": "reqlox_knowledge/pipeline.py",
+      "sha256": "aceb3aa3a9a4ba5117ddbee9ad75c88a38f4c2082a0c465e32e1f0b9704b323d"
+    },
+    {
+      "path": "reqlox_knowledge/probability.py",
+      "sha256": "a83baf26b1ec76dd48f416a2a3b6acb7ecc5158c0e0955b6a7cbef98b4a2419d"
+    },
+    {
+      "path": "reqlox_knowledge/native.py",
+      "sha256": "6665f22b6959b4970d7c92b07b68e1daeb9bcc6894dd30167e1be523716443e5"
+    },
+    {
+      "path": "reqlox_knowledge/facets.py",
+      "sha256": "59daddc775912bdfa7b9470f46f87529446d4478dca34a359dcb6a99b7a48372"
+    },
+    {
+      "path": "reqlox_knowledge/hybrid.py",
+      "sha256": "539e646bf3c6566499a2209858b74d1887602eb2b0ede6e0c198c1947b661276"
+    },
+    {
+      "path": "reqlox_knowledge/__init__.py",
+      "sha256": "4fc94c6841fe5a60b7510f2a4a31df8dc41809316354b0bed4d20cab61d9a80d"
+    },
+    {
+      "path": "reqlox_knowledge/reference.py",
+      "sha256": "f352ebef4159013fb6a7fd6134c5b2bf4b2007ca40891ae49cbd0e01bf328dd4"
+    },
+    {
+      "path": "reqlox_knowledge/repeatability.py",
+      "sha256": "d08cdc1338a1fcdac748afe7a6bc467bae56c31b40352a6f4d92ff23a3822723"
+    },
+    {
+      "path": "reqlox_knowledge/fidelity.py",
+      "sha256": "c065191cd018b16bfae825fb957bb42c8fa84f2ea3053c0a3ca541248759a996"
+    },
+    {
+      "path": "reqlox_knowledge/corpus.py",
+      "sha256": "d2ef715d6639dab7a2947d3cb6056d17ead7623c5a9f607b788c2a18d1289611"
+    },
+    {
+      "path": "reqlox_knowledge/judge_client.py",
+      "sha256": "94a8f19f05bad726449f2aece5c0cdd1900c3f6078fe5bbb72e27e4493a5449e"
+    },
+    {
+      "path": "reqlox_knowledge/choice_response.py",
+      "sha256": "095de7ab7b7d7b8da72f387922ea2046afaf8875e0e494af12bf0fe27e2f823d"
+    },
+    {
+      "path": "reqlox_knowledge/observed_v2.py",
+      "sha256": "057acee01c0d2cc8b8ad8e96d44ac57932e713844f7b41dd5abd458a43cffe03"
+    },
+    {
+      "path": "reqlox_knowledge/candidate_index.py",
+      "sha256": "caadef605e249242b3ff8eed5a961597a6d34d7ba6aeec88da8c9d844abd9de1"
+    },
+    {
+      "path": "reqlox_knowledge/utils.py",
+      "sha256": "667a6bae63d7de072a1a7c22c16c34c9037785e83c927195f29ee0ca26af22ff"
+    },
+    {
+      "path": "reqlox_knowledge/generation.py",
+      "sha256": "4b237b6fee1e19d6bcd67f8e651d6c666d94dec44c6ec40162d461759964f616"
+    },
+    {
+      "path": "reqlox_knowledge/partial_scores.py",
+      "sha256": "2e96fbe98e4751e2e7c4030cad2c9a2aa5ac6e396b10fc161e2467197de2ea13"
+    },
+    {
+      "path": "reqlox_knowledge/storage.py",
+      "sha256": "00976e24f65f130a9d1b62662584958a89d64523178d9a0e69367b2242d55582"
+    },
+    {
+      "path": "reqlox_knowledge/data/incident-knowledge-model-v0.1.sql",
+      "sha256": "7d08c883079ab8f0d554cac11ae22ad20df97d501baa2296248298a31d67ad2d"
+    },
+    {
+      "path": "reqlox_knowledge/data/schemas/embedding-record.v1.schema.json",
+      "sha256": "43b9a00477d381bdaa6a64b0252d54dfb3408be961ab5c3a5a393c65f4072279"
+    },
+    {
+      "path": "reqlox_knowledge/data/schemas/causal-edge.v0.1.schema.json",
+      "sha256": "c6644632c6c8145b328481f329c13e1596d203f26f5974e316fa0804542194bc"
+    },
+    {
+      "path": "reqlox_knowledge/data/schemas/failure-pattern.v0.1.schema.json",
+      "sha256": "0279d99599e941af15f8be9e421575de58dc212d4ed2c98a43c65f3e7d810518"
+    },
+    {
+      "path": "reqlox_knowledge/data/schemas/incident-knowledge-bundle.v0.1.schema.json",
+      "sha256": "18764f46226a642b1beab652cf1c0e2a35ff1a21cb1d76912c95d4a3291caa02"
+    },
+    {
+      "path": "reqlox_knowledge/data/schemas/retrieved-document.v1.schema.json",
+      "sha256": "8ece573e1e4e288e8f9ba231d1016af06a6b7ae344dc9fb82b851fbae10e3ebe"
+    },
+    {
+      "path": "reqlox_knowledge/data/schemas/evidence-span.v0.1.schema.json",
+      "sha256": "640c810751822f491a38facf0c81e9ce1da0c41524486a4907f87701b867c101"
+    },
+    {
+      "path": "reqlox_knowledge/data/schemas/provenance-record.v0.1.schema.json",
+      "sha256": "9348eff850bfb7c5db3b40b77841ac1e9b6ab39fd11840baea4527804760f6cb"
+    },
+    {
+      "path": "reqlox_knowledge/data/schemas/incident-occurrence.v0.1.schema.json",
+      "sha256": "17ac7aec9f3d5ca79a5855f4ad2e000e23e4387712dd523d706c321c7784ca17"
+    },
+    {
+      "path": "reqlox_knowledge/data/schemas/pattern-occurrence.v0.1.schema.json",
+      "sha256": "f7ac45b739c5e4d1f649359ecf325883fa047b5bb1565dacba243fa20b8c9ea5"
+    },
+    {
+      "path": "reqlox_knowledge/data/schemas/pattern-statistics.v0.1.schema.json",
+      "sha256": "d8a5d405d179be4b9c53cbf19c30ab1070da235c658241cd95f6e398f597caa2"
+    },
+    {
+      "path": "reqlox_knowledge/data/schemas/jev-judgment.v0.1.schema.json",
+      "sha256": "4a601a45b7ca77bc741acaca3b0e71fcdfb784241836bddcaae524f57a13d8fc"
+    },
+    {
+      "path": "reqlox_knowledge/data/schemas/provisional-judge-request.v0.2.schema.json",
+      "sha256": "d37de47c1eb0d8e5ee33dba3fefad575886fc99d172a4fb1bff96760883e289f"
+    },
+    {
+      "path": "reqlox_knowledge/data/schemas/incident-hypothesis-set.v0.1.schema.json",
+      "sha256": "2cec9512cd10bc7538b491dbb90b2b6d565343e4f8d1bee5107e4d8d4a41d2a3"
+    },
+    {
+      "path": "reqlox_knowledge/data/schemas/fault-injection-candidate.v0.1.schema.json",
+      "sha256": "7aa8b441cce3f0d7288ae4c35dd0184677bdb3a537aea52bc58095f2da9d9a2e"
+    },
+    {
+      "path": "reqlox_knowledge/data/schemas/source-document.v0.1.schema.json",
+      "sha256": "133cc6e2c416736eea0d5a458b6485d7936e4ef579c2a0f74ba3c9ba2e283152"
+    },
+    {
+      "path": "reqlox_knowledge/data/schemas/failure-event.v0.1.schema.json",
+      "sha256": "90c583ea7b74b021ce3bfb100f717dcb481076739a01138abe354ce9db39e909"
+    },
+    {
+      "path": "reqlox_knowledge/data/schemas/knowledge-embedding.v0.1.schema.json",
+      "sha256": "824d1b9dc8e19e5263104d937703850defe9e650df6d81546ee18d19a2636596"
+    },
+    {
+      "path": "reqlox_knowledge/data/schemas/incident-model-candidate.v1.schema.json",
+      "sha256": "fbb1aace76f125feff74dfd53efa6f59bf68953b8fc91419b0f9b1f3fcfe3e9a"
+    },
+    {
+      "path": "reqlox_knowledge/data/schemas/incident-knowledge-common.v0.1.schema.json",
+      "sha256": "705051cb3aaee53e028fec20c46af98967c11c8acacbb80a6ff1d9fa7293e95d"
+    },
+    {
+      "path": "reqlox_knowledge/data/policies/jev/incident-ir-element-fidelity.v0.1.json",
+      "sha256": "1efb83d7f95637eaa0696bda9888153ceea78b146b357932e0f70fd84cae352b"
+    },
+    {
+      "path": "reqlox/knowledge.py",
+      "sha256": "20aa1bec935d531f92d38bcf7b9d48317ccd9cc1e4b10cbf4acae3c3f40db866"
+    },
+    {
+      "path": "reqlox/knowledge_cli.py",
+      "sha256": "35903f49bd7d31a6107899126d7976cff8886e13426fbe2d1e9a1696d6de73d1"
+    }
+  ]
+}

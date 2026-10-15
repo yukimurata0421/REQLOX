@@ -1,0 +1,69 @@
+{
+  "schema": "REQLOX_PUBLIC_RECORDED_DEMO_TOUR_V1",
+  "status": "DEPLOYED_BROWSER_VERIFIED",
+  "verified_jst": "2026-10-13T01:09:51.004349+09:00",
+  "url": "https://reqlox.yukimurata0421.dev/",
+  "entry_label": "View the recorded demo",
+  "stages": [
+    "Input",
+    "Detection",
+    "Repair",
+    "Reinjection"
+  ],
+  "default_record": "lock-cleanup",
+  "record_ids": [
+    "lock-cleanup",
+    "elapsed-time-ttl",
+    "temporary-file-cleanup"
+  ],
+  "historical_record_fingerprints": {
+    "lock-cleanup": "ebb90a0e2e33915cb0b332ec3e89a9ee080a1460daec0386271ee2f4cc8ab65d",
+    "elapsed-time-ttl": "0c55cace73857891722f27c7d12d97844d888ee69ba440a3a51665604b182396",
+    "temporary-file-cleanup": "aeb6e4ff02335dc52e26f753837542e7e0862e565330fa35ac9186a6da65223d"
+  },
+  "record_values_unchanged": true,
+  "changed_assets": [
+    "index.html",
+    "app.js",
+    "style.css"
+  ],
+  "assets_manifest_sha256": "e4e86ebf6da79d40c043fa99968a91f6bbfb79b28163d315170b47654b54037d",
+  "changed_asset_hashes": {
+    "index.html": "2f6df0df8df0b568d10806b8ce08d88f208e1339df286b6334c92aef462b1861",
+    "app.js": "950210acab8d945cb7d3a5997eec65f0f9acd00d8c02e764143591a7c22bd095",
+    "style.css": "cbf9d115c54491d7c7ffef21369b6199e497052b070cf1f43cafb144491b36c4"
+  },
+  "runtime_release_sha256": "3e014a8aae2582a953dabf007e26a27142aecb1274d4bc77d55aa66a8a33ef74",
+  "runtime_release_changed": false,
+  "gateway_changed": false,
+  "services_restarted": false,
+  "continuous_hosting": true,
+  "automatic_stop_enabled": false,
+  "dev_browser_record_stage_checks": 12,
+  "public_source_browser_record_stage_checks": 12,
+  "deployed_browser_record_stage_checks": 12,
+  "browser_widths": [
+    1440,
+    800,
+    390
+  ],
+  "javascript_exceptions": 0,
+  "browser_api_requests": "GET_ONLY",
+  "native_campaigns": 0,
+  "provider_inference_calls": 0,
+  "cumulative_native_campaigns": 15,
+  "maximum_native_campaigns": 15,
+  "cumulative_charged_seconds": 62,
+  "maximum_experiment_seconds": 120,
+  "native_scope_closed": true,
+  "temppath_current_held_atomic_bindings": 4,
+  "temppath_current_repair_performed": false,
+  "historical_temppath_repair_is_distinct": true,
+  "raw_evidence_uploaded": false,
+  "targets_uploaded": false,
+  "git_commit_created": false,
+  "git_push_performed": false,
+  "independent_generalization": false,
+  "probability_calibration": false,
+  "source_added_value": false
+}

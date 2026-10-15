@@ -1,0 +1,7 @@
+{
+  "source_type": "OWNED_SYNTHETIC_REPORT",
+  "url": "https://example.test/owned-cleanup-report",
+  "documents": {
+    "owned-example": "unlink failed with EIO while releasing an owned temporary file."
+  }
+}

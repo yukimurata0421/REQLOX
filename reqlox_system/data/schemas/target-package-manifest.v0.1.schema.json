@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/reqlox/target-package-manifest.v0.1.schema.json",
+  "title": "REQLOX TargetPackageManifest v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "contract_type", "contract_version", "revision_id", "created_at", "target_id", "artifacts", "refs", "gates", "next_action"],
+  "properties": {
+    "$schema": {"type": "string"},
+    "id": {"type": "string", "pattern": "^tpm_[a-f0-9]{20}$"},
+    "contract_type": {"const": "TargetPackageManifest"},
+    "contract_version": {"const": "0.1.0"},
+    "revision_id": {"$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/revisionId"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "target_id": {"type": "string", "pattern": "^target_[a-z][a-z0-9_]{1,79}$"},
+    "artifacts": {
+      "type": "array",
+      "minItems": 4,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256", "contract_type", "record_count"],
+        "properties": {
+          "path": {"type": "string", "pattern": "^[a-z0-9._-]+$"},
+          "sha256": {"$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/sha256"},
+          "contract_type": {"enum": ["TargetSourceManifest", "TargetEvidence", "SystemIR", "SystemPlaneIR", "EnvironmentIR", "DistributedSystemArchitectureIR", "SystemContract"]},
+          "record_count": {"type": "integer", "minimum": 1}
+        }
+      }
+    },
+    "refs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_manifest_id", "system_ir_id", "system_ir_revision", "plane_ir_ids", "environment_ir_id", "distributed_architecture_ir_id", "system_contract_id"],
+      "properties": {
+        "source_manifest_id": {"type": "string", "pattern": "^tsm_[a-f0-9]{20}$"},
+        "system_ir_id": {"type": "string", "pattern": "^sir_[a-f0-9]{20}$"},
+        "system_ir_revision": {"$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/revisionId"},
+        "plane_ir_ids": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["SUT", "OBSERVATION", "ORACLE", "CONTROL"],
+          "properties": {
+            "SUT": {"type": "string", "pattern": "^spir_[a-f0-9]{20}$"},
+            "OBSERVATION": {"type": "string", "pattern": "^spir_[a-f0-9]{20}$"},
+            "ORACLE": {"type": "string", "pattern": "^spir_[a-f0-9]{20}$"},
+            "CONTROL": {"type": "string", "pattern": "^spir_[a-f0-9]{20}$"}
+          }
+        },
+        "environment_ir_id": {"type": "string", "pattern": "^eir_[a-f0-9]{20}$"},
+        "distributed_architecture_ir_id": {"type": "string", "pattern": "^dsair_[a-f0-9]{20}$"},
+        "system_contract_id": {"type": "string", "pattern": "^scontract_[a-f0-9]{20}$"}
+      }
+    },
+    "gates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_identity_verified", "source_graph_complete", "system_ir_candidate_ready", "canonical_system_ir", "human_contract_approved", "jev_required", "applicability_authorized", "experiment_generation_authorized", "fault_injection_authorized"],
+      "properties": {
+        "source_identity_verified": {"const": true},
+        "source_graph_complete": {"const": true},
+        "system_ir_candidate_ready": {"const": true},
+        "canonical_system_ir": {"const": false},
+        "human_contract_approved": {"const": false},
+        "jev_required": {"const": false},
+        "applicability_authorized": {"const": false},
+        "experiment_generation_authorized": {"const": false},
+        "fault_injection_authorized": {"const": false}
+      }
+    },
+    "next_action": {"const": "HUMAN_REVIEW_SYSTEM_IR_AND_ANNOTATE_RELEVANT_FAILURE_SLICE"}
+  }
+}

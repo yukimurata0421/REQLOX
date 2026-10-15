@@ -1,0 +1,35 @@
+{
+  "observed_assertions": [
+    {
+      "assertion_id": "oas_11111111111111111111",
+      "statement": "The primary worker renewed the lock.",
+      "predicate": "renewed",
+      "arguments": [
+        {
+          "role": "actor",
+          "value": "primary worker"
+        },
+        {
+          "role": "object",
+          "value": "lock"
+        }
+      ],
+      "evidence_ids": [
+        "ev_2255a967e856667ddff8"
+      ]
+    }
+  ],
+  "attribute_assertions": [],
+  "event_hypotheses": [
+    {
+      "event_hypothesis_id": "evh_22222222222222222222",
+      "hypothesis_group_id": "hgrp_33333333333333333333",
+      "alternative_index": 0,
+      "assertion_ids": [
+        "oas_11111111111111111111"
+      ],
+      "attribute_ids": []
+    }
+  ],
+  "relation_hypotheses": []
+}

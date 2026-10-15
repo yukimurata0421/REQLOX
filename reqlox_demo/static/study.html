@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head><script src="/workspace.js" defer></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#14243a">
+  <title>REQLOX — Evaluation lab</title>
+  <link rel="stylesheet" href="/workspace.css">
+  <script src="/study.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="REQLOX home"><span class="brand-mark">↻</span>REQLOX</a>
+    <nav class="workspace-nav" aria-label="Workspaces"><a href="/targets">Targets</a><a href="/">Guided check</a><a href="/knowledge">Incident library</a><a href="/study" aria-current="page">Evaluation lab</a></nav>
+    <span class="environment"><span class="dot"></span>PRIVATE WORKSPACE</span>
+  </header>
+  <main id="main" class="study-main">
+    <section class="intro">
+      <div><p class="eyebrow">EVALUATION LAB</p><h1>Does incident knowledge<br>improve the check?</h1>
+        <p class="lead">Prepare supported Python code, then compare equal-budget searches with and without incident knowledge. Inspect forecasts separately from the observed result.</p></div>
+      <div class="scope"><span class="scope-icon">⌘</span><div><strong>Bounded work, inspectable results</strong><p>No model calls or registry requests.<br>Detailed records stay in private workspace state.</p></div></div>
+    </section>
+    <div class="study-toolbar"><button id="load-example" class="secondary" type="button">Restore the included example</button><span class="small muted" id="example-note">Start with the included synthetic caller. Bring your own supported files when you are ready.</span></div>
+    <div class="study-tabs" role="tablist" aria-label="Evaluation steps">
+      <button id="tab-prepare" role="tab" aria-controls="pane-prepare" aria-selected="true" tabindex="0">01 · Prepare target</button>
+      <button id="tab-compare" role="tab" aria-controls="pane-compare" aria-selected="false" tabindex="-1">02 · Compare knowledge</button>
+      <button id="tab-calibration" role="tab" aria-controls="pane-calibration" aria-selected="false" tabindex="-1">03 · Check forecasts</button>
+    </div>
+    <div id="study-error" class="error hidden" role="alert"></div>
+    <p id="study-restoration" class="small muted" role="status"></p><details><summary>Restored private record summary</summary><pre id="study-restored-record" class="small"></pre></details><section id="pane-prepare" class="study-pane" role="tabpanel" aria-labelledby="tab-prepare">
+      <div class="workspace-context"><strong>First: find a caller we can actually check.</strong><p>Upload Python files or pinned wheels. Preparation reads code and documentation without importing it. Unsupported or undocumented mechanisms stop here.</p></div>
+      <div class="workspace">
+        <section class="panel">
+          <div class="section-heading"><span class="number">01</span><h2>Choose the Python code</h2></div>
+          <p class="small muted">Read supported Python code and author documentation without importing the target.</p>
+          <label for="project">Project name</label><input id="project" type="text" maxlength="100" autocomplete="off">
+          <label for="input-mode">Input format</label><select id="input-mode"><option value="snapshot">Python source snapshot</option><option value="wheels">Pinned pure-Python wheels</option></select>
+          <div id="snapshot-inputs">
+            <label for="python-files">Add Python files</label><input id="python-files" type="file" accept=".py" multiple>
+            <p class="small muted">Up to 128 files and 512 KiB in total. Nested module paths can be supplied in the JSON map.</p>
+            <details><summary>Inspect or edit the source map</summary><label for="sources">Relative Python paths → source text</label><textarea id="sources" class="code-input" rows="9" spellcheck="false"></textarea></details>
+          </div>
+          <div id="wheel-inputs" class="hidden">
+            <label for="wheel-files">Target and dependency wheels</label><input id="wheel-files" type="file" accept=".whl" multiple>
+            <p class="small muted">Up to 8 wheels and 4 MiB in total. Complete supplied dependency closure is required. Binary extensions and extras are held.</p>
+          </div>
+          <details><summary>Author documentation and declared project history</summary>
+            <label for="documents">Document names → author text</label><textarea id="documents" class="code-input" rows="5" spellcheck="false"></textarea>
+            <p class="small muted">An author docstring can supply the caller contract. This map can be empty when the source includes the required documentation.</p>
+            <label for="known-projects">Previously exposed project names (JSON list)</label><textarea id="known-projects" class="code-input" rows="2" spellcheck="false">[]</textarea>
+          </details>
+          <button id="prepare-target" class="primary study-action" type="button" disabled><span>Prepare target</span><span aria-hidden="true">→</span></button>
+        </section>
+        <section class="results-column" aria-live="polite">
+          <div class="panel"><div class="subheading"><h3>Can this caller be checked?</h3><span id="prepare-status" class="pill neutral">Not prepared</span></div>
+            <p id="prepare-message" class="muted">A static preparation finds supported callers. It does not establish native behavior or independence.</p>
+            <div id="prepare-metrics" class="measurements study-metrics"></div>
+            <div id="prepare-reasons"></div>
+            <label for="recipe">Documented caller for the comparison</label><select id="recipe" disabled><option>No caller selected</option></select>
+            <p id="prepare-binding" class="small muted"></p>
+          </div>
+          <div class="boundary"><strong>Read the boundary</strong><p>Declared project history covers supplied names only. Preparation does not verify that a target was unused across earlier chats. A held prerequisite is not an executed failure.</p></div>
+        </section>
+      </div>
+    </section>
+    <section id="pane-compare" class="study-pane hidden" role="tabpanel" aria-labelledby="tab-compare">
+      <div class="workspace-context"><strong>Next: test whether the report adds a useful condition.</strong><p>Both searches receive the same budget and caller. One also receives the incident text. Compare discovered faults and adopted changes; equal results mean no demonstrated added benefit.</p></div>
+      <div class="workspace">
+        <section class="panel">
+          <div class="section-heading"><span class="number">02</span><h2>Supply the incident knowledge</h2></div>
+          <p class="small muted">Both searches use the same caller, expected behavior, repair method, and confirmation conditions. Only one receives the incident text.</p>
+          <label for="incident-type">How is this text declared?</label><select id="incident-type"><option value="OWNED_SYNTHETIC_REPORT">Owned synthetic example</option><option value="ISSUE_REPORT">Issue report</option><option value="POSTMORTEM">Postmortem</option></select>
+          <label for="incident-url">Source URL</label><input id="incident-url" type="url" maxlength="2000">
+          <label for="incident-document">Document to edit</label><select id="incident-document"></select>
+          <label for="incident-text">Failure conditions in the report</label><textarea id="incident-text" rows="6" spellcheck="false"></textarea>
+          <p class="small muted">This is your declaration of supplied text, not authenticated external retrieval. Keep the original wording when using a real report.</p>
+          <details class="input-details"><summary>Source identity and additional documents</summary><label for="source-input">Structured Source (JSON)</label><textarea id="source-input" class="code-input" rows="7" spellcheck="false"></textarea></details>
+          <div class="field-row"><div><label for="discovery-budget">Discovery budget per arm</label><input id="discovery-budget" type="number" min="1" max="4" value="4"></div><div><label for="wall-seconds">Overall time limit (seconds)</label><input id="wall-seconds" type="number" min="15" max="180" value="120"></div></div>
+          <label for="native-limit">Maximum native campaigns</label><input id="native-limit" type="number" min="0" max="0" value="0" disabled>
+          <button id="freeze-comparison" class="secondary study-action" type="button" disabled>Freeze comparison inputs</button>
+          <p id="freeze-message" class="small muted">Prepare a supported caller first.</p>
+          <label class="consent"><input id="native-consent" type="checkbox">Execute isolated target code within these limits</label>
+          <p id="native-availability" class="small muted" role="status"></p>
+          <button id="run-comparison" class="primary study-action" type="button" disabled><span>Run frozen comparison</span><span aria-hidden="true">→</span></button>
+          <p class="small muted">Freezing inputs does not authorize execution or reset a scope budget. Open Records & history to inspect existing experiments.</p>
+        </section>
+        <section class="results-column" aria-live="polite" id="comparison-results" aria-busy="false">
+          <div class="panel"><div class="subheading"><h3>With and without incident knowledge</h3><span id="compare-status" class="pill neutral">Not executed</span></div>
+            <p id="compare-message" class="muted">Completion, fault discovery, and repair adoption are separate results.</p>
+            <div id="comparison-busy" class="busy hidden"><span class="spinner"></span>Running bounded isolated experiments.</div>
+            <div id="compare-metrics" class="measurements study-metrics"></div>
+            <div class="table-scroll"><table><thead><tr><th scope="col">Arm</th><th scope="col">Discovered faults</th><th scope="col">Unknown conditions</th><th scope="col">Candidate adopted</th></tr></thead><tbody id="arm-results"></tbody></table></div>
+          </div>
+          <div class="boundary"><strong>A completed comparison can show no benefit</strong><p>Supplied text is bound locally; external retrieval is not authenticated. Owned controls do not establish natural Source benefit or generalization to unseen OSS.</p></div>
+        </section>
+      </div>
+    </section>
+    <section id="pane-calibration" class="study-pane hidden" role="tabpanel" aria-labelledby="tab-calibration">
+      <div class="workspace-context"><strong>Separately: check how forecasts compare with outcomes.</strong><p>A probability is a prediction, not a test result. Score supplied rows, keep unknown outcomes visible, and inspect the calibration candidate. This interface does not activate candidates.</p></div>
+      <div class="workspace">
+        <section class="panel">
+          <div class="section-heading"><span class="number">03</span><h2>Bring forecasts and outcomes</h2></div>
+          <label for="score-file">Import a scoring dataset</label><input id="score-file" type="file" accept=".json,application/json">
+          <p class="small muted">The included rows demonstrate the diagnostic. Import a dataset to inspect your own predictions.</p><details><summary>Inspect or edit the forecast dataset</summary><label for="score-data">Rows including UNKNOWN or missing forecasts</label><textarea id="score-data" class="code-input" rows="8" spellcheck="false"></textarea></details>
+          <button id="score-forecasts" class="secondary study-action" type="button" disabled>Score raw forecasts</button>
+          <details><summary>Freeze one calibration candidate and confirmation forecasts</summary>
+            <label for="training-data">Training dataset (labeled)</label><textarea id="training-data" class="code-input" rows="8" spellcheck="false"></textarea>
+            <label for="forecast-data">Confirmation forecasts (unlabeled)</label><textarea id="forecast-data" class="code-input" rows="8" spellcheck="false"></textarea>
+            <p class="small muted">Declared groups and content hashes must not overlap. The owned example is illustrative; its labels are already known.</p>
+            <button id="register-calibration" class="secondary study-action" type="button" disabled>Fit and freeze candidate</button>
+            <p id="registration-message" class="small muted">No candidate registered. Serving remains RAW / 0.85.</p>
+            <label for="confirmation-data">Confirmation dataset with labels or null</label><textarea id="confirmation-data" class="code-input" rows="8" spellcheck="false"></textarea>
+            <button id="review-calibration" class="secondary study-action" type="button" disabled>Review frozen candidate</button>
+          </details>
+        </section>
+        <section class="results-column" aria-live="polite">
+          <div class="panel"><div class="subheading"><h3>Coverage and proper scores</h3><span id="score-status" class="pill neutral">Not scored</span></div>
+            <div id="score-metrics" class="measurements study-metrics"></div>
+            <svg id="reliability-chart" class="reliability-chart" viewBox="0 0 360 250" role="img" aria-labelledby="chart-title chart-description"><title id="chart-title">Reliability diagnostic for supplied rows</title><desc id="chart-description">No scored rows yet.</desc></svg>
+            <p class="small muted">Horizontal: mean PASS probability. Vertical: observed PASS fraction. Point size shows bin count. Empty bins and unknown labels supply no observations.</p>
+          </div>
+          <div class="panel"><div class="subheading"><h3>Calibration review</h3><span id="calibration-status" class="pill neutral">Not reviewed</span></div>
+            <p id="calibration-message" class="muted">Row inputs cannot certify natural forecast or native-label provenance. Review remains HELD; candidates are not activated.</p>
+            <div id="calibration-scores" class="table-scroll"></div><div id="calibration-reasons"></div>
+          </div>
+        </section>
+      </div>
+    </section>
+    <section class="panel study-export"><div><h3>Share a concise result</h3><p class="small muted">Downloads contain aggregate results and limits. Source text, Python code, individual forecast rows, and detailed experiment records are excluded.</p></div><button id="download-summary" class="secondary" type="button" disabled>Download summary JSON</button></section>
+    <footer><span>REQLOX · Learn from incidents. Check the behavior.</span><span>Supplied inputs · Private detailed records · Explicit unknowns</span></footer>
+  </main>
+</body>
+</html>

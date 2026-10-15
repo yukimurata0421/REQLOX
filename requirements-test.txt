@@ -1,0 +1,2 @@
+# The coverage runner and its JSON report schema are verified against this version.
+coverage==7.15.4

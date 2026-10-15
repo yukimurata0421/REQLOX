@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head><script src="/workspace.js" defer></script>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#14243a">
+  <title>REQLOX — Inject the fault. Check the repair.</title>
+  <link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="REQLOX home"><span class="brand-mark" aria-hidden="true">↻</span>REQLOX</a>
+    <nav class="workspace-nav" aria-label="Workspaces"><a href="/targets">Targets</a><a href="/" aria-current="page">Guided check</a><a href="/knowledge">Incident library</a><a href="/study">Evaluation lab</a></nav>
+    <span class="environment">PRIVATE WORKSPACE</span>
+  </header>
+  <main id="main">
+    <section class="hero" aria-labelledby="page-title">
+      <div class="hero-copy">
+        <p class="eyebrow">LEARN FROM A FAILURE. TEST BEFORE IT REPEATS.</p>
+        <h1 id="page-title">See the failure.<br>Follow the repair.</h1>
+        <p class="lead">Follow an existing record from its input to detection, repair, and the same fault again. Start with the lock example below; no experiment runs when you read it.</p>
+        <div class="hero-actions"><a id="start-recorded-demo" class="primary button-link" href="#recorded-demo">View the recorded demo <span aria-hidden="true">→</span></a><a class="text-link" href="/records?record=integration-caller-v01">Input → detection → repair → reinjection → decision</a></div>
+        <p class="hero-caption">Completed experiments: 8–11 October 2026. Input → detection → repair → reinjection. Viewing a record makes no new test or model call.</p>
+      </div>
+      <div class="story-map" aria-label="How the included check works">
+        <div class="story-label">THE LOCK EXAMPLE, IN THREE STEPS</div>
+        <div class="story-node"><span class="story-index">01</span><div><strong>An owned example supplies the condition</strong><p>A fictional report describes a timeout while a worker holds a lock.</p></div><span class="story-tag">REPORT</span></div>
+        <div class="story-connector" aria-hidden="true">↓</div>
+        <div class="story-node"><span class="story-index">02</span><div><strong>A check observes the consequence</strong><p>Does the next worker get in, or stay blocked?</p></div><span class="story-tag">CHECK</span></div>
+        <div class="story-connector" aria-hidden="true">↓</div>
+        <div class="story-node"><span class="story-index">03</span><div><strong>The same fault tests the repair</strong><p>Run cleanup on exceptions. Try the timeout again.</p></div><span class="story-tag">RECHECK</span></div>
+        <p class="story-footnote">Follow the completed observations in the recorded demo below.</p>
+      </div>
+    </section>
+    <div class="purpose-strip"><div><strong>Input</strong><span>An incident report + a supported caller</span></div><div><strong>Work</strong><span>A bounded test in an isolated worker</span></div><div><strong>Output</strong><span>What failed, what changed, what was rechecked</span></div></div>
+    <section id="recorded-demo" class="recorded-tour" aria-labelledby="tour-title">
+      <div class="tour-intro"><p class="eyebrow">RECORDED DEMO · NO NEW EXECUTION</p><h2 id="tour-title">Follow one repair, from input to the same fault again.</h2><p>Start with the lock example. Use Next to read each stage, or choose another existing record. These summaries describe completed experiments; reading them starts no check or model call.</p></div>
+      <div class="tour-frame">
+        <div class="tour-picker"><label for="tour-example">Choose a recorded example</label><select id="tour-example"></select></div>
+        <h3 id="tour-record-title"></h3><p id="tour-record-date" class="tour-caption"></p>
+        <ol id="tour-steps" class="tour-steps" aria-label="Recorded repair stages"><li><button type="button" aria-controls="tour-step-panel">1. Input</button></li><li><button type="button" aria-controls="tour-step-panel">2. Detection</button></li><li><button type="button" aria-controls="tour-step-panel">3. Repair</button></li><li><button type="button" aria-controls="tour-step-panel">4. Reinjection</button></li></ol>
+        <p id="tour-progress" class="tour-caption" aria-live="polite"></p>
+        <div id="tour-step-panel" class="tour-step-panel"><h3 id="tour-step-title" tabindex="-1"></h3><div id="tour-step-fields"></div></div>
+        <div class="tour-navigation"><button id="tour-previous" class="secondary" type="button">← Previous</button><button id="tour-next" class="primary" type="button">Next: detection →</button></div>
+        <p id="tour-temppath-note" class="tour-scope-note hidden"></p>
+        <details id="tour-more" class="tour-more"><summary>Evidence boundary, Source value and record identity</summary><p id="tour-boundary"></p><strong id="tour-source-value"></strong><p id="tour-source-note"></p><p class="tour-caption">Historical summary fingerprint; this identifies the existing summary, not a new execution receipt.</p><code id="tour-fingerprint"></code></details>
+        <p class="tour-footer">This is an archived summary, not a result from a new run. <a href="/targets">View the later copied-module result →</a></p>
+      </div>
+    </section>
+    <details class="archive-more"><summary>More archived evidence summaries</summary>
+    <section id="repair-evidence" class="repair-evidence" aria-labelledby="repair-evidence-title">
+      <div class="section-intro"><div><p class="eyebrow">RECORDED REPAIR EVIDENCE</p><h2 id="repair-evidence-title">From injected failure to verified repair.</h2><p class="muted">Three mechanisms, with observed failures, candidate changes, and repeated fault checks.</p></div><span class="pill neutral">Historical records · finite scope</span></div>
+      <p class="evidence-context">These are completed isolated experiments on the named versions and declared conditions. Opening a record makes no API call and does not run a new test. Each record identifies whether its Source is an owned example, incident knowledge, or an API reference.</p>
+      <div id="repair-example-cards" class="repair-example-cards"></div>
+      <noscript><p class="muted">Enable JavaScript to inspect the three archived repair records and use the interactive check.</p></noscript>
+      <section id="repair-example-detail" class="panel repair-example-detail hidden" aria-labelledby="repair-example-title">
+        <div class="subheading"><p class="eyebrow">ARCHIVED EXPERIMENT · NOT A LIVE RESULT</p><button id="close-repair-example" class="text-button" type="button">Close record ×</button></div>
+        <h3 id="repair-example-title"></h3><p id="repair-example-targets" class="small muted"></p>
+        <div class="repair-stage-story" id="repair-example-stages"></div>
+        <div class="evidence-change-pair"><div><span class="code-caption">BEFORE THE CHANGE</span><p id="repair-example-before"></p></div><div><span class="code-caption">AFTER THE CHANGE</span><p id="repair-example-after"></p></div></div>
+        <div class="repair-verification"><strong>What was verified</strong><p id="repair-example-verification"></p></div>
+        <p id="repair-example-source-kind" class="small muted"></p>
+        <div class="source-effect-note"><strong id="repair-example-source-value"></strong><p id="repair-example-source-note"></p></div>
+        <div class="boundary"><strong>Where this evidence applies</strong><p id="repair-example-boundary"></p></div>
+        <div class="repair-example-actions"><button id="try-recorded-example" class="secondary" type="button" disabled>Prepare a fresh lock check →</button><button id="download-repair-example" class="text-button" type="button">Download evidence summary ↓</button></div>
+        <p id="repair-example-current-note" class="small muted"></p>
+        <details><summary>Record identity and interpretation</summary><p id="repair-example-date" class="small muted"></p><dl><dt>Historical summary SHA-256</dt><dd id="repair-example-fingerprint"></dd></dl><p class="small muted">This fingerprint identifies the historical summary. It is not a trusted timestamp or a new execution receipt. Detailed records, original source text, and private judgment history are excluded.</p></details>
+      </section>
+      <div class="boundary evidence-boundary"><strong>Repair success and knowledge benefit are different results.</strong><p>These experiments show repair behavior within their contracts. They do not certify arbitrary OSS repair, independent generalization, population calibration, or a general added benefit from external knowledge.</p></div>
+    </section>
+    </details>
+    <section id="check" class="check-section" aria-labelledby="check-title">
+      <div class="section-intro"><div><p class="eyebrow">RUN A FRESH CHECK</p><h2 id="check-title">Try the lock failure, then check the change.</h2><p class="muted">The included rule checks lock cleanup in two known libraries. Results here come from your new run, separate from the archived generated-code experiment above.</p></div><span class="pill neutral">Included cleanup rule · finite scope</span></div>
+      <div class="workspace">
+        <section class="panel input-panel" aria-labelledby="input-title">
+          <div class="section-heading"><span class="number">1</span><h3 id="input-title">Choose the report</h3></div>
+          <p id="guided-restoration" class="small muted"></p><details id="guided-source-trace"><summary>Source identity and exact quotation</summary><pre id="guided-source-detail" class="small"></pre></details><button id="guided-save" class="secondary" type="button">Save input draft</button><div id="samples" class="samples" aria-label="Example reports"></div>
+          <p id="sample-help" class="sample-help"></p>
+          <label for="report">Incident report · what happened?<span class="field-tag" id="source-kind">Owned synthetic report</span></label>
+          <textarea id="report" maxlength="12000" rows="6" spellcheck="false" placeholder="Describe the lock, the exception, and what happened to the next worker."></textarea>
+          <div class="section-heading input-step"><span class="number">2</span><h3>Choose the code to check</h3></div>
+          <label for="target">Known implementation</label><select id="target"></select>
+          <details class="input-details"><summary>Inspect or change the caller</summary>
+            <div class="caller-label"><label for="caller">Caller structure</label><button id="use-repair" class="text-button" type="button">Use the repaired structure</button></div>
+            <textarea id="caller" rows="5" spellcheck="false" class="code-input" aria-describedby="caller-help"></textarea>
+            <p id="caller-help" class="small muted">The two included structures map to a finite check. The text entered here is not executed as arbitrary code.</p>
+          </details>
+          <details class="input-details"><summary>Assessment and repair options</summary>
+            <label for="method">How to assess the report</label><select id="method"><option value="baseline">Included text rules · no model call</option><option value="recorded">Replay a recorded assessment</option><option value="live">Request a new model assessment</option></select>
+            <p class="method-note" id="method-note"></p>
+            <label for="repair">How to obtain the change</label><select id="repair"><option value="rule">Included context-cleanup rule</option><option value="recorded">Use a recorded repair candidate</option><option value="live">Generate a new repair candidate</option></select>
+            <p class="method-note" id="repair-note"></p>
+            <label id="model-consent-wrap" class="consent hidden"><input type="checkbox" id="model-consent">Send this text to the configured model provider</label>
+          </details>
+          <div class="section-heading input-step"><span class="number">3</span><h3>Run and inspect the result</h3></div>
+          <button id="run" class="primary" type="button" disabled><span>Run this check</span><span aria-hidden="true">→</span></button>
+          <p class="small muted run-note">Checks the normal path, the fault, the changed caller, and the same fault after the change.</p>
+          <div id="error" class="error hidden" role="alert"></div>
+        </section>
+        <section class="results-column" aria-live="polite" aria-busy="false" id="results-column" aria-label="Check results">
+          <div class="panel result-header">
+            <div class="subheading"><p class="eyebrow">YOUR RESULT</p><span id="status-pill" class="pill neutral">Not run yet</span></div>
+            <h3 id="result-title">What does this report let us check?</h3>
+            <p id="result-message" class="muted">Run the example to see whether the lock stays held after an exception, and whether the changed caller releases it.</p>
+            <div id="flow" class="flow" aria-label="Observed stages"><span>Normal path</span><b aria-hidden="true">→</b><span>Injected fault</span><b aria-hidden="true">→</b><span>Changed caller</span><b aria-hidden="true">→</b><span>Same fault again</span></div>
+            <div id="busy" class="busy hidden"><span class="spinner" aria-hidden="true"></span>Running the bounded check. Observations arrive together after verification.</div>
+            <div id="result-next" class="result-next hidden"></div>
+          </div>
+          <div id="experiment-panel" class="panel hidden">
+            <div class="subheading"><h3>What we actually observed</h3><span id="stage-count" class="pill neutral"></span></div>
+            <div id="stage-cards" class="stage-cards"></div>
+            <div class="experiment-footer"><span id="target-result"></span><span id="runtime-result"></span></div>
+            <details id="trace-details"><summary>See every condition and its expected result</summary><div class="table-scroll"><table><thead><tr><th>Condition</th><th>Stage</th><th>Lock held</th><th>Next worker</th><th>Expected result</th></tr></thead><tbody id="trace-body"></tbody></table></div></details>
+          </div>
+          <div id="repair-panel" class="panel hidden">
+            <div class="subheading"><h3>The caller change</h3><span class="pill neutral" id="repair-method">Included cleanup rule</span></div>
+            <p class="muted" id="repair-result-note"></p>
+            <div class="code-comparison"><div><span class="code-caption">SUBMITTED CALLER</span><pre id="original-code"></pre></div><div><span class="code-caption">REPAIR CANDIDATE</span><pre id="repair-code"></pre></div></div>
+          </div>
+          <div id="evidence-panel" class="panel hidden">
+            <div class="subheading"><h3>Why this condition was selected</h3><span id="assessment-method" class="pill neutral"></span></div>
+            <div id="evidence-quotes"></div>
+            <details><summary>Hypothesis and assessment details</summary><p id="hypothesis"></p><p id="assessment-note" class="small muted"></p></details>
+          </div>
+          <div id="measurement-panel" class="panel hidden">
+            <div class="subheading"><h3>Keep a result you can inspect</h3><button id="download" type="button" class="text-button">Download summary JSON ↓</button></div>
+            <details><summary>Timing, predictions, and execution identity</summary><div id="measurements" class="measurements"></div><p class="small muted" id="probability-note"></p><dl id="provenance"></dl></details>
+          </div>
+          <div class="boundary"><strong>How to interpret this result</strong><p>A passing check covers the displayed caller and conditions. The included reports and libraries are known controls. Checking another repository requires a supported caller in the Evaluation lab.</p></div>
+        </section>
+      </div>
+    </section>
+    <section class="next-workspaces" aria-label="Continue your work">
+      <a href="/knowledge"><span class="eyebrow">WORK WITH YOUR REPORTS</span><h3>Incident library <span aria-hidden="true">↗</span></h3><p>Index supplied reports, find quotations, and bring a relevant excerpt into a guided check.</p></a>
+      <a href="/study"><span class="eyebrow">LOOK BEYOND ONE EXAMPLE</span><h3>Evaluation lab <span aria-hidden="true">↗</span></h3><p>Prepare supported Python code, compare exploration with and without incident knowledge, and inspect forecasts.</p></a>
+    </section>
+    <footer><span>REQLOX · Learn from incidents. Check the behavior.</span><span>Supplied evidence · Bounded execution · Explicit unknowns</span></footer>
+  </main>
+</body>
+</html>

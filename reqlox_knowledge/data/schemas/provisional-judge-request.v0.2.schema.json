@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/reqlox/provisional-judge-request.v0.2.schema.json",
+  "title": "REQLOX ProvisionalJudgeRequest v0.2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "contract_type",
+    "contract_version",
+    "created_at",
+    "purpose",
+    "subject",
+    "choices",
+    "insufficient_choice",
+    "input",
+    "input_sha256",
+    "source_refs",
+    "disclosure",
+    "authority",
+    "limitations"
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^pjr_[a-f0-9]{20}$"
+    },
+    "contract_type": {
+      "const": "ProvisionalJudgeRequest"
+    },
+    "contract_version": {
+      "const": "0.2.0"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "purpose": {
+      "enum": [
+        "assertion_evidence_fidelity",
+        "attribute_origin_fidelity",
+        "relation_evidence_fidelity"
+      ]
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "observed_assertion",
+            "attribute_assertion",
+            "relation_hypothesis"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        }
+      }
+    },
+    "choices": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Z0-9_]{1,79}$"
+      }
+    },
+    "insufficient_choice": {
+      "const": "INSUFFICIENT_INFORMATION"
+    },
+    "input": {
+      "type": "object",
+      "minProperties": 3
+    },
+    "input_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "source_refs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_kind",
+        "source_manifest_id",
+        "source_record_id",
+        "task_id",
+        "incident_key",
+        "hypothesis_set_id",
+        "assertion_id",
+        "attribute_id",
+        "event_hypothesis_id",
+        "relation_hypothesis_id"
+      ],
+      "properties": {
+        "source_kind": {
+          "const": "INCIDENT_HYPOTHESIS_SET"
+        },
+        "source_manifest_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_record_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "task_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "incident_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "hypothesis_set_id": {
+          "type": "string",
+          "pattern": "^irhs_[a-f0-9]{20}$"
+        },
+        "assertion_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "attribute_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "event_hypothesis_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "relation_hypothesis_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "disclosure": {
+      "const": {
+        "status": "BLOCKED_PENDING_SCOPED_AUTHORIZATION",
+        "external_api_used": false,
+        "authorized": false
+      }
+    },
+    "authority": {
+      "const": {
+        "dataset_tier": "SILVER_CANDIDATE",
+        "gold_truth": false,
+        "canonicalization_authorized": false,
+        "mutation_authority": "NONE"
+      }
+    },
+    "limitations": {
+      "$ref": "https://example.invalid/reqlox/incident-knowledge-common.v0.1.schema.json#/$defs/limitations"
+    }
+  }
+}

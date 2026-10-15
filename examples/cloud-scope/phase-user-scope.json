@@ -1,0 +1,10 @@
+{
+  "project": "replace-with-your-project",
+  "location": "global",
+  "model": "replace-with-an-available-model-id",
+  "deadline": "2000-01-01T00:00:00+00:00",
+  "maximum_calls": 0,
+  "maximum_output_tokens": 2048,
+  "per_call_reserved_usd": "0",
+  "maximum_reserved_usd": "0"
+}

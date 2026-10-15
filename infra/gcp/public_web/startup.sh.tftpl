@@ -1,0 +1,16 @@
+#!/bin/bash
+set -euo pipefail
+umask 077
+trap 'echo REQLOX_WEB_BOOTSTRAP_FAILED >&2; systemctl stop reqlox-tunnel.service reqlox.service nginx.service 2>/dev/null || true; systemctl start codex-host-context-refresh.service 2>/dev/null || true; python3 /usr/local/libexec/reqlox-boot-evidence.py 2>/dev/null || true' ERR
+export DEBIAN_FRONTEND=noninteractive
+timeout 600 apt-get update -qq
+timeout 600 apt-get install -y --no-install-recommends python3 python3-pip python3-venv bubblewrap nginx ca-certificates openssl
+install -d -m 0755 /opt/reqlox /usr/local/libexec
+printf '%s' '${base_bootstrap_b64}' | base64 -d > /usr/local/libexec/reqlox-base-bootstrap.py
+printf '%s' '${web_bootstrap_b64}' | base64 -d > /usr/local/libexec/reqlox-web-bootstrap.py
+printf '%s' '${context_b64}' | base64 -d > /usr/local/libexec/reqlox-host-context
+printf '%s' '${boot_evidence_b64}' | base64 -d > /usr/local/libexec/reqlox-boot-evidence.py
+chmod 0755 /usr/local/libexec/reqlox-base-bootstrap.py /usr/local/libexec/reqlox-web-bootstrap.py /usr/local/libexec/reqlox-host-context
+timeout 900 /usr/bin/python3 /usr/local/libexec/reqlox-web-bootstrap.py
+python3 /usr/local/libexec/reqlox-boot-evidence.py
+echo REQLOX_WEB_BOOTSTRAP_COMPLETE

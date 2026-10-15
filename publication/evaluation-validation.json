@@ -1,0 +1,117 @@
+{
+  "schema_version": "reqlox.public-evaluation-validation.v1",
+  "observed_at_jst": "2026-10-11T21:19:33+09:00",
+  "observation_authority": "LOCAL_CHECKS_NOT_TRUSTED_TIMESTAMP",
+  "scope": "Local public implementation and owned controls; no external effectiveness qualification",
+  "unit_suite": {
+    "runner": "python3 scripts/check.py",
+    "discovered": 281,
+    "passed": 253,
+    "skipped": 28,
+    "failures": 0,
+    "errors": 0,
+    "native_tests": "Opt-in integration tests are excluded from the portable default suite"
+  },
+  "wheel": {
+    "filename": "reqlox-0.1.0-py3-none-any.whl",
+    "sha256": "8fda4f108f8f61c5e7b3e91e40d9236e30f548534bd6da717dda3b84febef019",
+    "archive_files": 81,
+    "unwanted_data_files": 0,
+    "current_runtime_bytes_verified": true
+  },
+  "installed_package": {
+    "status": "PASS",
+    "loaded_from": "site-packages",
+    "isolated_interpreter": true,
+    "development_worktree_imports": false,
+    "command_checks": 16,
+    "zero_budget_stop_before_native_launch": true
+  },
+  "dependency_capsule": {
+    "status": "PASS",
+    "fixture_kind": "OWNED_SYNTHETIC_CONTROL",
+    "distributions": 2,
+    "prepared_without_importing_package_code": true,
+    "native_campaigns": 1,
+    "native_label": "PASS"
+  },
+  "source_comparison": {
+    "status": "COMPLETE",
+    "fixture_kind": "OWNED_SYNTHETIC_CONTROL",
+    "native_campaigns": 21,
+    "equal_discovery_budgets": true,
+    "shared_confirmation_envelope": true,
+    "original_normal_context_verified": true,
+    "input_checkout_unchanged": true,
+    "source_added_adoptions": 0,
+    "source_candidate_adopted": false,
+    "no_source_candidate_adopted": false
+  },
+  "calibration": {
+    "status": "HELD",
+    "fixture_kind": "OWNED_SYNTHETIC_ROWS",
+    "training_confirmation_separated": true,
+    "unlabeled_confirmation_input_required": true,
+    "unknown_labels_retained": true,
+    "natural_provenance_verified": false,
+    "serving_mode": "RAW",
+    "threshold": 0.85,
+    "automatic_activation": false
+  },
+  "english_ui": {
+    "status": "PASS",
+    "browser_javascript_exceptions": 0,
+    "document_language": "en",
+    "default_assessment": "baseline",
+    "default_repair": "rule",
+    "nonexecuting_runs": 2,
+    "statuses": [
+      "NOT_SUPPORTED",
+      "INSUFFICIENT_INFORMATION"
+    ],
+    "new_native_attempts": 0,
+    "recorded_and_live_modes_unavailable_without_explicit_local_inputs": true,
+    "result_export_excludes_user_text_evidence_and_candidate_code": true
+  },
+  "documentation": {
+    "language": "en",
+    "documents": 13,
+    "local_links": 116,
+    "missing_links": 0,
+    "unbalanced_fences": 0,
+    "non_english_prose": 0,
+    "private_design_journals_included": false
+  },
+  "disclosure": {
+    "raw_incident_corpus_included": false,
+    "acquired_oss_bundles_included": false,
+    "provider_responses_included": false,
+    "detailed_experiment_journals_included": false,
+    "candidate_selection_history_included": false,
+    "credentials_included": false,
+    "detailed_record_files_bundled": 0,
+    "secret_scan_findings": 0
+  },
+  "claims": {
+    "independent_generalization_certified": false,
+    "natural_source_added_value_certified": false,
+    "probability_calibration_certified": false,
+    "human_effort_savings_measured": false,
+    "production_adoption": false
+  },
+  "actions": {
+    "live_paid_provider_calls": 0,
+    "cloud_deployments": 0,
+    "commits_created": 0,
+    "pushed": false
+  },
+  "file_inventory": {
+    "path": "evaluation-files.json",
+    "sha256": "7bd2697360b86151c771459dbb881eb03beaa4965a29924b8505d810c7aba0f1"
+  },
+  "historical_records": [
+    "validation.json",
+    "documentation.json",
+    "source-map.json"
+  ]
+}

@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>REQLOX — Records & history</title><link rel="stylesheet" href="/workspace.css"><script src="/workspace.js" defer></script><script src="/records.js" defer></script></head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="topbar"><a class="brand" href="/">↻ REQLOX</a><nav class="workspace-nav" aria-label="Workspaces"><a href="/">Guided check</a><a href="/targets">Targets</a><a href="/knowledge">Incident library</a><a href="/study">Evaluation lab</a><a href="/records" aria-current="page">Records & history</a></nav><span class="environment">PRIVATE WORKSPACE</span></header>
+<main id="main" class="study-main">
+<section class="intro"><div><p class="eyebrow">SAVED OBSERVATIONS · NO NEW EXECUTION</p><h1>Follow a result<br>from input to decision.</h1><p class="lead">Open the copied Target observations, review each stage, and trace their declared input and evidence identity. Earlier demonstrations remain separate.</p></div></section>
+<p id="record-status" role="status" aria-live="polite">Loading saved records…</p>
+<section class="panel"><label for="record-choice">Archived experiment</label><select id="record-choice"></select><div class="subheading"><h2 id="record-title"></h2><span id="record-kind" class="pill neutral">Archived</span></div><p id="record-date" class="small muted"></p>
+<ol id="record-steps" class="record-steps" aria-label="Record stages"></ol>
+<section id="record-stage" aria-live="polite"><h3 id="record-stage-title" tabindex="-1"></h3><strong id="record-stage-status"></strong><p id="record-stage-description"></p></section>
+<div class="tour-navigation"><button id="record-previous" class="secondary" type="button">← Previous</button><button id="record-next" class="primary" type="button">Next →</button></div>
+<div class="boundary"><strong id="record-decision"></strong><p id="record-held"></p><p id="record-limits"></p></div>
+<details id="record-provenance"><summary>Trace Source and evidence</summary><h3 id="record-source-title"></h3><p id="record-source-kind"></p><blockquote id="record-source-text" class="quote"></blockquote><p id="record-source-boundary" class="small muted"></p><dl id="record-source-identity"></dl><h3>Archived evidence identifiers</h3><ul id="record-evidence"></ul><p class="small muted">Hashes identify retained content. They are not a trusted timestamp or a new audit of the raw observations.</p></details>
+</section>
+<section class="panel"><h2>Private workspace history</h2><p>Reopen local preparation and review summaries. Inputs and draft state stay in the private workspace. Loading a record starts no experiment.</p><button id="refresh-history" class="secondary" type="button">Refresh history</button><div id="workspace-history"></div><pre id="history-detail" class="small"></pre><p id="history-error" role="status"></p></section>
+</main></body></html>
