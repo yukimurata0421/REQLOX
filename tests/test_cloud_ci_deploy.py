@@ -102,6 +102,24 @@ class FakeCloud:
         return {}
 
 
+class DeployJobImportTests(unittest.TestCase):
+    def test_static_verification_needs_no_installed_application_in_deploy_job(self):
+        import sys
+        sys.path.insert(0, str(ROOT/'scripts'))
+        cfg,vm=fixture();job=ci.Deployment(cfg,'b'*40,ROOT,ROOT/'unused',FakeCloud(vm))
+        routes={'/demo/':'public-demo.html','/demo/public-demo.html':'public-demo.html',
+                '/demo/public-demo.js':'public-demo.js','/demo/public-demo.css':'public-demo.css',
+                '/demo/public-demo.json':'public-demo.json'}
+        def response(path,**kwargs):
+            if path in routes:
+                return (405,b'{}') if kwargs.get('value') is not None else (200,b'owned static asset')
+            return (401,b'{}') if path=='/api/workspace/config' else (404,b'{}')
+        manifest=dict(files=[dict(name=n,sha256=ci.digest(b'owned static asset')) for n in set(routes.values())])
+        with patch.dict(sys.modules, {'reqlox_demo':None,'reqlox_demo.public_demo':None}),patch.object(job,'public',side_effect=response):
+            job.verify_public_demo(None,manifest)
+        self.assertTrue(job.result['anonymous_demo_verified'])
+
+
 class AdmissionTests(unittest.TestCase):
     def test_only_fixed_host_project_and_budget_are_accepted(self):
         cfg,_=fixture()
@@ -179,6 +197,11 @@ class FakeDeploymentTests(AdmissionTests):
             (bundle/'assets.json').write_text(json.dumps(assets))
             job=ci.Deployment(cfg,'b'*40,bundle,root/'out',cloud)
             def public(path,*,base=None,headers=None,value=None,authenticate=True):
+                if path.startswith('/demo/'):
+                    from reqlox_demo.public_demo import ROUTES
+                    if path not in ROUTES:return 404,b'{}'
+                    if value is not None:return 405,b'{}'
+                    return 200,(bundle/'assets'/ROUTES[path]).read_bytes()
                 if not authenticate:return 401,b'{}'
                 if headers and headers.get('Origin')=='https://wrong.example':return 403,b'{}'
                 evidence,deployment=host(cloud.vm)
@@ -202,6 +225,7 @@ class FakeDeploymentTests(AdmissionTests):
         self.assertEqual(len(result['execution_stop_checked']),3)
         self.assertEqual(result['new_native_campaigns'],0);self.assertEqual(result['new_model_calls'],0)
         self.assertTrue(result['private_history_preserved']);self.assertEqual(cloud.vm['disks'],old['disks'])
+        self.assertTrue(result['anonymous_demo_verified'])
         self.assertEqual([k for k,v in cloud.effects],['setMetadata','stop','start'])
 
     def test_failed_cutover_restores_old_metadata_once_and_keeps_admission_history(self):

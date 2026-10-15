@@ -14,6 +14,9 @@ STATIC = {"/":"index.html","/study":"study.html","/knowledge":"knowledge.html",
           "/targets":"targets.html","/targets.js":"targets.js","/targets.css":"targets.css",
           "/records":"records.html","/records.js":"records.js","/workspace.js":"workspace.js","/workspace.css":"workspace.css",
           "/app.js":"app.js","/study.js":"study.js","/knowledge.js":"knowledge.js","/style.css":"style.css"}
+PUBLIC = {'/demo/':'public-demo.html', '/demo/public-demo.html':'public-demo.html',
+          '/demo/public-demo.js':'public-demo.js', '/demo/public-demo.css':'public-demo.css',
+          '/demo/public-demo.json':'public-demo.json'}
 MAXIMUM_BYTES=8*1024*1024
 CSP="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'"
 
@@ -47,9 +50,20 @@ class Handler(BaseHTTPRequestHandler):
         origin=self.headers.get('Origin')
         if origin is not None and origin!='https://'+self.server.public_host:
             return self.send(403,b'{"error":"Use the configured HTTPS origin."}')
-        if not hmac.compare_digest(self.headers.get('Authorization','').encode(),self.server.authorization):
-            return self.send(401,b'{"error":"Owner sign-in required."}',challenge=True)
         path=urllib.parse.urlsplit(self.path).path
+        public_asset = path in PUBLIC
+        if path == '/demo' and self.command in ('GET','HEAD'):
+            self.send_response(308)
+            self.send_header('Location','/demo/')
+            self.send_header('Content-Length','0')
+            self.send_header('Cache-Control','no-store')
+            self.end_headers()
+            return
+        if path.startswith('/demo/') or path == '/demo':
+            if not public_asset:return self.send(404,b'{"error":"Not found."}')
+            if self.command not in ('GET','HEAD'):return self.send(405)
+        if not public_asset and not hmac.compare_digest(self.headers.get('Authorization','').encode(),self.server.authorization):
+            return self.send(401,b'{"error":"Owner sign-in required."}',challenge=True)
         if self.command not in ('GET','HEAD','POST'):return self.send(405)
         body=None
         if self.command=='POST':
@@ -59,8 +73,9 @@ class Handler(BaseHTTPRequestHandler):
                 body=self.rfile.read(length)
                 if len(body)!=length:raise ValueError()
             except ValueError:return self.send(400,b'{"error":"Check the input size."}')
-        if self.command in ('GET','HEAD') and path in STATIC:
-            url='https://storage.googleapis.com/'+self.server.bucket+'/'+getattr(self.server,'asset_prefix','')+STATIC[path]
+        if self.command in ('GET','HEAD') and (public_asset or path in STATIC):
+            filename = PUBLIC[path] if public_asset else STATIC[path]
+            url='https://storage.googleapis.com/'+self.server.bucket+'/'+getattr(self.server,'asset_prefix','')+filename
             headers={}
         elif path.startswith('/api/'):
             url=self.server.backend+self.path
@@ -76,8 +91,9 @@ class Handler(BaseHTTPRequestHandler):
                 response=urllib.request.urlopen(request,timeout=90)
             except urllib.error.HTTPError as exc:response=exc
             with response:
-                raw=response.read(MAXIMUM_BYTES+1)
-                if len(raw)>MAXIMUM_BYTES:raise ValueError('Response size bound')
+                bound = 1024*1024 if public_asset else MAXIMUM_BYTES
+                raw=response.read(bound+1)
+                if len(raw)>bound:raise ValueError('Response size bound')
                 return self.send(response.status,raw,response.headers.get('Content-Type','application/json'))
         except (OSError,ValueError):return self.send(503,b'{"error":"The bounded VM is unavailable. Saved data is retained."}')
         finally:self.server.bound.release()
@@ -85,6 +101,7 @@ class Handler(BaseHTTPRequestHandler):
     do_GET=proxy
     do_POST=proxy
     do_HEAD=proxy
+    do_PUT=do_PATCH=do_DELETE=do_OPTIONS=proxy
 
 
 def main():

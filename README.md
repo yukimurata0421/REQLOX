@@ -14,6 +14,10 @@ public validation snapshot.
 The public implementation covers bounded code patterns and known demo targets.
 It does not provide a general incident-to-production repair service.
 
+A [read-only review](docs/read-only-demo.md) presents saved outcomes without new
+execution. See the [delivery checkpoint](publication/ci-delivery-20261015.json) and
+[review follow-up](docs/review-follow-up-20261015.md) for verified versus pending work.
+
 ## Try it locally
 
 Use Python 3.11 or later. Isolated experiments require Linux, `bubblewrap`,

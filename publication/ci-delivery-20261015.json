@@ -1,0 +1,63 @@
+{
+  "schema": "reqlox.public-ci-delivery-checkpoint.v1",
+  "observed_date_jst": "2026-10-15",
+  "status": "HISTORICAL_DEPLOYED_CHECKPOINT",
+  "commit": "6fb68ff9db93094fc178c0f0a923091739311c83",
+  "actions_url": "https://github.com/yukimurata0421/REQLOX/actions/runs/38708891481",
+  "actions_conclusion": "success",
+  "python_jobs": [
+    {
+      "version": "3.11",
+      "tests_run": 691,
+      "failures": 0,
+      "errors": 0,
+      "native_skips": 29
+    },
+    {
+      "version": "3.14",
+      "tests_run": 691,
+      "failures": 0,
+      "errors": 0,
+      "native_skips": 29
+    }
+  ],
+  "critical_file_gates": {
+    "minimum_line_percent": 95,
+    "minimum_branch_percent": 90,
+    "passed": true
+  },
+  "release_sha256": "dd622727e1f33a78b6d763ec6d13c2b830bb4c1dfa3f50c0dfb994644cc84c2b",
+  "gateway_revision": "reqlox-web-gateway-00006-laj",
+  "cloud_build": "a84475ed-88c7-4fdc-a9b4-720007a5fc0f",
+  "new_native_campaigns": 0,
+  "new_model_calls": 0,
+  "copied_target_ledger": {
+    "campaigns": 15,
+    "maximum_campaigns": 15,
+    "charged_seconds": 62,
+    "maximum_seconds": 120
+  },
+  "historical_failed_ci_retained": true,
+  "private_history_preserved": true,
+  "read_only_demo_changes_included_in_this_release": false,
+  "competition_submission_verified": false,
+  "qualifying_cloud_ai_usage_proven_by_deployment": false,
+  "independent_generalization": false,
+  "probability_calibration": false,
+  "source_added_value": false,
+  "configured_runtime_coverage_python_3_14": {
+    "statements_covered": 8604,
+    "statements": 13461,
+    "statement_percent": 63.91798529084021,
+    "branches_covered": 2041,
+    "branches": 4112,
+    "branch_percent": 49.6352140077821,
+    "source_directories": [
+      "reqlox",
+      "reqlox_core",
+      "reqlox_demo",
+      "reqlox_knowledge"
+    ],
+    "excluded_runtime_directory": "reqlox_system"
+  }
+}

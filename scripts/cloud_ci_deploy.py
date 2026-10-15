@@ -271,6 +271,20 @@ class Deployment:
             time.sleep(4)
         raise TimeoutError('UI_READINESS_DEADLINE')
 
+    def verify_public_demo(self, base, assets):
+        from cloud_web_assets import PUBLIC_ROUTES as ROUTES
+        rows = {r['name']: r for r in assets['files']}
+        for route, name in ROUTES.items():
+            status, raw = self.public(route, base=base, authenticate=False)
+            require(status == 200 and digest(raw) == rows[name]['sha256'], 'READONLY_DEMO_ASSET_DRIFT')
+        require(self.public('/api/workspace/config', base=base, authenticate=False)[0] == 401,
+                'READONLY_DEMO_PRIVATE_API_EXPOSED')
+        require(self.public('/demo/api/workspace/config', base=base, authenticate=False)[0] == 404,
+                'READONLY_DEMO_ROUTE_ESCAPE')
+        require(self.public('/demo/public-demo.json', base=base, authenticate=False, value={})[0] == 405,
+                'READONLY_DEMO_WRITE_EXPOSED')
+        self.result['anonymous_demo_verified'] = True
+
     def restore(self, before_vm, old_revision, host_before, history_before):
         """One explicit rollback; preserve the failed release and all state."""
         self.result['rollback'] = 'STARTED'
@@ -358,6 +372,7 @@ class Deployment:
             require(len(staged) == 1 and staged[0].get('percent',0) == 0, 'CANDIDATE_TRAFFIC_BINDING')
             self.wait_ready(staged[0]['url'], release)
             self.verify(staged[0]['url'], release, host, workspace['history'])
+            self.verify_public_demo(staged[0]['url'], assets)
             current = self.cloud.api(self.vm_url)
             require(current['serviceAccounts'] == before_vm['serviceAccounts']
                 and current['scheduling'] == before_vm['scheduling']
@@ -367,9 +382,12 @@ class Deployment:
             self.cloud.command(['run','services','update-traffic',self.cfg['gateway'],
                 '--region='+self.cfg['region'], '--to-revisions='+revision+'=100', '--clear-tags'])
             self.verify(None, release, host, workspace['history'])
+            self.verify_public_demo(None, assets)
             for row in assets['files']:
                 route = {'index.html':'/','study.html':'/study','knowledge.html':'/knowledge',
-                         'targets.html':'/targets','records.html':'/records'}.get(row['name'],'/'+row['name'])
+                         'targets.html':'/targets','records.html':'/records',
+                         'public-demo.html':'/demo/','public-demo.js':'/demo/public-demo.js',
+                         'public-demo.css':'/demo/public-demo.css','public-demo.json':'/demo/public-demo.json'}.get(row['name'],'/'+row['name'])
                 status, raw = self.public(route)
                 require(status == 200, 'PUBLIC_ASSET_UNAVAILABLE')
                 if not row['name'].endswith('.html'):

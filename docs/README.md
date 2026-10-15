@@ -8,10 +8,12 @@ They are a usage and inspection guide, not a transcript of development history.
 
 | Goal | Read in order |
 | --- | --- |
+| Browse archived results without new execution | [Read-only review](read-only-demo.md) → [Review follow-up](review-follow-up-20261015.md) |
 | Try the package | [Project overview](../README.md) → [Getting started](getting-started.md) → [Results](results.md) |
 | Understand the structure | [Concepts](concepts.md) → [Architecture](architecture.md) → [Data contracts](data-contracts.md) |
 | Review the engineering work | [Architecture](architecture.md) → [Evaluation](evaluation-plan.md) → [Safety and data](safety-and-data-policy.md) |
 | Run tests and inspect coverage | [Tests and coverage](testing.md) → [Coverage validation](../publication/coverage-validation.json) |
+| Prepare a bounded project description | [Description draft](project-summary.md) → [Architecture](architecture.md) → [Review follow-up](review-follow-up-20261015.md) |
 | Review the project quickly | [Reviewer guide](reviewer-guide.md) → [Getting started](getting-started.md) → [Evaluation](evaluation-plan.md) |
 | Inspect the copied-module continuation | [Copied-module integration](copied-module-integration.md) → [Tests](testing.md) |
 | Select repositories in one Target | [Target workspaces](target-workspaces.md) → [Results](results.md) |

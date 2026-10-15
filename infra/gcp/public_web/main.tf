@@ -3,7 +3,7 @@ locals {
   initial_release_archive = var.initial_release_archive != "" ? var.initial_release_archive : var.release_archive
   labels                  = { application = "reqlox", managed_by = "terraform", purpose = "bounded-web" }
   digest                  = filesha256(var.release_archive)
-  static_files            = toset(["index.html", "study.html", "knowledge.html", "app.js", "study.js", "knowledge.js", "style.css", "targets.html", "targets.js", "targets.css", "records.html", "records.js", "workspace.js", "workspace.css"])
+  static_files            = toset(["index.html", "study.html", "knowledge.html", "app.js", "study.js", "knowledge.js", "style.css", "targets.html", "targets.js", "targets.css", "records.html", "records.js", "workspace.js", "workspace.css", "public-demo.html", "public-demo.js", "public-demo.css", "public-demo.json"])
   runtime = jsonencode({
     project_id          = var.project_id, project_number = data.google_project.target.number,
     host_id             = var.name, release_sha256 = local.digest,

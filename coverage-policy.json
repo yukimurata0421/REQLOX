@@ -4,7 +4,8 @@
     "reqlox",
     "reqlox_core",
     "reqlox_demo",
-    "reqlox_knowledge"
+    "reqlox_knowledge",
+    "reqlox_system"
   ],
   "unit_test_roots": [
     "tests"

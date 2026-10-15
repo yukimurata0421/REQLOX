@@ -1,0 +1,147 @@
+{
+  "schema": "reqlox.review-remediation-validation.v1",
+  "observed_date_jst": "2026-10-15",
+  "status": "OFFLINE_AND_BROWSER_VERIFIED_NOT_DEPLOYED",
+  "base_commit": "6fb68ff9db93094fc178c0f0a923091739311c83",
+  "source_sha256": {
+    "reqlox_demo/public_demo.py": "f5c865707dbd6d53771736cc8070396ce30efe31aa029b13bad4f6db11c8378a",
+    "reqlox_demo/server.py": "a13f94b619139ca5f1fc550650197d5a03c4279235866090cc757e4befa32f87",
+    "reqlox_demo/static/index.html": "504d7c98d8a8d50f906843275e7f5d35bef1d41ed38263d517439bc8894f5934",
+    "reqlox_demo/static/public-demo.html": "ef06b8dc0819b517df5c11136efdf5e0c38155b5703f421b62513cc45f310997",
+    "reqlox_demo/static/public-demo.js": "932e884ecf620a412fe30bde424fca7e26d55199e73df3ed4d77744a6143b2b1",
+    "reqlox_demo/static/public-demo.css": "da566989f25104365b1272213d71587232d8ef5a29747cc4ce41dc7f92cf024d",
+    "coverage-policy.json": "640228c1357accd785abd149f039cffea056e838a328b33756334c1cef555545",
+    "scripts/cloud_ci_deploy.py": "82f69695c436a1ffd9380ff1c7220c6ea9869c03472ef02a47a8e9b7849ae74c",
+    "scripts/cloud_web_assets.py": "95ea5bba8e8bc99db09dd061d4726e241192f4cd0091c708767a63367ecd5c9b",
+    "infra/gcp/public_web/gateway/main.py": "9ecc9d9c6dea7026b50e9b1c8c4d4aed0900425da6da6e01e19aa909b116afaf",
+    "infra/gcp/public_web/web_bootstrap.py": "0cc535f800abd1c97be34899f120e16d59a4e9baad2ea344ae41cfb43e658efe",
+    "infra/gcp/public_web/main.tf": "168e9d4b0953536370b77090098eed119d17a644fd03d30726c10fa4c2d62ff0",
+    "tests/test_public_readonly_demo.py": "6e6bfe8f9163f854f4571c0a58709c12f4b468a55ced492c62b426088f8a3e85",
+    "tests/test_cloud_web.py": "a6c19e65c5c9c47aac0cff5676058507e0da46f1fd524c11e0864efb93f0778d",
+    "tests/test_cloud_ci_deploy.py": "824ab8575fd8fb11a26bf86413f8f88c77c3178b9dd1062c12478027cece6a4f"
+  },
+  "public_owned_snapshot": {
+    "python": "3.14.4",
+    "tests_run": 699,
+    "failures": 0,
+    "errors": 0,
+    "native_skips": 29,
+    "denied_execution_attempts": [],
+    "critical_gate": {
+      "passed": true,
+      "files": [
+        {
+          "file": "reqlox/__init__.py",
+          "covered_lines": 22,
+          "statements": 22,
+          "covered_branches": 6,
+          "branches": 6,
+          "line_percent": 100.0,
+          "branch_percent": 100.0,
+          "passed": true
+        },
+        {
+          "file": "reqlox/cli.py",
+          "covered_lines": 126,
+          "statements": 128,
+          "covered_branches": 31,
+          "branches": 32,
+          "line_percent": 98.4375,
+          "branch_percent": 96.875,
+          "passed": true
+        },
+        {
+          "file": "reqlox/target_audit.py",
+          "covered_lines": 167,
+          "statements": 172,
+          "covered_branches": 53,
+          "branches": 56,
+          "line_percent": 97.09302325581395,
+          "branch_percent": 94.64285714285714,
+          "passed": true
+        },
+        {
+          "file": "reqlox_demo/portable.py",
+          "covered_lines": 89,
+          "statements": 89,
+          "covered_branches": 38,
+          "branches": 38,
+          "line_percent": 100.0,
+          "branch_percent": 100.0,
+          "passed": true
+        },
+        {
+          "file": "reqlox_core/workflow_effort.py",
+          "covered_lines": 175,
+          "statements": 175,
+          "covered_branches": 30,
+          "branches": 30,
+          "line_percent": 100.0,
+          "branch_percent": 100.0,
+          "passed": true
+        }
+      ]
+    },
+    "coverage_source_directories": [
+      "reqlox",
+      "reqlox_core",
+      "reqlox_demo",
+      "reqlox_knowledge",
+      "reqlox_system"
+    ],
+    "overview_totals": {
+      "covered_lines": 8981,
+      "num_statements": 13880,
+      "percent_covered": 61.37116361227644,
+      "percent_covered_display": "61.37",
+      "missing_lines": 4899,
+      "excluded_lines": 0,
+      "percent_statements_covered": 64.70461095100865,
+      "percent_statements_covered_display": "64.70",
+      "num_branches": 4236,
+      "num_partial_branches": 461,
+      "covered_branches": 2137,
+      "missing_branches": 2099,
+      "percent_branches_covered": 50.448536355051935,
+      "percent_branches_covered_display": "50.45"
+    }
+  },
+  "development_selected_checks": {
+    "tests": 46,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "denied": [],
+    "new_native_campaigns": 0,
+    "new_model_calls": 0
+  },
+  "browser_checks": {
+    "closed_ledger_and_seven_records": true,
+    "all_seven_five_stage_records_and_held4": true,
+    "real_reload_restores_url_record_and_stage": true,
+    "source_and_evidence_hashes_visible": true,
+    "three_mobile_panels_no_overflow": true,
+    "plain_static_export_without_api": true,
+    "browser_never_uses_workspace_api_or_write_or_external_requests": true
+  },
+  "javascript_exceptions": 0,
+  "video_materials_development_only": true,
+  "new_native_campaigns": 0,
+  "new_model_calls": 0,
+  "copied_target_ledger": {
+    "campaigns": 15,
+    "maximum_campaigns": 15,
+    "charged_seconds": 62,
+    "maximum_seconds": 120,
+    "remaining_campaigns": 0
+  },
+  "unrelated_public_changes_preserved": true,
+  "new_cloud_deployment": false,
+  "new_commit": false,
+  "new_push": false,
+  "independent_generalization": false,
+  "probability_calibration": false,
+  "source_added_value": false,
+  "package_exports_verified": true,
+  "secret_scan": "NO_FINDINGS"
+}

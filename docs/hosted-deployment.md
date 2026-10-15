@@ -122,3 +122,10 @@ calibration, Source added value, or a new live repair experiment.
 
 The [continuous deployment guide](continuous-deployment.md) describes the checked-main
 workflow and its separate deployment result artifacts.
+
+## Later delivery checkpoint
+
+The [2026-10-15 CI delivery record](../publication/ci-delivery-20261015.json) supersedes
+the earlier no-commit/no-push delivery procedure as a current deployment reference.
+The earlier observations remain historical. The new [read-only demo](read-only-demo.md)
+is a subsequent source change and is not part of that deployed checkpoint.

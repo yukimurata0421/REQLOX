@@ -73,6 +73,17 @@ class Handler(BaseHTTPRequestHandler):
         if not self.valid_host():
             return self.send({"error": "Only the local origin is supported."}, 403)
         path = urlsplit(self.path).path
+        from .public_demo import asset
+        if path == "/demo":
+            self.send_response(308)
+            self.send_header("Location", "/demo/")
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
+        public_asset = asset(path)
+        if public_asset is not None:
+            raw, kind = public_asset
+            return self.send(raw, kind=kind)
         if path == "/api/workspace/config":
             return self.send(self.server.workspace.configuration(self.server.token))
         static = {"/records": ("records.html", "text/html; charset=utf-8"), "/records.js": ("records.js", "text/javascript; charset=utf-8"), "/workspace.js": ("workspace.js", "text/javascript; charset=utf-8"), "/": ("index.html", "text/html; charset=utf-8"), "/targets.js": ("targets.js", "text/javascript; charset=utf-8"), "/targets.css": ("targets.css", "text/css; charset=utf-8"), "/app.js": ("app.js", "text/javascript; charset=utf-8"), "/style.css": ("style.css", "text/css; charset=utf-8"),

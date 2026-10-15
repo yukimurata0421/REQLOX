@@ -52,12 +52,19 @@ Independent unused-target qualification, natural Source contribution,
 probability calibration, human-effort reduction, and total-cost savings are
 not established by those implementation checks.
 
-## Future delivery work
+## Delivery and remaining work
 
-Public cloud hosting requires its own authentication, request and cost bounds,
-worker-isolation arrangement, data handling, and deployment verification.
-The current loopback server is not that deployment. No cloud deployment is
-included in the recorded public validation.
+The owner Workspace has a verified GCP deployment through the existing VM and
+Cloud Run gateway. The [dated checkpoint](../publication/ci-delivery-20261015.json)
+records the actual commit and release. Earlier package validation predates that
+deployment and remains historical.
+
+A separate [read-only publication](read-only-demo.md) now exports curated static
+records and defines anonymous GET/HEAD routes without exposing private history
+or execution APIs. Its source and local checks are separate from the installed
+owner release; delivery of these new routes requires the separate Actions and browser gates. Competition
+submission, qualifying Cloud AI usage, public source access and sustained hosting
+costs require the evidence or decisions listed in the [review register](review-follow-up-20261015.md).
 
 Additional targets and incident workflows can extend this slice after their
 interfaces and evidence boundaries are specified and checked. This page does

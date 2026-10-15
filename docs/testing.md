@@ -56,7 +56,7 @@ gate; the aggregate alone cannot compensate for an under-covered critical file.
 The [`gate tests`](../tests/test_coverage_gate.py) verify those failure cases.
 
 The overview includes every Python runtime file in `reqlox/`, `reqlox_core/`,
-`reqlox_demo/`, and `reqlox_knowledge/`, including unexecuted native workers.
+`reqlox_demo/`, `reqlox_knowledge/`, and `reqlox_system/`, including unexecuted native workers.
 Tests, examples, deployment scripts, and infrastructure are outside that runtime
 denominator. No runtime file is omitted to increase the displayed total.
 `--suite critical` runs a smaller diagnostic selection; CI uses `--suite unit`.
@@ -75,6 +75,14 @@ GitHub Actions is configured to check Python 3.11 and 3.14 and retain reports
 for seven days.
 
 ## Recorded validation
+
+The [review remediation checks](../publication/review-remediation-validation.json)
+cover the current read-only surface and include System IR in the runtime
+coverage denominator. The earlier [CI checkpoint](../publication/ci-delivery-20261015.json)
+measured four configured runtime directories and predates that correction.
+Its totals are not coverage for every current runtime module.
+
+### Historical package snapshot
 
 The [coverage validation record](../publication/coverage-validation.json)
 records the tested source hashes and counts. The local Python 3.14.4 run

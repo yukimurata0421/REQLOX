@@ -5,6 +5,45 @@ workers and a file-based result store. This page describes implemented
 interfaces. The broader incident-knowledge workflow is listed separately in
 [Public scope](minimal-implementation-plan.md).
 
+The hosted owner application also runs on the dedicated GCP VM through the
+existing gateway. Its current Web policy is `OFFLINE_RECORDS_ONLY`: the worker
+capabilities described below are not permission to start new browser experiments.
+The [dated delivery checkpoint](../publication/ci-delivery-20261015.json) identifies
+the earlier observed deployment. The read-only branch below belongs to a later
+release, whose actual availability requires its own Actions and browser evidence.
+
+## Public viewing and owner access
+
+```mermaid
+flowchart LR
+    R[Anonymous reviewer] -->|Exact GET/HEAD /demo routes| G[Existing gateway]
+    G --> P[Curated static GCS objects]
+    O[Owner browser] -->|Basic authentication| G
+    G -->|Authenticated /api routes| V[Dedicated VM Workspace]
+    V --> H[Private state and history]
+```
+
+The static branch does not instantiate the Workspace and cannot proxy its API.
+Only fixed publication paths are anonymous. Other owner routes keep their
+authentication, origin checks and server-side execution rejection. See
+[Read-only review](read-only-demo.md) for the allowlist and offline export.
+
+## IR review and experiment authority
+
+Incident replay rebuilds a candidate IR and review questions from frozen Source
+and saved provider exchanges. System replay uses the supported captured
+evidence-lineage adapter and its archived System IR witness. JEV answers assess
+source fidelity; neither these answers nor a model repair proposal authorize
+Target execution. The exact-byte replay and deterministic validation paths
+are documented in [Incident reproduction](incident-reproduction.md) and
+[System IR reproduction](system-ir-reproduction.md).
+
+Actual experiments require a separately supported caller, existing specification,
+fixed Target identity, human authorization, isolation and available durable
+budget. Observation/contract comparison then controls finite candidate adoption.
+No arbitrary repository-to-IR inference, automatic production repair, calibrated
+probability or additional Source benefit is established by this diagram.
+
 ## Repository experiment path
 
 ```mermaid

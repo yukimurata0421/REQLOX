@@ -42,8 +42,13 @@ def nginx_config(domain, bucket, gateway=False):
               "/workspace.js": "workspace.js", "/workspace.css": "workspace.css",
               "/targets": "targets.html", "/targets.js": "targets.js", "/targets.css": "targets.css",
               "/app.js": "app.js", "/study.js": "study.js", "/knowledge.js": "knowledge.js", "/style.css": "style.css"}
+    public = {'/demo/': 'public-demo.html', '/demo/public-demo.html': 'public-demo.html',
+              '/demo/public-demo.js': 'public-demo.js', '/demo/public-demo.css': 'public-demo.css',
+              '/demo/public-demo.json': 'public-demo.json'}
+    assets.update(public)
     for route, filename in assets.items():
         locations.append(f"""    location = {route} {{
+      {"auth_basic off;" if route in public else ""}
       limit_except GET {{ deny all; }}
       proxy_pass https://storage.googleapis.com/{bucket}/{filename};
       proxy_ssl_server_name on;
@@ -57,6 +62,7 @@ def nginx_config(domain, bucket, gateway=False):
       proxy_hide_header Cache-Control;
       proxy_hide_header X-Goog-Metageneration;
     }}""")
+    locations.append("    location = /demo { return 308 /demo/; }\n    location /demo/ { return 404; }")
     return """user www-data;
 worker_processes 1;
 pid /run/nginx.pid;

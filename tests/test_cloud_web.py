@@ -63,8 +63,11 @@ class WebBoundaryTests(unittest.TestCase):
             root = Path(directory)
             source = root / "source"
             source.mkdir()
-            for name in assets.FILES:
+            for name in assets.OWNER_FILES:
                 (source / name).write_text("<body>Inputs stay local</body>")
+            for name in assets.PUBLIC_FILES:
+                if not name.endswith(".json"):
+                    (source/name).write_bytes((ROOT/"reqlox_demo/static"/name).read_bytes())
             (source / "state.sqlite").write_bytes(b"private fixture")
             (source / "private.md").write_text("private fixture")
             result = assets.export(source, root / "export")
@@ -193,6 +196,38 @@ class OwnerGatewayTests(unittest.TestCase):
                 self.assertEqual(response.read(),b'<body>public</body>')
         self.assertEqual(len(observed),1)
         self.assertEqual(observed[0].header_items(),[])
+
+    def test_anonymous_demo_is_exact_static_allowlist_without_workspace_proxy(self):
+        from reqlox_demo.public_demo import ROUTES
+        self.assertEqual(gateway.PUBLIC, ROUTES)
+        self.assertEqual(assets.PUBLIC_ROUTES, ROUTES)
+        observed=[];real=gateway.urllib.request.urlopen
+        def fetch(request,*args,**kwargs):
+            if request.full_url.startswith('https://storage.googleapis.com/'):
+                observed.append(request)
+                value=io.BytesIO(b'curated fixture');value.status=200;value.headers={'Content-Type':'text/plain'}
+                return value
+            return real(request,*args,**kwargs)
+        with patch.object(gateway.urllib.request,'urlopen',side_effect=fetch):
+            for path in ROUTES:
+                with self.request(path,{'Cookie':'private-cookie','X-REQLOX-Token':'private-token'}) as response:
+                    self.assertEqual(response.status,200)
+                    self.assertNotIn('WWW-Authenticate',response.headers)
+            self.assertEqual(len(observed),len(ROUTES))
+            self.assertTrue(all(r.header_items()==[] for r in observed))
+            for path in ['/api/workspace/config','/api/config','/workspace.js','/records']:
+                with self.request(path) as response:self.assertEqual(response.status,401)
+            for path in ['/demo/api/workspace/config','/demo/../api/config','/demo/%2e%2e/api/config','/demo/private.json']:
+                with self.request(path) as response:self.assertEqual(response.status,404)
+            self.assertEqual(len(observed),len(ROUTES))
+
+    def test_public_write_methods_are_denied_before_any_fetch(self):
+        with patch.object(gateway.urllib.request,'urlopen',wraps=urllib.request.urlopen) as fetch:
+            for method in ['POST','PUT','PATCH','DELETE','OPTIONS']:
+                request=urllib.request.Request(self.url+'/demo/public-demo.json',method=method)
+                with self.assertRaises(urllib.error.HTTPError) as exc:urllib.request.urlopen(request,timeout=3)
+                self.assertEqual(exc.exception.code,405)
+            self.assertEqual(fetch.call_count,5)  # Only the loopback client calls, never GCS/backend.
 
 
 if __name__ == "__main__":
