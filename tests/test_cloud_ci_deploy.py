@@ -4,6 +4,7 @@ import copy
 import datetime
 import hashlib
 import importlib.util
+import io
 import json
 import os
 from pathlib import Path
@@ -103,6 +104,20 @@ class FakeCloud:
 
 
 class DeployJobImportTests(unittest.TestCase):
+    def test_public_observation_retains_only_safe_response_headers(self):
+        cfg,vm=fixture();cloud=FakeCloud(vm)
+        response=io.BytesIO(b'curated page');response.status=200
+        response.headers={'Cache-Control':'public, no-transform, max-age=0, must-revalidate',
+            'Content-Type':'text/html', 'CF-Ray':'owned-edge-observation',
+            'Set-Cookie':'private-cookie', 'Authorization':'private-authorization'}
+        from unittest.mock import Mock
+        cloud.opener=Mock();cloud.opener.open.return_value=response
+        job=ci.Deployment(cfg,'b'*40,ROOT,ROOT/'unused',cloud)
+        self.assertEqual(job.public('/demo/',authenticate=False),(200,b'curated page'))
+        self.assertEqual(job.last_public_response_headers,{
+            'cache-control':'public, no-transform, max-age=0, must-revalidate',
+            'content-type':'text/html','cf-ray':'owned-edge-observation'})
+
     def test_static_verification_needs_no_installed_application_in_deploy_job(self):
         import sys
         sys.path.insert(0, str(ROOT/'scripts'))
@@ -130,6 +145,7 @@ class DeployJobImportTests(unittest.TestCase):
         check=job.result['public_asset_checks'][0]
         self.assertEqual((check['route'],check['phase'],check['status']),('/demo/','origin',200))
         self.assertNotEqual(check['observed_sha256'],check['expected_sha256'])
+        self.assertFalse(check['analytics_markup_seen'])
 
 
 class AdmissionTests(unittest.TestCase):

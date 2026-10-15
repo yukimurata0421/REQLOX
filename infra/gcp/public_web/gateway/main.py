@@ -27,9 +27,10 @@ class Handler(BaseHTTPRequestHandler):
 
     def log_message(self,*args):pass
 
-    def send(self,status,raw=b'',kind='application/json; charset=utf-8',challenge=False):
+    def send(self,status,raw=b'',kind='application/json; charset=utf-8',challenge=False,public_asset=False):
         self.send_response(status)
-        for key,value in [('Content-Type',kind),('Content-Length',str(len(raw))),('Cache-Control','no-store, no-transform'),
+        cache = 'public, no-transform, max-age=0, must-revalidate' if public_asset and status == 200 else 'no-store, no-transform'
+        for key,value in [('Content-Type',kind),('Content-Length',str(len(raw))),('Cache-Control',cache),
                           ('X-Content-Type-Options','nosniff'),('Referrer-Policy','no-referrer'),('Content-Security-Policy',CSP),
                           ('Strict-Transport-Security','max-age=86400')]:
             self.send_header(key,value)
@@ -94,7 +95,7 @@ class Handler(BaseHTTPRequestHandler):
                 bound = 1024*1024 if public_asset else MAXIMUM_BYTES
                 raw=response.read(bound+1)
                 if len(raw)>bound:raise ValueError('Response size bound')
-                return self.send(response.status,raw,response.headers.get('Content-Type','application/json'))
+                return self.send(response.status,raw,response.headers.get('Content-Type','application/json'),public_asset=public_asset)
         except (OSError,ValueError):return self.send(503,b'{"error":"The bounded VM is unavailable. Saved data is retained."}')
         finally:self.server.bound.release()
 

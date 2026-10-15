@@ -3,10 +3,20 @@
 The `ca50603c` release passed both offline Python jobs and its staged Gateway
 checks, then failed the public-origin asset check. The edge added an analytics
 script to HTML, so the response no longer matched the tested asset hash.
-The Gateway now sends `Cache-Control: no-store, no-transform`, retaining the
-exact-byte verification. Cloudflare documents that `no-transform` prevents
+Public static responses now send
+`Cache-Control: public, no-transform, max-age=0, must-revalidate`, retaining the
+exact-byte verification and requiring immediate revalidation. Private pages,
+management APIs and rejected requests retain `no-store, no-transform`.
+Cloudflare documents `public, no-transform` for preventing
 [automatic analytics injection](https://developers.cloudflare.com/web-analytics/get-started/).
-Asset checks also retain the route, phase, HTTP status, size and both hashes on failure.
+Asset checks also retain the route, phase, HTTP status, size, safe response headers,
+analytics-markup presence and both hashes on failure.
+
+The first successor, `be1e91f`, used `no-store, no-transform` and passed staged
+checks. Public-origin HTML still gained 367 bytes and failed strict verification.
+That failure is retained; the corrected rollback restored the previous release
+and the same 37 history entries. It was not retried. The public-only header change
+requires a separately tested successor and its own delivery result.
 
 The first rollback restored VM metadata but reused an older forward-startup
 script. The guest still pointed at the failed release, and the forward script

@@ -194,6 +194,7 @@ class OwnerGatewayTests(unittest.TestCase):
             with self.request('/',{'Authorization':self.server.authorization.decode(),'Cookie':'private-cookie','X-REQLOX-Token':'private-fixture'}) as response:
                 self.assertEqual(response.status,200)
                 self.assertEqual(response.read(),b'<body>public</body>')
+                self.assertEqual(response.headers['Cache-Control'],'no-store, no-transform')
         self.assertEqual(len(observed),1)
         self.assertEqual(observed[0].header_items(),[])
 
@@ -212,7 +213,7 @@ class OwnerGatewayTests(unittest.TestCase):
             for path in ROUTES:
                 with self.request(path,{'Cookie':'private-cookie','X-REQLOX-Token':'private-token'}) as response:
                     self.assertEqual(response.status,200)
-                    self.assertEqual(response.headers['Cache-Control'],'no-store, no-transform')
+                    self.assertEqual(response.headers['Cache-Control'],'public, no-transform, max-age=0, must-revalidate')
                     self.assertNotIn('WWW-Authenticate',response.headers)
             self.assertEqual(len(observed),len(ROUTES))
             self.assertTrue(all(r.header_items()==[] for r in observed))

@@ -212,10 +212,14 @@ class Deployment:
         request = urllib.request.Request(origin+path, data=data, headers=actual)
         try:
             with self.cloud.opener.open(request, timeout=30) as response:
+                self.last_public_response_headers = {k.lower(): v for k, v in response.headers.items()
+                    if k.lower() in ('cache-control', 'content-type', 'server', 'cf-ray', 'cf-cache-status')}
                 raw = response.read(1024*1024+1)
                 require(len(raw) <= 1024*1024, 'PUBLIC_RESPONSE_BOUND')
                 return response.status, raw
         except urllib.error.HTTPError as exc:
+            self.last_public_response_headers = {k.lower(): v for k, v in exc.headers.items()
+                if k.lower() in ('cache-control', 'content-type', 'server', 'cf-ray', 'cf-cache-status')}
             return exc.code, exc.read(1024*1024)
 
     def public_json(self, path, **kwargs):
@@ -306,7 +310,9 @@ class Deployment:
             status, raw = self.public(route, base=base, authenticate=False)
             self.result.setdefault('public_asset_checks', []).append(dict(
                 phase='staged' if base else 'origin', route=route, status=status,
-                bytes=len(raw), observed_sha256=digest(raw), expected_sha256=rows[name]['sha256']))
+                bytes=len(raw), observed_sha256=digest(raw), expected_sha256=rows[name]['sha256'],
+                headers=dict(getattr(self, 'last_public_response_headers', {})),
+                analytics_markup_seen=b'static.cloudflareinsights.com/beacon.min.js' in raw))
             require(status == 200 and digest(raw) == rows[name]['sha256'], 'READONLY_DEMO_ASSET_DRIFT')
         require(self.public('/api/workspace/config', base=base, authenticate=False)[0] == 401,
                 'READONLY_DEMO_PRIVATE_API_EXPOSED')
