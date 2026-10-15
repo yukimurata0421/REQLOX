@@ -213,13 +213,13 @@ class Deployment:
         try:
             with self.cloud.opener.open(request, timeout=30) as response:
                 self.last_public_response_headers = {k.lower(): v for k, v in response.headers.items()
-                    if k.lower() in ('cache-control', 'content-type', 'server', 'cf-ray', 'cf-cache-status')}
+                    if k.lower() in ('cache-control', 'content-type', 'content-security-policy', 'server', 'cf-ray', 'cf-cache-status')}
                 raw = response.read(1024*1024+1)
                 require(len(raw) <= 1024*1024, 'PUBLIC_RESPONSE_BOUND')
                 return response.status, raw
         except urllib.error.HTTPError as exc:
             self.last_public_response_headers = {k.lower(): v for k, v in exc.headers.items()
-                if k.lower() in ('cache-control', 'content-type', 'server', 'cf-ray', 'cf-cache-status')}
+                if k.lower() in ('cache-control', 'content-type', 'content-security-policy', 'server', 'cf-ray', 'cf-cache-status')}
             return exc.code, exc.read(1024*1024)
 
     def public_json(self, path, **kwargs):
@@ -303,8 +303,30 @@ class Deployment:
             time.sleep(4)
         raise TimeoutError('UI_READINESS_DEADLINE')
 
+    def verify_edge_boundary(self, gateway_base):
+        """Reject edge rewriting or private caching before reserving a release."""
+        status, _ = self.public('/api/workspace/config', authenticate=False)
+        headers = dict(self.last_public_response_headers)
+        self.result['edge_preflight'] = dict(private_status=status, private_headers=headers)
+        directives = {v.strip().lower() for v in headers.get('cache-control', '').split(',')}
+        require(status == 401 and {'no-store', 'no-transform'} <= directives,
+                'EDGE_PRIVATE_CACHE_POLICY_DRIFT')
+        direct_status, direct = self.public('/', base=gateway_base)
+        direct_headers = dict(self.last_public_response_headers)
+        edge_status, edge = self.public('/')
+        edge_headers = dict(self.last_public_response_headers)
+        self.result['edge_preflight'].update(origin_status=direct_status, edge_status=edge_status,
+            origin_sha256=digest(direct), edge_sha256=digest(edge), edge_headers=edge_headers)
+        require(direct_status == edge_status == 200 and digest(direct) == digest(edge),
+                'EDGE_ORIGIN_BODY_DRIFT')
+        require(direct_headers.get('content-security-policy') == edge_headers.get('content-security-policy'),
+                'EDGE_ORIGIN_CSP_DRIFT')
+        self.result['edge_preflight']['verified'] = True
+
     def verify_public_demo(self, base, assets):
         from cloud_web_assets import PUBLIC_ROUTES as ROUTES
+        result_key = 'anonymous_demo_staged_verified' if base else 'anonymous_demo_verified'
+        self.result[result_key] = False
         rows = {r['name']: r for r in assets['files']}
         for route, name in ROUTES.items():
             status, raw = self.public(route, base=base, authenticate=False)
@@ -320,7 +342,7 @@ class Deployment:
                 'READONLY_DEMO_ROUTE_ESCAPE')
         require(self.public('/demo/public-demo.json', base=base, authenticate=False, value={})[0] == 405,
                 'READONLY_DEMO_WRITE_EXPOSED')
-        self.result['anonymous_demo_verified'] = True
+        self.result[result_key] = True
 
     def restore(self, before_vm, old_revision, host_before, history_before):
         """One explicit rollback; preserve the failed release and all state."""
@@ -378,6 +400,7 @@ class Deployment:
         traffic = [r for r in before_gateway['status']['traffic'] if r.get('percent')]
         require(len(traffic) == 1 and traffic[0]['percent'] == 100, 'GATEWAY_TRAFFIC_DRIFT')
         old_revision = traffic[0]['revisionName']
+        self.verify_edge_boundary(before_gateway['status']['url'])
         # Immutable admission rejects a second deployment of the same commit.
         self.cloud.upload(self.cfg['releases_bucket'], 'deployments/'+self.commit+'.json',
             json.dumps(dict(commit=self.commit, release_sha256=release, old_release=old['release_sha256'],

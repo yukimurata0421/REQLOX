@@ -91,7 +91,7 @@ class FakeCloud:
                 rows.append(dict(revisionName='new-revision',percent=0,tag=self.tag,url='https://owned.run.app'))
             if self.promoted:
                 rows=[dict(revisionName='new-revision',percent=100)]
-            return dict(status=dict(traffic=rows))
+            return dict(status=dict(traffic=rows,url='https://owned.run.app'))
         if args[:2]==['run','deploy']:
             self.tag=next(a.split('=',1)[1] for a in args if a.startswith('--tag='))
             if self.break_after_cutover:
@@ -146,6 +146,39 @@ class DeployJobImportTests(unittest.TestCase):
         self.assertEqual((check['route'],check['phase'],check['status']),('/demo/','origin',200))
         self.assertNotEqual(check['observed_sha256'],check['expected_sha256'])
         self.assertFalse(check['analytics_markup_seen'])
+
+    def test_staged_success_does_not_claim_public_origin_success(self):
+        import sys
+        sys.path.insert(0,str(ROOT/'scripts'))
+        from cloud_web_assets import PUBLIC_ROUTES
+        cfg,vm=fixture();job=ci.Deployment(cfg,'b'*40,ROOT,ROOT/'unused',FakeCloud(vm))
+        manifest=dict(files=[dict(name=n,sha256=ci.digest(b'original')) for n in set(PUBLIC_ROUTES.values())])
+        def response(path,**kwargs):
+            if path in PUBLIC_ROUTES:
+                if kwargs.get('value') is not None:return 405,b'{}'
+                return 200,b'original' if kwargs.get('base') else b'edge rewrite'
+            return (401,b'{}') if path=='/api/workspace/config' else (404,b'{}')
+        with patch.object(job,'public',side_effect=response):
+            job.verify_public_demo('https://owned.run.app',manifest)
+            self.assertTrue(job.result['anonymous_demo_staged_verified'])
+            self.assertFalse(job.result.get('anonymous_demo_verified',False))
+            with self.assertRaisesRegex(ValueError,'READONLY_DEMO_ASSET_DRIFT'):
+                job.verify_public_demo(None,manifest)
+        self.assertFalse(job.result['anonymous_demo_verified'])
+
+    def test_edge_preflight_rejects_private_cache_and_changed_body_or_csp(self):
+        cfg,vm=fixture()
+        for fault,reason in [('cache','EDGE_PRIVATE_CACHE_POLICY_DRIFT'),
+                             ('body','EDGE_ORIGIN_BODY_DRIFT'),('csp','EDGE_ORIGIN_CSP_DRIFT')]:
+            job=ci.Deployment(cfg,'b'*40,ROOT,ROOT/'unused',FakeCloud(vm))
+            def response(path,**kwargs):
+                job.last_public_response_headers={'cache-control':'max-age=14400' if fault=='cache' else 'no-store, no-transform',
+                    'content-security-policy':"default-src 'self'" if kwargs.get('base') or fault!='csp' else "default-src *"}
+                if path=='/api/workspace/config':return 401,b'{}'
+                return 200,b'changed' if fault=='body' and not kwargs.get('base') else b'original'
+            with self.subTest(fault=fault),patch.object(job,'public',side_effect=response):
+                with self.assertRaisesRegex(ValueError,reason):job.verify_edge_boundary('https://owned.run.app')
+            self.assertFalse(job.cloud.effects);self.assertFalse(job.cloud.uploads)
 
 
 class AdmissionTests(unittest.TestCase):
@@ -225,6 +258,8 @@ class FakeDeploymentTests(AdmissionTests):
             (bundle/'assets.json').write_text(json.dumps(assets))
             job=ci.Deployment(cfg,'b'*40,bundle,root/'out',cloud)
             def public(path,*,base=None,headers=None,value=None,authenticate=True):
+                job.last_public_response_headers={'cache-control':'no-store, no-transform',
+                    'content-security-policy':"default-src 'self'"}
                 if path.startswith('/demo/'):
                     from reqlox_demo.public_demo import ROUTES
                     if path not in ROUTES:return 404,b'{}'
@@ -254,6 +289,8 @@ class FakeDeploymentTests(AdmissionTests):
         self.assertEqual(result['new_native_campaigns'],0);self.assertEqual(result['new_model_calls'],0)
         self.assertTrue(result['private_history_preserved']);self.assertEqual(cloud.vm['disks'],old['disks'])
         self.assertTrue(result['anonymous_demo_verified'])
+        self.assertTrue(result['anonymous_demo_staged_verified'])
+        self.assertTrue(result['edge_preflight']['verified'])
         self.assertEqual([k for k,v in cloud.effects],['setMetadata','stop','start'])
 
     def test_failed_cutover_uses_inverse_startup_and_keeps_admission_history(self):

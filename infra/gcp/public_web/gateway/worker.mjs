@@ -13,6 +13,21 @@ export default {
     headers.delete("Cookie");
     const upstream = new Request(destination, { method: request.method, headers,
       body: ["GET", "HEAD"].includes(request.method) ? undefined : request.body, redirect: "manual" });
-    return fetch(upstream, { cf: { cacheTtl: 0, cacheEverything: false } });
+    // Bypass the edge cache; cacheTtl: 0 still overrides origin instructions.
+    const response = await fetch(upstream, { cache: "no-store" });
+    const resultHeaders = new Headers(response.headers);
+    const publicPaths = new Set(["/demo/", "/demo/public-demo.html", "/demo/public-demo.js",
+      "/demo/public-demo.css", "/demo/public-demo.json"]);
+    if (response.status === 200 && publicPaths.has(url.pathname)
+        && ["GET", "HEAD"].includes(request.method)) {
+      const policy = resultHeaders.get("Cache-Control") || "no-store";
+      resultHeaders.set("Cache-Control", /(?:^|,)\s*no-transform\s*(?:,|$)/i.test(policy)
+        ? policy : policy + ", no-transform");
+    } else {
+      resultHeaders.set("Cache-Control", "no-store, no-transform");
+    }
+    // Preserve the original body and CSP, including rejected private requests.
+    return new Response(response.body, { status: response.status,
+      statusText: response.statusText, headers: resultHeaders });
   }
 };
