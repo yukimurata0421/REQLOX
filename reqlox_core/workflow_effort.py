@@ -9,7 +9,7 @@ import re
 import resource
 import time
 
-import incident_reference as c
+from . import incident_reference as c
 
 SCHEMA = 'reqlox.workflow-effort.v0.1'
 MAX_EVENTS = 1024

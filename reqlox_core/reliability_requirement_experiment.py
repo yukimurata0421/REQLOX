@@ -1,6 +1,6 @@
 "Finite reliability controls and verification."
-import reliability_reuse as reuse
-import reliability_specifications as specifications
+from . import reliability_reuse as reuse
+from . import reliability_specifications as specifications
 
 c = reuse.c
 

@@ -1,4 +1,8 @@
 """Reject private material and unsupported claims in the hosted aggregate."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 import copy
 import json
 from pathlib import Path

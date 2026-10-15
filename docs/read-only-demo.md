@@ -1,5 +1,9 @@
 # Read-only public review
 
+The [latest verified delivery](current-delivery.md) records the deployed public
+main `dffb8f7` and successful Cloudflare browser checks. It supersedes the
+earlier source-only pending-delivery checkpoint without rewriting that record.
+
 The standalone demo publishes selected archived summaries. It never opens the
 owner Workspace, private history, drafts, provider credentials or a Target.
 It performs zero new model calls and zero new native campaigns.
@@ -62,13 +66,15 @@ The asset exporter does not inject the owner page's VM input-storage notice into
 the static demo. The package includes all four assets, with JSON generated from
 the curated data at export time.
 
-The CI deployment gate checks anonymous asset hashes, private API rejection,
-unknown public paths and write rejection on the staged revision before traffic
-promotion, then repeats these reads on the configured origin. This describes
-the implementation; see the dated delivery record for what was actually deployed.
+The CI deployment gate first checks the existing edge boundary before release
+admission. It checks anonymous asset hashes, private API rejection, unknown public
+paths and write rejection on the staged revision, then repeats these reads on the
+configured origin. Staged and origin results are separate fields.
+The [delivery checkpoint](../publication/read-only-delivery-20261015.json) records
+these checks and real Cloudflare browser confirmation for main `dffb8f7`.
 The hosted entry is [the read-only review](https://reqlox.yukimurata0421.dev/demo/).
-Verify its live behavior against the latest successful Actions deployment;
-source checks alone do not establish that a revision is installed.
+This dated observation does not guarantee future availability. Past provider use
+is documented separately in the [safe usage summary](historical-vertex-ai-usage.md).
 
 ## Maintenance and costs
 

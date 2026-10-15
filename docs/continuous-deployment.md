@@ -1,5 +1,7 @@
 # Continuous deployment
 
+For the observed result of public main `dffb8f7`, see [Latest delivery](current-delivery.md).
+
 The publication checkout has a GitHub Actions pipeline in
 [`.github/workflows/check.yml`](../.github/workflows/check.yml). A push to `main`
 runs the offline unit and coverage suite on Python 3.11 and 3.14, checks the
@@ -45,8 +47,11 @@ repair, reinjection, or independent generalization.
 
 A duplicate commit admission or workflow rerun cannot start another deployment.
 Failed admissions and immutable artifacts remain available. If a failure occurs
-after UI cutover, the driver attempts one bounded rollback to saved VM metadata
-and the previous gateway revision, then checks readiness and inherited history.
+after UI cutover, the driver attempts one bounded inverse rollback of the saved
+VM metadata, reviewed managed files, site pointer and previous Gateway revision.
+It reloads the existing secret-version references, then checks readiness and
+inherited history. The [recovery record](deployment-recovery-20261015.md) explains
+the original metadata-only defect and the corrected returns observed in later failures.
 Identity drift stops rollback; an unconfirmed outcome remains unknown. No automatic
 deployment retry or experiment-budget reset is performed. A corrected commit must
 pass validation again.

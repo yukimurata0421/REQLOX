@@ -2,7 +2,7 @@
 import ast
 from copy import deepcopy
 
-import incident_reference as c
+from . import incident_reference as c
 
 GENERATOR_KINDS=('GENERATOR_CONTEXT','FD_GENERATOR_CONTEXT')
 

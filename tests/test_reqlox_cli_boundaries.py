@@ -1,4 +1,9 @@
 """CLI delegation preserves arguments and avoids importing Target code."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+from runtime_imports import patched_runtime_modules
+
 import contextlib
 import io
 import json
@@ -18,6 +23,17 @@ class CliBoundaryTests(unittest.TestCase):
         runtime = patch.object(cli, '_runtime')
         self.runtime = runtime.start()
         self.addCleanup(runtime.stop)
+
+    def test_review_and_preparation_commands_delegate_without_execution(self):
+        for command, module in [('knowledge', 'reqlox.knowledge_cli'),
+                                ('study', 'reqlox.study_cli'),
+                                ('scope', 'reqlox.scope_cli'),
+                                ('integration', 'reqlox.integration_cli')]:
+            delegate = ModuleType(module)
+            delegate.main = Mock(return_value=7)
+            with self.subTest(command=command), patched_runtime_modules( {module: delegate}):
+                self.assertEqual(cli.main([command, 'inspect', '--input', 'fixture']), 7)
+            delegate.main.assert_called_once_with(['inspect', '--input', 'fixture'])
 
     def test_version_exits_successfully_and_prints_package_version(self):
         output = io.StringIO()
@@ -48,7 +64,7 @@ class CliBoundaryTests(unittest.TestCase):
         for command in ('target', 'run'):
             arguments = [command, '--repo', 'worker', '--repo', 'api']
             before = arguments.copy()
-            with self.subTest(command=command), patch.dict(sys.modules, {delegated.__name__: delegated}):
+            with self.subTest(command=command), patched_runtime_modules( {delegated.__name__: delegated}):
                 self.assertEqual(cli.main(arguments), 7)
                 delegated.main.assert_called_with(before)
                 self.assertEqual(arguments, before)
@@ -59,7 +75,7 @@ class CliBoundaryTests(unittest.TestCase):
         delegated.main = Mock(side_effect=lambda: seen.append(sys.argv.copy()) or 3)
         original = sys.argv
         arguments = ['demo', 'run', '--sample', 'unknown']
-        with patch.dict(sys.modules, {delegated.__name__: delegated}):
+        with patched_runtime_modules( {delegated.__name__: delegated}):
             self.assertEqual(cli.main(arguments), 3)
         self.assertEqual(seen, [['reqlox demo', 'run', '--sample', 'unknown']])
         self.assertIs(sys.argv, original)
@@ -69,7 +85,7 @@ class CliBoundaryTests(unittest.TestCase):
         delegated = ModuleType('reqlox_demo.__main__')
         delegated.main = Mock(side_effect=RuntimeError('owned failure'))
         original = sys.argv
-        with patch.dict(sys.modules, {delegated.__name__: delegated}):
+        with patched_runtime_modules( {delegated.__name__: delegated}):
             with self.assertRaisesRegex(RuntimeError, 'owned failure'):
                 cli.main(['demo', 'run'])
         self.assertIs(sys.argv, original)
@@ -78,7 +94,7 @@ class CliBoundaryTests(unittest.TestCase):
         delegated = ModuleType('reqlox_demo.__main__')
         delegated.main = Mock(side_effect=SystemExit(2))
         original = sys.argv
-        with patch.dict(sys.modules, {delegated.__name__: delegated}), self.assertRaises(SystemExit):
+        with patched_runtime_modules( {delegated.__name__: delegated}), self.assertRaises(SystemExit):
             cli.main(['demo', '--unknown'])
         self.assertIs(sys.argv, original)
 
@@ -91,10 +107,10 @@ class CliBoundaryTests(unittest.TestCase):
             self.assertEqual(sys.argv, ['owned-cli', '--version'])
 
     def test_inventory_requires_root_before_loading_a_snapshot(self):
-        runner = ModuleType('run_reliability_reuse')
+        runner = ModuleType('reqlox_core.run_reliability_reuse')
         runner.load_snapshot = Mock()
         runner.inventory_for = Mock()
-        with patch.dict(sys.modules, {runner.__name__: runner}), contextlib.redirect_stderr(io.StringIO()):
+        with patched_runtime_modules( {runner.__name__: runner}), contextlib.redirect_stderr(io.StringIO()):
             with self.assertRaises(SystemExit) as exit_code:
                 cli.main(['inventory'])
         self.assertEqual(exit_code.exception.code, 2)
@@ -102,12 +118,12 @@ class CliBoundaryTests(unittest.TestCase):
         runner.inventory_for.assert_not_called()
 
     def test_inventory_emits_one_json_document_and_resolves_relative_root(self):
-        runner = ModuleType('run_reliability_reuse')
+        runner = ModuleType('reqlox_core.run_reliability_reuse')
         sources = {'owned.py': 'value = 1\n'}
         runner.load_snapshot = Mock(return_value=sources)
         runner.inventory_for = Mock(return_value={'accepted': [], 'reason': '対象外'})
         output = io.StringIO()
-        with patch.dict(sys.modules, {runner.__name__: runner}), contextlib.redirect_stdout(output):
+        with patched_runtime_modules( {runner.__name__: runner}), contextlib.redirect_stdout(output):
             self.assertEqual(cli.main(['inventory', '--root', 'owned']), 0)
         runner.load_snapshot.assert_called_once_with(Path('owned').absolute())
         runner.inventory_for.assert_called_once_with(sources)
@@ -130,22 +146,25 @@ class CliBoundaryTests(unittest.TestCase):
 
 
 class RuntimeImportBoundaryTests(unittest.TestCase):
-    def test_conflicting_tool_module_is_rejected_before_changing_import_path(self):
-        conflicting = ModuleType('workflow_effort')
-        conflicting.__file__ = '/owned-unrelated-checkout/workflow_effort.py'
-        before = sys.path.copy()
-        with patch.dict(sys.modules, {'workflow_effort': conflicting}):
-            with self.assertRaisesRegex(ImportError, 'Conflicting runtime module: workflow_effort'):
-                reqlox._runtime()
+    def test_unqualified_module_cannot_shadow_packaged_runtime(self):
+        before = list(sys.path)
+        with patch.dict(sys.modules, {'workflow_effort': ModuleType('workflow_effort')}):
+            self.assertEqual(reqlox._runtime().__name__, 'reqlox_core')
         self.assertEqual(sys.path, before)
 
-    def test_runtime_path_is_inserted_once_when_missing(self):
-        tools = str(Path(reqlox.__file__).resolve().parents[1] / 'reqlox_core')
-        with patch.object(sys, 'path', [value for value in sys.path if value != tools]):
-            reqlox._runtime()
-            reqlox._runtime()
-            self.assertEqual(sys.path[0], tools)
-            self.assertEqual(sys.path.count(tools), 1)
+    def test_runtime_import_does_not_change_global_search_path(self):
+        before = list(sys.path)
+        self.assertIs(reqlox._runtime(), reqlox._runtime())
+        self.assertEqual(sys.path, before)
+
+    def test_foreign_or_missing_package_origin_is_rejected(self):
+        for origin in (None, '/unrelated/runtime/__init__.py'):
+            package = ModuleType('reqlox_core')
+            if origin is not None:
+                package.__file__ = origin
+            with patch.dict(sys.modules, {'reqlox_core': package}):
+                with self.assertRaisesRegex(ImportError, 'Conflicting runtime package'):
+                    reqlox._runtime()
 
 
 if __name__ == '__main__':

@@ -4,8 +4,8 @@ from copy import deepcopy
 import hashlib
 from pathlib import PurePosixPath
 
-import incident_reference as c
-import repository_atomic_write as atomic
+from . import incident_reference as c
+from . import repository_atomic_write as atomic
 
 DESTINATION = 'instance_destination'
 

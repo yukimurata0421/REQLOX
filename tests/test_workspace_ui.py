@@ -1,4 +1,8 @@
 """Offline HTTP gates, retained records, durable restoration and exact Source binding."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 from copy import deepcopy
 import hashlib
 import json
@@ -128,7 +132,7 @@ class WorkspaceUITests(unittest.TestCase):
         self.assertIsNone(unknown['native_campaigns']);self.assertFalse(unknown['automatic_retry'])
 
     def test_explicit_native_state_path_does_not_evaluate_home(self):
-        import reqlox_paths
+        from reqlox_core import reqlox_paths
         base=Path(reqlox_paths.__file__).resolve().parents[1]/'corpus/knowledge/semantic-experiments/local-private-quarantine/owned-path-only'
         with patch.dict(os.environ,{'REQLOX_STATE_DIR':str(base)}),patch.object(Path,'home',side_effect=AssertionError('Home lookup forbidden')):
             self.assertEqual(reqlox_paths.state_root(),base)

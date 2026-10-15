@@ -1,4 +1,8 @@
 """Evidence survives errors; denied launches consume no synthetic reservation."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 import hashlib
 import json
 import os
@@ -10,8 +14,8 @@ from unittest.mock import patch
 import reqlox
 reqlox._runtime()
 from reqlox.native_evidence import retained_workspace
-import reliability_path_context as context
-import run_reliability_path_context as native
+from reqlox_core import reliability_path_context as context
+from reqlox_core import run_reliability_path_context as native
 
 
 class RetainedEvidenceTests(unittest.TestCase):

@@ -1,4 +1,11 @@
 "Finite reliability controls and verification."
+
+if __name__ == '__main__' and not __package__:
+    import sys as _entry_sys
+    from pathlib import Path as _EntryPath
+    _entry_sys.path.insert(0, str(_EntryPath(__file__).resolve().parents[1]))
+    __package__ = 'reqlox_core'
+
 import hashlib
 import importlib
 import inspect
@@ -15,8 +22,8 @@ def main():
     os.nice(10);resource.setrlimit(resource.RLIMIT_CPU,(10,10));resource.setrlimit(resource.RLIMIT_AS,(268435456,268435456));resource.setrlimit(resource.RLIMIT_FSIZE,(1048576,1048576))
     raw=Path(sys.argv[1]).read_bytes()
     if hashlib.sha256(raw).hexdigest()!=sys.argv[2]:raise ValueError('SYNC_CONTEXT_PLAN_DRIFT')
-    p=json.loads(raw);sys.path.insert(0,str(ROOT/'reqlox_core'))
-    from qualification_context_sync import validate
+    p=json.loads(raw);pass  # Package imports resolve from the repository root.
+    from .qualification_context_sync import validate
     validate(p['inventory'],p['binding']);b=p['binding']
     for r in p['input_files']:
         data=Path(r['path']).read_bytes()

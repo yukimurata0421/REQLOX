@@ -1,10 +1,17 @@
 """Prepare explicitly supplied bounded conditions without a corpus database."""
-import reliability_reuse as reuse
+
+if __name__ == '__main__' and not __package__:
+    import sys as _entry_sys
+    from pathlib import Path as _EntryPath
+    _entry_sys.path.insert(0, str(_EntryPath(__file__).resolve().parents[1]))
+    __package__ = 'reqlox_core'
+
+from . import reliability_reuse as reuse
 import argparse
 import json
-import run_reliability_reuse as runner
-import reliability_specifications as specifications
-import reliability_source_conditions as natural
+from . import run_reliability_reuse as runner
+from . import reliability_specifications as specifications
+from . import reliability_source_conditions as natural
 
 
 def main():

@@ -1,9 +1,9 @@
 "Keep decision abstention separate from the finite truth categories."
 from copy import deepcopy
 
-import incident_reference as c
-import incident_provider_scores as provider
-from incident_semantic_response import fingerprint
+from . import incident_reference as c
+from . import incident_provider_scores as provider
+from .incident_semantic_response import fingerprint
 
 
 def check(answer, categories):

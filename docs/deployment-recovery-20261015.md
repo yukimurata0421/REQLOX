@@ -1,5 +1,11 @@
 # Public UI deployment recovery
 
+The recovery and edge corrections were followed by successful deployment of
+public main `dffb8f7` and real Cloudflare browser checks. See
+[Latest delivery](current-delivery.md) and the
+[new checkpoint](../publication/read-only-delivery-20261015.json). Earlier failed
+releases, rollback outcomes and the original UNKNOWN record below remain retained.
+
 The `ca50603c` release passed both offline Python jobs and its staged Gateway
 checks, then failed the public-origin asset check. The edge added an analytics
 script to HTML, so the response no longer matched the tested asset hash.

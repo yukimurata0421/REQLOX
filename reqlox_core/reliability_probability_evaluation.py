@@ -3,8 +3,8 @@ from collections import Counter
 from copy import deepcopy
 import math
 
-import incident_choice_response as responses
-import incident_reference as c
+from . import incident_choice_response as responses
+from . import incident_reference as c
 
 BINS=(0.,.2,.4,.6,.8,1.)
 THRESHOLDS=(.65,.70,.85)

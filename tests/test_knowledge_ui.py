@@ -1,4 +1,8 @@
 """Verify local knowledge HTTP flows and disclosure boundaries."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 import json
 import os
 from pathlib import Path

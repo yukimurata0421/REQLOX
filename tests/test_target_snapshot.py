@@ -1,4 +1,8 @@
 """Local Target copy, lineage, source drift and private output boundaries."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 import contextlib
 import io
 import json
@@ -9,8 +13,8 @@ from unittest.mock import patch
 import test_target_workspace as fixtures
 from reqlox import targets, target_audit, target_prepare, target_snapshot as snapshot
 from reqlox.target_cli import main
-import reliability_reuse as reuse
-import run_reliability_reuse as runner
+from reqlox_core import reliability_reuse as reuse
+from reqlox_core import run_reliability_reuse as runner
 
 
 class TargetSnapshotTests(unittest.TestCase):

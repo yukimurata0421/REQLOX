@@ -70,15 +70,16 @@ def evaluate(report, policy):
 
 def worker(output, suite_name, policy):
     import coverage
-    from offline_test_guard import install
-    denied = install()
     os.chdir(ROOT)
-    sys.path[:0] = [str(ROOT), *[str(ROOT / name) for name in policy['source_directories']],
-        *[str(ROOT / name) for name in policy['unit_test_roots']]]
+    # Source packages resolve from the repository root, never from a flat
+    # runtime directory. Test roots remain explicit for unittest module names.
+    sys.path[:0] = [str(ROOT), *[str(ROOT / name) for name in policy['unit_test_roots']]]
     before = {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in policy['critical_files']}
     measurement = coverage.Coverage(config_file=str(ROOT / '.coveragerc'),
         source=[str(ROOT / name) for name in policy['source_directories']], data_file=str(output / '.coverage'))
     measurement.start()
+    from reqlox.offline_testing import install
+    denied = install()
     with tempfile.TemporaryDirectory(prefix='reqlox-coverage-state-') as state:
         os.environ['REQLOX_STATE_DIR'] = state
         if suite_name == 'critical':
@@ -103,6 +104,8 @@ def worker(output, suite_name, policy):
         tests_run=result.testsRun, failures=len(result.failures), errors=len(result.errors),
         skipped=[test.id() for test, _ in result.skipped], critical_gate=gate,
         overview_totals=raw['totals'], source_sha256=before, sources_unchanged=unchanged,
+        selected_test_roots=policy['unit_test_roots'],
+        selected_critical_modules=policy['critical_test_modules'],
         native_tests_enabled=False, denied_execution_attempts=denied,
         passed=result.wasSuccessful() and gate['passed'] and unchanged and not denied)
     (output / 'summary.json').write_text(json.dumps(summary, indent=2, allow_nan=False) + '\n')

@@ -1,23 +1,29 @@
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 from reqlox import _runtime
 _runtime()
-from reqlox_paths import state_root
+from reqlox_core.reqlox_paths import state_root
 """\u81ea\u7136\u6587\u6295\u5f71、Source\u60c5\u5831\u306e\u9694\u96e2、\u72ec\u7acb\u3057\u305f\u4ed5\u69d8\u30fb\u6240\u6709policy\u306e\u5883\u754c。"""
 from copy import deepcopy
 import datetime
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 ROOT=Path(__file__).resolve().parents[1]
-sys.path[:0]=[str(ROOT/'reqlox_core'),str(ROOT/'tests')]
-import reliability_source_conditions as natural
-import reliability_specifications as specs
-import reliability_reuse as reuse
-import run_reliability_reuse as runner
-import run_reliability_improvement_loop as loop
+sys.path[:0]=[str(ROOT / 'tests')]
+from reqlox_core import reliability_source_conditions as natural
+from reqlox_core import reliability_specifications as specs
+from reqlox_core import reliability_reuse as reuse
+from reqlox_core import run_reliability_reuse as runner
+from reqlox_core import run_reliability_improvement_loop as loop
 from test_reliability_condition_programs import SPLIT_GUARDS
 from test_reliability_context_lifecycle import contracts
 
@@ -144,6 +150,11 @@ class NaturalConditionTests(unittest.TestCase):
         self.assertFalse(value['contracts'])
 
     def test_natural_source_and_specification_cli_share_no_caller_adapter(self):
+        with tempfile.TemporaryDirectory(prefix='natural-cli-state-') as state, \
+             patch.dict(os.environ, {'REQLOX_STATE_DIR': state}):
+            self.check_static_cli_in_private_state()
+
+    def check_static_cli_in_private_state(self):
         quarantine=state_root()
         with tempfile.TemporaryDirectory(prefix='natural-cli-',dir=quarantine) as directory:
             directory=Path(directory);root=directory/'repository';root.mkdir();(root/'storage.py').write_text(SPLIT_GUARDS)

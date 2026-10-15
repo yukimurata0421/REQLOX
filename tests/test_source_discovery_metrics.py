@@ -1,12 +1,16 @@
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 from copy import deepcopy
 from pathlib import Path
 import sys
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT/'reqlox_core'))
-import incident_reference as c
-import source_discovery_metrics as discovery
+pass  # Package imports resolve from the repository root.
+from reqlox_core import incident_reference as c
+from reqlox_core import source_discovery_metrics as discovery
 
 
 def group(i='0', conditions=2):

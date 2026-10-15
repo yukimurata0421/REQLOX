@@ -221,7 +221,7 @@ def compare_boundary(references, predictions):
               if any(r["reference_expected_brier"] is not None for r in g)]
     complete_groups = [g for g in groups.values() if all(r["reference_eligible"] for r in g)]
     group_agreements = sum(all(r["agrees"] for r in g) for g in complete_groups)
-    from qualification_probability import exact_interval, beta_posterior
+    from .qualification_probability import exact_interval, beta_posterior
     return seal(dict(schema_version="reqlox.reference-comparison.v0.1", attempted_tasks=len(rows),
                 eligible_reference_tasks=len(eligible_rows), unresolved_reference_tasks=len(rows)-len(eligible_rows),
                 observed_predictions=sum(r["prediction_observed"] for r in rows),

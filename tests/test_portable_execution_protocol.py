@@ -1,4 +1,8 @@
 """Verify execution orchestration with owned receipts, without native workers."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 from copy import deepcopy
 import hashlib
 import json

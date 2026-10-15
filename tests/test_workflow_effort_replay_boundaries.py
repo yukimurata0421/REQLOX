@@ -1,4 +1,8 @@
 """Resealed effort traces retain semantic, ordering, and terminal checks."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 from copy import deepcopy
 import json
 from pathlib import Path
@@ -8,8 +12,8 @@ import unittest
 
 import reqlox
 reqlox._runtime()
-import incident_reference as reference
-import workflow_effort as effort
+from reqlox_core import incident_reference as reference
+from reqlox_core import workflow_effort as effort
 
 
 class EffortReplayBoundaryTests(unittest.TestCase):

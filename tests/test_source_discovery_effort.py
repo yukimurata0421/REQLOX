@@ -1,14 +1,18 @@
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 from copy import deepcopy
 from pathlib import Path
 import sys
 import tempfile
 import unittest
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'reqlox_core'))
-import incident_reference as c
-import source_discovery_metrics as discovery
-import source_discovery_effort as measured
-import workflow_effort as effort
+pass  # Package imports resolve from the repository root.
+from reqlox_core import incident_reference as c
+from reqlox_core import source_discovery_metrics as discovery
+from reqlox_core import source_discovery_effort as measured
+from reqlox_core import workflow_effort as effort
 
 
 class EffortDiscoveryTests(unittest.TestCase):

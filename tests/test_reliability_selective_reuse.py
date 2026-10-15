@@ -1,6 +1,10 @@
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 from reqlox import _runtime
 _runtime()
-from reqlox_paths import state_root
+from reqlox_core.reqlox_paths import state_root
 """\u5909\u66f4\u4f9d\u5b58\u306e\u5931\u52b9\u3068、\u5909\u66f4\u306e\u306a\u3044site\u306e\u5b9f\u8a3c\u6e08\u307f\u89b3\u6e2c\u3060\u3051\u306e\u518d\u5229\u7528\u3092\u691c\u67fb\u3059\u308b。"""
 from copy import deepcopy
 import datetime
@@ -11,10 +15,10 @@ import unittest
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path[:0] = [str(ROOT/'reqlox_core'), str(ROOT/'tests')]
-import reliability_reuse as reuse
-import reliability_reuse_cache as cache
-import run_reliability_reuse as runner
+sys.path[:0] = [str(ROOT / 'tests')]
+from reqlox_core import reliability_reuse as reuse
+from reqlox_core import reliability_reuse_cache as cache
+from reqlox_core import run_reliability_reuse as runner
 from test_reliability_reuse import ATOMIC, ASYNC, contracts
 
 
@@ -56,7 +60,7 @@ class DependencyBoundaryTests(unittest.TestCase):
         self.assertNotEqual(self.key(plan=p),self.key(plan=p,snapshot=dict(self.sources,extra='value=1')))
 
 
-@unittest.skipUnless(__import__("os").environ.get("REQLOX_RUN_NATIVE_TESTS") == "1", "native experiments are opt-in")
+@unittest.skip('Archived native tests require a separate retained-scope authorized harness')
 class NativeSelectiveReuseTests(unittest.TestCase):
     def test_unrelated_and_changed_member_source_contract_and_corrupt_evidence(self):
         base=state_root()

@@ -132,7 +132,7 @@ def listing(target):
 
 
 def validate_configuration(config):
-    import reliability_reuse as reuse
+    from reqlox_core import reliability_reuse as reuse
     allowed = {'contracts', 'source_texts', 'hypotheses', 'maximum_probes', 'specification_texts', 'path_context'}
     if not isinstance(config, dict) or 'contracts' not in config or set(config) - allowed:
         raise ValueError('Configuration requires contracts; unknown fields are rejected')
@@ -160,9 +160,9 @@ def validate_configuration(config):
 
 def prepare(target, repositories, all_repositories=False, *, paired=False, seconds=120, campaigns=12, rounds=3,
             authorization=None):
-    import reliability_reuse as reuse
-    import run_reliability_reuse as runner
-    import run_reliability_improvement_loop as loop
+    from reqlox_core import reliability_reuse as reuse
+    from reqlox_core import run_reliability_reuse as runner
+    from reqlox_core import run_reliability_improvement_loop as loop
     from .target_snapshot import verify_target
     verify_target(target)
     if type(seconds) is not int or not 1 <= seconds <= 7200 or type(campaigns) is not int or not 0 <= campaigns <= 64:
@@ -200,8 +200,8 @@ def prepare(target, repositories, all_repositories=False, *, paired=False, secon
                 raise ValueError('TARGET_CONTEXT_PAIRED_OR_DEPENDENCY_UNSUPPORTED')
             context_plan = target_context.prepare(sources, config)
         if paired:
-            import reliability_requirement_experiment as requirements
-            import run_reliability_paired as pair
+            from reqlox_core import reliability_requirement_experiment as requirements
+            from reqlox_core import run_reliability_paired as pair
             policies = {family: {key: record[key] for key in ('basis', 'scope')} for family, record in config['contracts'].items()}
             experiment = requirements.prepare(sources, config.get('specification_texts', {}), policies)
             pair.hypotheses_for(sources, experiment['contracts'], config.get('source_texts', {}))
@@ -256,14 +256,14 @@ class Budget:
         self.repository = None
 
     def reserve(self):
-        import reliability_reuse as reuse
+        from reqlox_core import reliability_reuse as reuse
         if (self.deadline - datetime.datetime.now(datetime.timezone.utc)).total_seconds() < reuse.LIMITS['wall_seconds']:
             raise ValueError('TARGET_DEADLINE')
         if self.attempts >= self.maximum:
             raise ValueError('TARGET_NATIVE_CAMPAIGN_LIMIT')
         self.attempts += 1  # Failed or unknown launches retain their reservation.
         if self.output is not None:
-            import run_reliability_reuse as runner
+            from reqlox_core import run_reliability_reuse as runner
             runner.save(self.output / f'native-reservation-{self.attempts:03d}.json',
                         dict(attempt=self.attempts, maximum=self.maximum, deadline=self.deadline.isoformat(),
                              repository=self.repository, plan_sha256=self.plan_sha256,
@@ -271,8 +271,8 @@ class Budget:
 
 
 def execute(planned, prepared, roots, state, *, name=None, expected=None):
-    import run_reliability_reuse as runner
-    import run_reliability_improvement_loop as loop
+    from reqlox_core import run_reliability_reuse as runner
+    from reqlox_core import run_reliability_improvement_loop as loop
     plan = planned['plan']
     if expected is not None and expected != planned['plan_sha256']:
         raise ValueError('Target plan changed since the reviewed dry run')
@@ -304,7 +304,7 @@ def execute(planned, prepared, roots, state, *, name=None, expected=None):
     output = runner.private(state / 'target-runs' / run_name, new=True)
     output.parent.mkdir(mode=0o700, exist_ok=True)
     output.mkdir(mode=0o700)
-    import reliability_reuse as reuse
+    from reqlox_core import reliability_reuse as reuse
     from .target_audit import files
     if authorization_value is None:
         budget = Budget(plan['maximum_native_campaigns'], deadline, output, planned['plan_sha256'])
@@ -347,7 +347,7 @@ def execute(planned, prepared, roots, state, *, name=None, expected=None):
                 if result['status'] == 'STOPPED':
                     raise ValueError(result['reason'])
             elif plan['paired']:
-                import run_reliability_paired as pair
+                from reqlox_core import run_reliability_paired as pair
                 result = pair.run(entry['sources'], entry['experiment'], entry['config'].get('source_texts', {}), child,
                                   maximum_native_campaigns_per_arm=remaining, **common)
                 qualified = all(arm['status'] in ('ADOPTED_IN_SNAPSHOT', 'NO_COUNTEREXAMPLE') for arm in result['arms'].values())

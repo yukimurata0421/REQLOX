@@ -1,3 +1,7 @@
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 from copy import deepcopy
 import json
 from pathlib import Path
@@ -6,9 +10,9 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'reqlox_core'))
-import incident_reference as c
-import workflow_effort as effort
+pass  # Package imports resolve from the repository root.
+from reqlox_core import incident_reference as c
+from reqlox_core import workflow_effort as effort
 
 
 class Clock:

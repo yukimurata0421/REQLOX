@@ -1,45 +1,35 @@
-# Reviewer Guide
+# Reviewer guide
 
-REQLOX turns quoted failure conditions into bounded experiments and repair
-checks. A reviewer can inspect how the implementation prepares a supported
-caller, limits execution, retains unknown outcomes, and verifies a candidate
-without writing to the target checkout.
+Start with the [file-sync example](../README.md#one-example-a-failed-file-sync),
+then open the [saved review](https://reqlox.yukimurata0421.dev/demo/) and select
+**api · copied Target repair**. Follow Input, Detection, Repair, Re-injection and
+Decision. The UI reads archived summaries and starts no experiment.
 
-## A short review
+## Inspect the implementation
 
-1. Read the [overview](../README.md) for the problem, available interfaces, and
-   current limits.
-2. Open the [read-only review](read-only-demo.md) to inspect saved input, detection,
-   candidate, re-injection and decision records without new execution.
-3. Inspect the retained unsupported and insufficient-information outcomes.
-   The current browser execution policy is `OFFLINE_RECORDS_ONLY`; do not start
-   a fresh experiment under the exhausted copied Target scope.
-4. Inspect [Portable evaluation](portable-evaluation.md) for target preparation,
-   an equal-budget comparison, and calibration diagnostics. The **Evaluation**
-   workspace lets you follow these stages and inspect aggregate results.
-5. Read [Architecture](architecture.md) and [Evaluation](evaluation-plan.md) to
-   distinguish implementation checks from effectiveness claims.
-
-## Implementation evidence
-
-| Engineering question | Inspect |
+| Question | Code or guide |
 | --- | --- |
-| How are original inputs and dependencies fixed? | [`capsule.py`](../reqlox/capsule.py), [`studies.py`](../reqlox/studies.py) |
-| How is a documented caller found without importing the target? | [`reliability_signature_context.py`](../reqlox_core/reliability_signature_context.py), [`reliability_path_context.py`](../reqlox_core/reliability_path_context.py) |
-| Is the Source comparison fair within its finite scope? | [`reliability_incident_conditions.py`](../reqlox_core/reliability_incident_conditions.py), [`run_reliability_incident_conditions.py`](../reqlox_core/run_reliability_incident_conditions.py) |
-| How are leakage and missing outcomes handled? | [`studies.py`](../reqlox/studies.py), [`test_public_studies.py`](../tests/test_public_studies.py) |
-| What prevents an unsupported model execution? | [`cloud_model.py`](../reqlox_demo/cloud_model.py), [`test_public_runtime.py`](../tests/test_public_runtime.py) |
+| How is code read without importing a Target? | [`inventory`](../reqlox_core/reliability_reuse.py), [Target workspaces](target-workspaces.md) |
+| Where do failure conditions come from? | [Source comparison scope](source-comparison-scope.md), [`source_conditions`](../reqlox_core/reliability_source_conditions.py) |
+| How is the repair constructed? | [`repository_atomic_write`](../reqlox_core/repository_atomic_write.py), [`candidate`](../reqlox_core/reliability_reuse.py) |
+| How are observations classified? | [`observation_status`](../reqlox_core/reliability_reuse_worker.py) |
+| What prevents unauthorized execution? | [Safety and data](safety-and-data-policy.md), [`target_integration`](../reqlox/target_integration.py) |
+| Can the implementation be checked offline? | [Tests and coverage](testing.md) |
+| How is the public reading surface isolated? | [Architecture](architecture.md), [Read-only boundary](read-only-demo.md) |
 
-The public material contains usable contracts, readable implementation, owned
-examples, tests, and concise validation boundaries. Private incident corpora,
-provider records, candidate-selection history, and experiment journals are not
-distributed. Their absence is not presented as evidence of successful
-generalization, Source benefit, or calibration.
+## Terms used in results
 
-The existing owner application was deployed to GCP and verified through the
-configured browser origin. The [dated CI delivery checkpoint](../publication/ci-delivery-20261015.json)
-binds its tested main commit and installed release. The new anonymous read-only
-routes belong to a later release; verify their current live behavior through the
-[read-only entry](https://reqlox.yukimurata0421.dev/demo/). Cloud delivery does not prove
-a submitted competition entry or qualifying Cloud AI usage. See the
-[review register](review-follow-up-20261015.md) for remaining evidence gates.
+| Term | Meaning |
+| --- | --- |
+| Source | Supplied incident or failure material used to propose a condition |
+| IR | A structured intermediate record of incident or system facts |
+| JEV | Applicability review of a failure hypothesis against a system; it cannot authorize execution |
+| HELD | A binding or decision lacks the required qualification or support |
+| UNKNOWN | An outcome is unconfirmed; missing evidence is retained |
+| Capsule | A manifest-bound bundle of supplied package and dependency files |
+
+Known copied-module results, model proposals and Source comparisons are separate
+evidence. Read the [claim boundaries](source-comparison-scope.md) before drawing
+effectiveness conclusions. The latest observed release is in
+[Current delivery](current-delivery.md); older release/test snapshots and
+operational records are in the [archive](history/README.md).

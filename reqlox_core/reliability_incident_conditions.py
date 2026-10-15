@@ -5,7 +5,7 @@ import hashlib
 from pathlib import Path
 import re
 
-import reliability_source_study as study
+from . import reliability_source_study as study
 
 c=study.c
 EVENT='FINITE_GENERATED_CLEANUP_CONDITION_V1'

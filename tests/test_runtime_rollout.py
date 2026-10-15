@@ -1,4 +1,8 @@
 """Offline guards for the dedicated demo release update; no cloud operations."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 import copy
 import importlib.util
 from pathlib import Path

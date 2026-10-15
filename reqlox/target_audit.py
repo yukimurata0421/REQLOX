@@ -57,9 +57,9 @@ def claims(value):
 
 
 def audit(output):
-    import reliability_reuse as reuse
-    import run_reliability_reuse as runner
-    import run_reliability_improvement_loop as loop
+    from reqlox_core import reliability_reuse as reuse
+    from reqlox_core import run_reliability_reuse as runner
+    from reqlox_core import run_reliability_improvement_loop as loop
     output = runner.private(Path(output).absolute())
     check(output.is_dir() and output.stat().st_uid == os.getuid() and not output.stat().st_mode & 0o077,
           'TARGET_AUDIT_PRIVATE_DIRECTORY')
@@ -80,7 +80,7 @@ def audit(output):
     check(start.tzinfo is not None and end.tzinfo is not None and (end-start).total_seconds() == plan['seconds'], 'TARGET_AUDIT_DEADLINE')
     method = loop.method_identity(Path(runner.__file__).parent)
     if plan['paired']:
-        import run_reliability_paired as pair
+        from reqlox_core import run_reliability_paired as pair
         method = pair.method_identity(Path(runner.__file__).parent)
     check(plan['method']['target_workspace'] == reuse.sha(Path(targets.__file__).read_bytes())
           and plan['method']['core'] == method, 'TARGET_AUDIT_METHOD_UNSUPPORTED')
@@ -211,7 +211,7 @@ def audit(output):
               and child_inputs['maximum_probes'] == preparation.get('maximum_probes', 3), 'TARGET_AUDIT_CHILD_BUDGET_DRIFT')
         remaining = plan['maximum_native_campaigns'] - prior_attempts - sum(reserved[n] for n in selected[:selected.index(name)])
         if plan['paired']:
-            import reliability_requirement_experiment as requirements
+            from reqlox_core import reliability_requirement_experiment as requirements
             policies = {family: {k: value[k] for k in ('basis', 'scope')} for family, value in preparation['contracts'].items()}
             expected_experiment = requirements.prepare(child_inputs['sources'], preparation.get('specification_texts', {}), policies)
             check(child_inputs['experiment'] == expected_experiment

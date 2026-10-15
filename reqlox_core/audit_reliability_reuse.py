@@ -1,11 +1,19 @@
 """Finite reliability controls and verification."""
+
+if __name__ == '__main__' and not __package__:
+    import sys as _entry_sys
+    from pathlib import Path as _EntryPath
+    _entry_sys.path.insert(0, str(_EntryPath(__file__).resolve().parents[1]))
+    __package__ = 'reqlox_core'
+
 import argparse
 import hashlib
 import json
 from pathlib import Path
 import re
 import sys
-from reqlox_paths import state_root
+from .archive_loader import archived_method
+from .reqlox_paths import state_root
 ROOT = Path(__file__).resolve().parents[1]
 
 def claim_limits(output, kind, seen=None):
@@ -62,25 +70,15 @@ def main():
         raise ValueError('REUSE_AUDIT_SCOPE')
     claim_limits(output, args.kind)
     study = json.loads((output / ('input.json' if args.kind in ('loop', 'paired') else 'study.json')).read_bytes())
-    method = output / 'method'
-    for name, digest in study['method'].items():
-        path = method / name
-        if path.name != name or path.is_symlink() or hashlib.sha256(path.read_bytes()).hexdigest() != digest:
-            raise ValueError('REUSE_AUDIT_METHOD_DRIFT')
-    archived_modules = {Path(name).stem for name in study['method']} - {'reqlox_paths'}
-    if archived_modules.intersection(sys.modules):
-        raise ValueError('REUSE_AUDIT_FRESH_PROCESS_REQUIRED')
-    sys.path.insert(0, str(method))
-    import run_reliability_reuse as archived
-    archived.ROOT = ROOT
-    if args.kind == 'paired':
-        import run_reliability_paired as archived_paired
-        _, result = archived_paired.verify(output)
-    elif args.kind == 'loop':
-        import run_reliability_improvement_loop as archived_loop
-        _, result = archived_loop.verify(output)
-    else:
-        _, result = archived.verify(output)
+    verifier = {
+        'run': 'run_reliability_reuse',
+        'loop': 'run_reliability_improvement_loop',
+        'paired': 'run_reliability_paired',
+    }[args.kind]
+    with archived_method(output / 'method', study['method']) as load:
+        archived = load('run_reliability_reuse')
+        archived.ROOT = ROOT
+        _, result = load(verifier).verify(output)
     print(json.dumps(dict(status='VERIFIED', historical_status=result['status'], native_campaigns_in_history=result['native_campaigns'], new_native_campaigns=0, new_provider_calls=0, historical_method_used=True, current_claim_limits_checked=True)))
 if __name__ == '__main__':
     main()

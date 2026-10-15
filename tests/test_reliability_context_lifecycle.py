@@ -1,6 +1,10 @@
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 from reqlox import _runtime
 _runtime()
-from reqlox_paths import state_root
+from reqlox_core.reqlox_paths import state_root
 """contextmanager\u306e\u5b9fmodule\u4fee\u5fa9\u3068、\u672a\u5230\u9054fault\u3092\u6545\u969c\u3078\u8aa4\u8a8d\u3057\u306a\u3044\u3053\u3068。"""
 import datetime
 from pathlib import Path
@@ -10,11 +14,11 @@ import unittest
 from unittest.mock import patch
 
 ROOT=Path(__file__).resolve().parents[1]
-sys.path[:0]=[str(ROOT/'reqlox_core'),str(ROOT/'tests')]
-import reliability_reuse as reuse
-import reliability_reuse_worker as worker
-import run_reliability_reuse as runner
-import run_reliability_improvement_loop as loop
+sys.path[:0]=[str(ROOT / 'tests')]
+from reqlox_core import reliability_reuse as reuse
+from reqlox_core import reliability_reuse_worker as worker
+from reqlox_core import run_reliability_reuse as runner
+from reqlox_core import run_reliability_improvement_loop as loop
 
 GENERATOR='''import os as operating
 import tempfile as temporary_files
@@ -129,7 +133,7 @@ class ContextLifecycleTests(unittest.TestCase):
             self.assertEqual(path.read_bytes(),b'actual')
 
 
-@unittest.skipUnless(__import__("os").environ.get("REQLOX_RUN_NATIVE_TESTS") == "1", "native experiments are opt-in")
+@unittest.skip('Archived native tests require a separate retained-scope authorized harness')
 class NativeContextLoopTests(unittest.TestCase):
     def test_generator_is_adopted_after_fresh_confirmation_and_unreached_is_held(self):
         base=state_root()

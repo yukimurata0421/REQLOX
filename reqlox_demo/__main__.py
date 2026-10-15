@@ -9,7 +9,7 @@ from .engine import Demo
 from reqlox import _runtime
 
 _runtime()
-from reqlox_paths import ensure_state, state_root
+from reqlox_core.reqlox_paths import ensure_state, state_root
 
 
 def main():

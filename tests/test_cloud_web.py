@@ -1,4 +1,8 @@
 """Check public asset scope, owner authentication, and origin boundaries."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 import importlib.util
 import json
 import re

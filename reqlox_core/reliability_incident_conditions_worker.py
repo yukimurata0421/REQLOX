@@ -1,4 +1,11 @@
 "Apply finite cleanup conditions without receiving Source text."
+
+if __name__ == '__main__' and not __package__:
+    import sys as _entry_sys
+    from pathlib import Path as _EntryPath
+    _entry_sys.path.insert(0, str(_EntryPath(__file__).resolve().parents[1]))
+    __package__ = 'reqlox_core'
+
 import errno
 import io
 import json
@@ -6,8 +13,8 @@ import os
 from pathlib import Path
 import sys
 
-import reliability_incident_conditions as protocol
-import reliability_path_context_worker as caller
+from . import reliability_incident_conditions as protocol
+from . import reliability_path_context_worker as caller
 
 
 def run(path,digest):

@@ -21,7 +21,10 @@
     "test_reqlox_demo_portable",
     "test_target_workspace",
     "test_target_preparation_audit",
-    "test_public_cli_execution_boundaries"
+    "test_public_cli_execution_boundaries",
+    "test_package_imports",
+    "test_target_path_context",
+    "test_target_snapshot"
   ],
   "minimum_line_percent": 95,
   "minimum_branch_percent": 90,

@@ -21,9 +21,9 @@ def main():
     if hashlib.sha256(raw).hexdigest() != sys.argv[2]:
         raise ValueError("PORTABLE_PLAN_DRIFT")
     p = json.loads(raw)
-    sys.path[:0] = ["/app/reqlox_demo", "/app/reqlox_core"]
-    import repair_contract as contract
-    import portable
+    sys.path.insert(0, "/app")
+    from reqlox_demo import repair_contract as contract
+    from reqlox_demo import portable
     portable.validate_binding(p["binding"], p["declarations"])
     proof = contract.validate(p["candidate_code"])
     if proof != p["candidate_proof"] or p["original_caller_policy"] != "OMIT_EXIT":

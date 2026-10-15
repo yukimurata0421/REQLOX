@@ -17,11 +17,11 @@ from .capsule import inspect_wheels
 
 def _modules():
     _runtime()
-    import incident_reference as c
-    import reliability_path_context as context
-    import reliability_incident_conditions as conditions
-    import reliability_probability_evaluation as probability
-    import reliability_calibration_setup as calibration
+    from reqlox_core import incident_reference as c
+    from reqlox_core import reliability_path_context as context
+    from reqlox_core import reliability_incident_conditions as conditions
+    from reqlox_core import reliability_probability_evaluation as probability
+    from reqlox_core import reliability_calibration_setup as calibration
     return c, context, conditions, probability, calibration
 
 
@@ -121,7 +121,7 @@ def freeze_comparison(preparation, source, *, recipe_index=0, budget=4):
 def run_comparison(frozen, output, *, seconds=180, maximum_campaigns=32):
     """Execute a frozen comparison in new private directories with hard bounds."""
     c, _, conditions, _, _ = _modules()
-    import run_reliability_incident_conditions as runner
+    from reqlox_core import run_reliability_incident_conditions as runner
     c.require(type(seconds) is int and 1 <= seconds <= 600 and type(maximum_campaigns) is int
               and 0 <= maximum_campaigns <= 32, 'PUBLIC_COMPARISON_LIMITS')
     deadline = time.monotonic() + seconds

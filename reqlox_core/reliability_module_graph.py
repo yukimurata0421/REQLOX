@@ -8,8 +8,8 @@ import importlib.util
 import hashlib
 from pathlib import PurePosixPath
 import sys
-import incident_reference as c
-import reliability_serialized_flow as serialized
+from . import incident_reference as c
+from . import reliability_serialized_flow as serialized
 MAXIMUM_MODULES = 4
 MAXIMUM_REEXPORT_EDGES = 2
 MAXIMUM_PUBLIC_EXPORTS = 4

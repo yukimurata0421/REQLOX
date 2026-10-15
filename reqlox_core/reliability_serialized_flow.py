@@ -3,8 +3,8 @@ import ast
 from copy import deepcopy
 import json
 
-import incident_reference as c
-import reliability_context as contexts
+from . import incident_reference as c
+from . import reliability_context as contexts
 
 KIND = 'SERIALIZED_ATOMIC_CONTEXT'
 PROFILES = ('TEXT_UTF8', 'JSON_OBJECT_UTF8')

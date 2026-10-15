@@ -1,4 +1,11 @@
 """Finite reliability controls and verification."""
+
+if __name__ == '__main__' and not __package__:
+    import sys as _entry_sys
+    from pathlib import Path as _EntryPath
+    _entry_sys.path.insert(0, str(_EntryPath(__file__).resolve().parents[1]))
+    __package__ = 'reqlox_core'
+
 import argparse
 import datetime
 import hashlib
@@ -10,9 +17,9 @@ import signal
 import subprocess
 import sys
 import shutil
-from reqlox_paths import state_root
-import reliability_reuse as reuse
-import reliability_reuse_cache as site_cache_support
+from .reqlox_paths import state_root
+from . import reliability_reuse as reuse
+from . import reliability_reuse_cache as site_cache_support
 ROOT = Path(__file__).resolve().parents[1]
 METHODS = ('reqlox_paths.py', 'reliability_reuse.py', 'reliability_reuse_worker.py', 'run_reliability_reuse.py', 'repository_atomic_write.py', 'repository_atomic_worker.py', 'incident_reference.py', 'reliability_reuse_cache.py', 'reliability_context.py', 'reliability_instance.py', 'reliability_conditions.py', 'reliability_delegated_context.py', 'reliability_serialized_flow.py', 'reliability_module_graph.py')
 _INVENTORY_MEMO = None
@@ -243,12 +250,12 @@ def execute(directory, plan, archive, dependency=None):
         '--ro-bind', '/usr', '/usr', '--ro-bind', '/lib', '/lib']
     if Path('/lib64').exists(): command.extend(['--ro-bind', '/lib64', '/lib64'])
     command.extend(['--proc', '/proc', '--dev', '/dev', '--tmpfs', '/tmp', '--dir', '/run',
-        '--ro-bind', str(directory/'plan.json'), '/run/plan.json', '--ro-bind', str(archive), '/run/modules'])
+        '--ro-bind', str(directory/'plan.json'), '/run/plan.json', '--ro-bind', str(archive), '/run/reqlox_core'])
     if dependency is not None:
         reuse.c.require(reuse.sha(Path(dependency).read_bytes()) == plan['dependency_sha256'], 'REUSE_DEPENDENCY_DRIFT')
         command.extend(['--ro-bind', str(Path(dependency).absolute()), '/run/dependency.whl'])
-    command.extend(['--chdir', '/run/modules', str(Path(sys.executable).resolve()), '-S', '-B',
-                    '/run/modules/reliability_reuse_worker.py', reuse.c.digest(plan)])
+    command.extend(['--chdir', '/run', str(Path(sys.executable).resolve()), '-S', '-B',
+                    '-m', 'reqlox_core.reliability_reuse_worker', reuse.c.digest(plan)])
     command = ['/usr/bin/prlimit', '--cpu=2:2', '--as=134217728:134217728',
                '--fsize=131072:131072', '--core=0:0', '--', *command]
     process = None; value = None; error = None; code = None

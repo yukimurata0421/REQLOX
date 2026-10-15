@@ -1,4 +1,8 @@
 """Local Target UI uses explicit registration and the same finite CLI path."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 import http.client
 import json
 from pathlib import Path
@@ -9,7 +13,7 @@ from unittest.mock import patch
 import test_target_workspace as fixtures
 from reqlox_demo.target_ui import TargetLab
 from reqlox_demo.server import Server
-import run_reliability_reuse as runner
+from reqlox_core import run_reliability_reuse as runner
 
 
 class TargetUITests(unittest.TestCase):

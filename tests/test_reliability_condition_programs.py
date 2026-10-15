@@ -1,6 +1,10 @@
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 from reqlox import _runtime
 _runtime()
-from reqlox_paths import state_root
+from reqlox_core.reqlox_paths import state_root
 """\u56fa\u5b9a\u6545\u969c\u540d\u306e\u5916\u306e\u4f4d\u7f6e\u30fb\u56de\u6570\u6307\u5b9a\u3092Source\u3078\u7d50\u3073\u4ed8\u3051、\u6b63\u89e3\u5224\u5b9a\u3068\u672a\u5230\u9054\u3092\u5206\u96e2\u3059\u308b。"""
 from copy import deepcopy
 from pathlib import Path
@@ -11,12 +15,12 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'reqlox_core'))
-import reliability_conditions as conditions
-import reliability_reuse as reuse
-import run_reliability_reuse as runner
-import prepare_reliability_reuse as prepare
-import run_reliability_improvement_loop as loop
+pass  # Package imports resolve from the repository root.
+from reqlox_core import reliability_conditions as conditions
+from reqlox_core import reliability_reuse as reuse
+from reqlox_core import run_reliability_reuse as runner
+from reqlox_core import prepare_reliability_reuse as prepare
+from reqlox_core import run_reliability_improvement_loop as loop
 from test_reliability_context_lifecycle import GENERATOR
 
 SPLIT_GUARDS = '''from contextlib import contextmanager
@@ -52,7 +56,7 @@ def hypothesis(occurrence=1, operation='STREAM_CLOSE', phase='AFTER'):
     return h,sources
 
 
-@unittest.skipUnless(__import__("os").environ.get("REQLOX_RUN_NATIVE_TESTS") == "1", "native experiments are opt-in")
+@unittest.skip('Archived native tests require a separate retained-scope authorized harness')
 class ConditionProgramTests(unittest.TestCase):
     def setUp(self):
         self.site = reuse.inventory({'storage.py':SPLIT_GUARDS})['accepted'][0]

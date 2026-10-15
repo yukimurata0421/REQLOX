@@ -1,4 +1,8 @@
 """Offline boundary checks: synthetic observations, no Target import or launch."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 import contextlib
 import datetime as dt
 import io
@@ -260,7 +264,9 @@ class IntegrationTests(unittest.TestCase):
         def launch(prepared, phase, plan, guard):
             guard.reserve(plan['attempt'], 'synthetic-plan')
             return summaries[plan['attempt'] - 13]
-        with patch.object(m, 'check_grant', return_value=m.now() + dt.timedelta(seconds=300)), \
+        # Exercise orchestration with synthetic dispatch, separately from UID admission.
+        with patch.object(m, '_require_non_root'), \
+             patch.object(m, 'check_grant', return_value=m.now() + dt.timedelta(seconds=300)), \
              patch.object(m, 'check_bundle', return_value=self.bundle), \
              patch.object(m, 'observe', return_value={}), \
              patch.object(m, 'validate_runtime', side_effect=[{} ,ValueError('synthetic new anomaly')] if anomaly else None,
@@ -473,3 +479,45 @@ class ContractTests(unittest.TestCase):
         with patch.object(m, 'CONTRACT', contract), patch.object(m, 'read', return_value=value), \
              patch.object(m, 'CONTRACT_SHA', m.digest(value)):
             with self.assertRaisesRegex(ValueError, 'EXPLICIT_EXCEPTION_REQUIRED'): m.check_contract()
+
+
+class ExecutionIdentityTests(unittest.TestCase):
+    """No process, Target, real grant or campaign reservation is used."""
+
+    def test_root_real_or_effective_identity_is_rejected(self):
+        for real, effective in [(0, 0), (0, 1000), (1000, 0)]:
+            with self.subTest(real=real, effective=effective), \
+                 patch.object(m.os, 'getuid', return_value=real), \
+                 patch.object(m.os, 'geteuid', return_value=effective):
+                with self.assertRaisesRegex(ValueError, 'INTEGRATION_NON_ROOT_REQUIRED'):
+                    m._require_non_root()
+
+    def test_non_root_identity_is_accepted_by_identity_gate_only(self):
+        with patch.object(m.os, 'getuid', return_value=1000), \
+             patch.object(m.os, 'geteuid', return_value=1000):
+            m._require_non_root()
+
+    def test_approval_rejection_precedes_identity_gate(self):
+        with patch.object(m, 'private_dir', return_value=Path('/synthetic')), \
+             patch.object(m, 'check_grant', side_effect=ValueError('FINAL_APPROVAL_REQUIRED')), \
+             patch.object(m, '_require_non_root') as identity, \
+             patch.object(m.subprocess, 'Popen') as process, \
+             patch.object(m, 'retained_workspace') as workspace:
+            with self.assertRaisesRegex(ValueError, 'FINAL_APPROVAL_REQUIRED'):
+                m.execute('/synthetic', '/synthetic/grant')
+        identity.assert_not_called()
+        process.assert_not_called()
+        workspace.assert_not_called()
+
+    def test_approved_root_execution_stops_before_bundle_workspace_or_process(self):
+        with patch.object(m, 'private_dir', return_value=Path('/synthetic')), \
+             patch.object(m, 'check_grant', return_value=m.now()), \
+             patch.object(m.os, 'getuid', return_value=0), \
+             patch.object(m, 'check_bundle') as bundle, \
+             patch.object(m.subprocess, 'Popen') as process, \
+             patch.object(m, 'retained_workspace') as workspace:
+            with self.assertRaisesRegex(ValueError, 'INTEGRATION_NON_ROOT_REQUIRED'):
+                m.execute('/synthetic', '/synthetic/grant')
+        bundle.assert_not_called()
+        process.assert_not_called()
+        workspace.assert_not_called()

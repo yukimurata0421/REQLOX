@@ -1,7 +1,7 @@
 "Finite reliability controls and verification."
 import re
 
-import reliability_reuse as reuse
+from . import reliability_reuse as reuse
 
 c = reuse.c
 LIMITS = dict(documents=20, document_bytes=262144, blocks=128, block_characters=4096)
@@ -115,7 +115,7 @@ def verify_prepared(configuration, sources):
     c.check_seal(configuration)
     expected = prepare(sources,configuration['contracts'],configuration['source_texts'])
     if 'contract_preparation' in configuration:
-        import reliability_specifications as specifications
+        from . import reliability_specifications as specifications
         value = specifications.verify(configuration['contract_preparation'],sources)
         specifications.check_roles(value['specification_texts'],configuration['source_texts'])
         c.require(value['contracts']==configuration['contracts'],'NATURAL_SOURCE_CONTRACT_DRIFT')

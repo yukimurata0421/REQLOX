@@ -4,7 +4,7 @@ from copy import deepcopy
 import hashlib
 from pathlib import PurePosixPath
 
-import incident_reference as c
+from . import incident_reference as c
 
 LIMITS = dict(files=1024, file_bytes=262144, total_bytes=16777216, function_bytes=4096,
               targets=8, child_cpu_seconds=2, child_wall_seconds=5,

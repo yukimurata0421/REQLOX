@@ -1,4 +1,8 @@
 """Verify HTTP boundaries, immutable stages, and public summary redaction."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 import base64
 from copy import deepcopy
 import json

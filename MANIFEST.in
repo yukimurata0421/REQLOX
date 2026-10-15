@@ -1,4 +1,4 @@
-include LICENSE README.md pyproject.toml
+include LICENSE README.md README.history-20261015.md pyproject.toml
 include .coveragerc coverage-policy.json requirements-test.txt
 recursive-include docs *.md
 recursive-include reqlox *.py *.json

@@ -1,4 +1,11 @@
 "Finite reliability controls and verification."
+
+if __name__ == '__main__' and not __package__:
+    import sys as _entry_sys
+    from pathlib import Path as _EntryPath
+    _entry_sys.path.insert(0, str(_EntryPath(__file__).resolve().parents[1]))
+    __package__ = 'reqlox_core'
+
 import ast
 import errno
 import hashlib
@@ -11,7 +18,7 @@ import tempfile
 from types import SimpleNamespace
 from unittest.mock import patch
 
-import repository_atomic_write as contract
+from . import repository_atomic_write as contract
 
 
 class WriteHandle:

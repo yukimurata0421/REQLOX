@@ -23,16 +23,16 @@ def main():
     p = json.loads(raw)
     if p.get("original_caller_policy") not in {"OMIT_EXIT", "BALANCED_CONTEXT"}:
         raise ValueError("REPAIR_CALLER_POLICY")
-    sys.path[:0] = ["/app/reqlox_demo", "/app/reqlox_core"]
-    import repair_contract as contract
+    sys.path.insert(0, "/app")
+    from reqlox_demo import repair_contract as contract
     proof = contract.validate(p["candidate_code"])
     if proof != p["candidate_proof"]:
         raise ValueError("REPAIR_CANDIDATE_DRIFT")
     b = p["binding"]
     if p["target"] == "py-cachify":
-        from qualification_context_protocol import validate
+        from reqlox_core.qualification_context_protocol import validate
     else:
-        from qualification_context_sync import validate
+        from reqlox_core.qualification_context_sync import validate
     validate(p["inventory"], b)
     for ref in p["input_files"]:
         data = Path(ref["path"]).read_bytes()

@@ -15,8 +15,8 @@ def check(condition, reason):
 
 
 def build(target, repositories, all_repositories=False):
-    import run_reliability_reuse as runner
-    import reliability_reuse as reuse
+    from reqlox_core import run_reliability_reuse as runner
+    from reqlox_core import reliability_reuse as reuse
     verify_target(target)
     path, manifest, roots = targets.load(target)
     check('authorization' not in manifest, 'TARGET_SNAPSHOT_COPY_BEFORE_AUTHORIZATION')
@@ -59,7 +59,7 @@ def unchanged(path, manifest, entries):
     check(targets.read_json(path) == manifest, 'TARGET_SNAPSHOT_MANIFEST_CHANGED')
     for entry in entries:
         check(entry['configuration'].read_bytes() == entry['raw_config'], 'TARGET_SNAPSHOT_CONFIGURATION_CHANGED')
-        import run_reliability_reuse as runner
+        from reqlox_core import run_reliability_reuse as runner
         check(runner.load_snapshot(entry['root']) == entry['sources'] and all(
             (entry['root'] / member).read_bytes() == raw for member, raw in entry['source_files'].items()),
             'TARGET_SNAPSHOT_SOURCE_CHANGED')
@@ -68,8 +68,8 @@ def unchanged(path, manifest, entries):
 
 
 def save_bundle(target, repositories, output, all_repositories=False):
-    import run_reliability_reuse as runner
-    import reliability_reuse as reuse
+    from reqlox_core import run_reliability_reuse as runner
+    from reqlox_core import reliability_reuse as reuse
     path, original, roots, copied, entries, payload = build(target, repositories, all_repositories)
     output = runner.private(Path(os.path.abspath(output)), new=True)
     check(not any(output.is_relative_to(root) or root.is_relative_to(output) for root in roots.values()), 'TARGET_SNAPSHOT_OVERLAP')
@@ -113,8 +113,8 @@ def save_bundle(target, repositories, output, all_repositories=False):
 
 
 def verify(output):
-    import run_reliability_reuse as runner
-    import reliability_reuse as reuse
+    from reqlox_core import run_reliability_reuse as runner
+    from reqlox_core import reliability_reuse as reuse
     output = runner.private(Path(os.path.abspath(output)))
     check(output.is_dir() and output.stat().st_uid == os.getuid() and not output.stat().st_mode & 0o077,
           'TARGET_SNAPSHOT_PRIVATE_DIRECTORY')

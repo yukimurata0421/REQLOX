@@ -1,4 +1,8 @@
 """Inherited counts, immutable dispatch reservations and fresh observation gates."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 from copy import deepcopy
 import datetime
 import hashlib

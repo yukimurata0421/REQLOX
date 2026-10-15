@@ -1,196 +1,112 @@
 # REQLOX
 
-**Use incident knowledge to test and repair reliability weaknesses before release.**
+**Check reliability requirements against controlled failures in Python code.**
 
-REQLOX provides a Python library, a command-line interface, and a local browser
-demo for finite reliability experiments. It connects quoted failure conditions
-to supported Python code, compares observations with a fixed contract, and
-retains repair candidates and verification records.
+REQLOX connects a reported failure condition to a supported caller, checks the
+caller's stated requirements, and records whether a repair survives the same
+failure and normal regression checks. It provides a Python API, CLI and browser
+view of saved results.
 
-The product goal is to reduce repeated investigation and human intervention
-while keeping results inspectable. Those savings are not quantified by this
-public validation snapshot.
+## One example: a failed file sync
 
-The public implementation covers bounded code patterns and known demo targets.
-It does not provide a general incident-to-production repair service.
+Consider the owned [`persist` example](examples/repository/storage.py).
+A report such as “fsync failed with an I/O error” supplies a failure hypothesis.
+The owner supplies the requirement separately: preserve the destination, propagate
+the error and remove only this invocation's temporary file.
 
-A [read-only review](docs/read-only-demo.md) presents saved outcomes without new
-execution. See the [delivery checkpoint](publication/ci-delivery-20261015.json) and
-[review follow-up](docs/review-follow-up-20261015.md) for verified versus pending work.
+| Step | What the check does |
+| --- | --- |
+| Input | Bind the report's `FSYNC` condition to the supported `persist` caller |
+| Detection | Raise a selected sync error; the original code leaves its pending file |
+| Candidate | Wrap the write/replace sequence in cleanup guarded by ownership |
+| Re-injection | Apply the same failure to the candidate, then check normal calls |
+| Decision | Adopt only in the isolated derived snapshot when all required checks pass |
 
-## Try it locally
+The relevant change has this shape (excerpt; full rewrite in
+[`repository_atomic_write.repair`](reqlox_core/repository_atomic_write.py)):
 
-Use Python 3.11 or later. Isolated experiments require Linux, `bubblewrap`,
-working user namespaces, and a Python executable that resolves under `/usr`.
-A virtual environment created from that interpreter is supported.
+```diff
+- with pending.open("xb") as output:
+-     output.write(data)
+-     output.flush()
+-     os.fsync(output.fileno())
+- os.replace(pending, destination)
++ temporary_created = False
++ try:
++     with pending.open("xb") as output:
++         temporary_created = True
++         output.write(data)
++         output.flush()
++         os.fsync(output.fileno())
++     os.replace(pending, destination)
++ finally:
++     if temporary_created:
++         pending.unlink(missing_ok=True)
+```
+
+Open [the saved review](https://reqlox.yukimurata0421.dev/demo/) and select
+**api · copied Target repair**. That archived record contains four native
+campaigns, six failed original observations, six passing re-injections, ten
+normal regressions and six passing confirmation observations. These are
+dependent cases for one candidate. The report sentence above is illustrative;
+the saved run used owned requirements and curated inputs, not a natural-incident
+transfer study. Viewing it starts no new experiment.
+
+## Start with inspection
+
+Use Python 3.11 or later:
 
 ```bash
 python3 -m venv .venv
 .venv/bin/python -m pip install '.[knowledge]'
 .venv/bin/reqlox inventory --root examples/repository
-.venv/bin/reqlox check
+.venv/bin/reqlox run --target examples/targets/target.json --all --dry-run
 .venv/bin/reqlox demo
 ```
 
-Open the local URL printed by the last command. The server binds to
-`127.0.0.1`; it is not a public hosting endpoint. The demo uses two known
-controls, `py-cachify` and `readerwriterlock`, and a bounded lock-cleanup
-scenario. The browser UI now supports offline records, input drafts and static
-preparation; all new native execution and model calls are disabled at one
-server boundary. See [Records and history](docs/ui-records-and-history.md).
-Recorded assessments and repair proposals are optional local inputs; detailed
-model and experiment records are not bundled.
+Inventory reads Python syntax without importing the Target. The dry run prepares
+the selection without executing it. The local UI supports saved records, input
+drafts, static preparation and history restoration; new model calls and native
+execution are disabled at the server boundary.
 
-Choose **Evaluation** in the navigation to prepare documented targets, freeze
-Source and No Source comparison inputs, and review probability diagnostics in the
-same local UI. Its owned examples, private artifacts, and aggregate result
-exports are described in [Portable evaluation](docs/portable-evaluation.md).
-
-For an initial run that does not execute a target:
-
-```bash
-.venv/bin/reqlox demo run --sample negative --method baseline
-```
-
-Choose **Knowledge** to import and search supplied reports, prepare source-bound
-incident IR, and review missing probability outcomes. The current local methods
-are available through the CLI and Python API as well. See
-[Local incident knowledge](docs/local-knowledge.md) for an owned end-to-end
-example and explicit provider scopes.
-
-See [Getting started](docs/getting-started.md) for the repository repair loop,
-condition preparation, state directories, and saved-result audits.
-
-## Select repositories in a Target
-
-An explicit documented path-context configuration also connects author README
-examples to finite exit-release checks and fresh-process confirmation. Try the
-[owned example](examples/targets/path-context/target.json) and read its
-[contract and budget boundaries](docs/target-workspaces.md#select-a-documented-path-context).
-
-Use a private copy of registered repositories for local preparation and isolated
-experiments. A VM is optional; the execution host must permit the bounded
-namespace workers. Copying alone does not verify a fault or a repair.
-
-```bash
-export REQLOX_STATE_DIR="$HOME/.local/state/reqlox"
-mkdir -p -m 700 "$REQLOX_STATE_DIR/target-snapshots"
-.venv/bin/reqlox target snapshot --target examples/targets/target.json --all \
-  --output "$REQLOX_STATE_DIR/target-snapshots/my-system"
-.venv/bin/reqlox target snapshot-audit --output "$REQLOX_STATE_DIR/target-snapshots/my-system"
-.venv/bin/reqlox run --target "$REQLOX_STATE_DIR/target-snapshots/my-system/target.json" --all --dry-run
-```
-
-
-A Target manifest groups named repository roots and their individual contract
-configurations. From this checkout after installation, inspect the owned `api`
-and `worker` examples:
-
-```bash
-.venv/bin/reqlox target list --target examples/targets/target.json
-.venv/bin/reqlox run --target examples/targets/target.json --repo api --dry-run
-.venv/bin/reqlox run --target examples/targets/target.json --repo api --repo worker --dry-run
-.venv/bin/reqlox run --target examples/targets/target.json --all --dry-run
-```
-
-Repeat `--repo` to select several names, or use `--all` to explicitly select every
-registered repository. Dry runs inspect and hash the plan without executing
-Target code, calling a provider, or creating runtime state.
-
-On a host where isolated experiments are permitted, execute a bounded run:
-
-```bash
-.venv/bin/reqlox run --target examples/targets/target.json --all \
-  --seconds 120 --maximum-native-campaigns 12 --maximum-rounds 3
-```
-
-The execution deadline and native campaign limit are shared across all selected
-repositories, comparison arms, and repair rounds. Candidates are adopted in
-isolated snapshots. See [Target workspaces](docs/target-workspaces.md) for
-`target init`, `target add`, contract configuration, and saved results.
-
-Prepare supplied Source text with registered contracts, then audit an aggregate
-result without executing another experiment:
-
-```bash
-.venv/bin/reqlox target prepare --target examples/targets/target.json --all \
-  --natural-source-input examples/targets/source-input.json --output PRIVATE_NEW_DIRECTORY
-.venv/bin/reqlox run --target PRIVATE_NEW_DIRECTORY/target.json --all --dry-run
-.venv/bin/reqlox target audit --output PRIVATE_RUN_DIRECTORY
-.venv/bin/reqlox demo --target-manifest examples/targets/target.json
-```
-
-Replace `PRIVATE_NEW_DIRECTORY` with a new directory under the private
-`REQLOX_STATE_DIR` (default `~/.local/state/reqlox`), using an existing parent, and `PRIVATE_RUN_DIRECTORY` with a run's reported output directory. The
-**Targets** page first copies the selection, then uses the same preparation, planning, run, and audit methods.
-Native Target experiments are disabled in the UI by default. See
-[Target workspaces](docs/target-workspaces.md) for isolation and audit boundaries.
-
-
-## What is included
-
-| Interface | Available behavior |
+| Goal | Start here |
 | --- | --- |
-| `reqlox target` / `reqlox run` | Register multiple repositories in a Target, inspect an explicit selection, and run with one shared finite budget. |
-| `reqlox inventory` | Inspect a Python snapshot without importing target code; report accepted and held bindings. |
-| `reqlox prepare` | Prepare supplied, quoted failure conditions against declared contracts. |
-| `reqlox qualify` | Run a bounded repair loop on a supported snapshot; retain candidate changes without writing to the checkout. |
-| `reqlox qualify --paired` | Run separate Source and No Source arms from the same initial snapshot. |
-| `reqlox audit` | Verify a saved result using its recorded method and current claim checks; execute no new target experiments. |
-| `reqlox demo` | Inspect evidence and finite observations in a local UI. |
-| `reqlox study` | Prepare documented targets and dependency capsules, compare equal-budget Source/No Source exploration, and review calibration candidates. |
-| `reqlox knowledge` | Import or explicitly fetch reports, search a local index, freeze and review native IR, run explicitly scoped generation and parallel judging, and retain partial score bounds. |
-| Python API | Use `reqlox.inventory()`, `reqlox.source_conditions()`, and `reqlox.studies` on explicitly supplied inputs. |
+| Follow the existing result | [Read-only review](docs/read-only-demo.md) |
+| Prepare your own supported caller | [Getting started](docs/getting-started.md) and [Target workspaces](docs/target-workspaces.md) |
+| Understand extraction and comparison | [Source comparison scope](docs/source-comparison-scope.md) |
+| Inspect the design and code | [Reviewer guide](docs/reviewer-guide.md) and [Architecture](docs/architecture.md) |
+| Run offline checks | [Tests and coverage](docs/testing.md) |
+| Explore document/IR interfaces | [Knowledge](docs/local-knowledge.md) and [System IR](docs/system-ir-reproduction.md) |
 
-The repository also includes schemas, owned examples, portable unit tests,
-optional native integration tests, and an optional cloud model adapter.
+## What the implementation covers
 
-## Read the project
+The core binds four supported families: atomic file writes, atomic file contexts,
+asynchronous resource release and elapsed-time expiry. Report projection uses a
+bounded lexical grammar; caller binding uses syntax and documented interfaces.
+Repair generation uses deterministic family rewrites or explicitly supplied
+candidates. Optional model proposals and applicability review are separate
+from execution authority; [one historical provider call](docs/historical-vertex-ai-usage.md)
+is documented independently of the copied-Target runs.
 
-- [Documentation index](docs/README.md): choose a path through the public documentation.
-- [Reviewer guide](docs/reviewer-guide.md): a short path through runnable behavior and inspectable engineering evidence.
-- [Concepts](docs/concepts.md): Source, Target, contracts, candidates, and result boundaries.
-- [Architecture](docs/architecture.md): implemented data flow and component locations.
-- [Data contracts](docs/data-contracts.md): inputs, saved artifacts, and integrity checks.
-- [Target workspaces](docs/target-workspaces.md): register repositories, inspect a plan, and execute selected names.
-- [Results](docs/results.md): interpret statuses and inspect a completed or stopped run.
-- [Evaluation](docs/evaluation-plan.md): published validation scope and further measurements.
-- [Tests and coverage](docs/testing.md): portable checks, per-file thresholds, reports, and remaining coverage gaps.
-- [Records and history](docs/ui-records-and-history.md): common execution gate, archived outcomes, private restoration and exact Source lineage.
-- [Portable evaluation](docs/portable-evaluation.md): local preparation, Source comparison, and probability diagnostics.
-- [Local incident knowledge](docs/local-knowledge.md): document search, current IR methods, explicit provider scopes, and reference SQL.
-- [System IR reproduction](docs/system-ir-reproduction.md): frozen code/spec projection and request-bound offline review.
-- [Safety and data](docs/safety-and-data-policy.md): execution and disclosure boundaries.
-- [Public scope](docs/minimal-implementation-plan.md): available capabilities and remaining work.
+The comparison interface supports fixed and Target-guided source-blind planners.
+Both arms share an available primitive library and equal declared budgets.
+Source can change ordering or select a condition outside a particular baseline;
+this measures a finite planner comparison, not general incident understanding.
 
-## Validation scope
+## Limits and evidence
 
-The [knowledge port validation](publication/knowledge-port.json) covers the local
-knowledge interfaces and their installation. The [UI validation](publication/ui-validation.json) covers the earlier browser
-workspaces and their packaged runtime. The earlier
-[evaluation implementation validation](publication/evaluation-validation.json)
-records checks of this public implementation, installation outside the
-development import path, English interfaces, and bounded owned controls.
-The [earlier runtime snapshot](publication/validation.json) is historical;
-its file hashes do not describe the updated implementation.
+Native execution requires separately approved copied inputs, Linux namespaces,
+resource limits and a durable budget. Model output and review scores cannot
+authorize execution. Originals are preserved; candidates affect isolated copies.
 
-Implementation verification and owned controls do not establish effectiveness
-on independent unseen projects, natural Source benefit, or probability
-calibration. An owner-authenticated cloud workspace was deployed on 12 October
-2026 (JST). The [hosted deployment record](docs/hosted-deployment.md) identifies
-the revision verified through the public browser, its archived result display,
-and the existing automatic stop deadline. Deployment and archived summaries
-do not establish a new live experiment. New browser checks are disabled. The CLI baseline needs no
-paid model call.
+The archived copied-Target scope is closed at **15/15 campaigns, 62/120 charged
+seconds**. Temppath retains **four HELD bindings**, with no repair or repair
+re-injection. Missing historical raw evidence remains `UNKNOWN_UNRECOVERED`.
+HELD means a binding is not qualified; UNKNOWN means an outcome is unconfirmed.
+Independent generalization, Source added value, probability calibration and
+human-effort savings remain research questions.
 
-## Limits and license
-
-Accepted static bindings are candidates for the supported finite contracts;
-they are not proof of a defect or of compatibility with arbitrary Python.
-A successful finite repair does not establish cross-target generalization,
-incident-cause accuracy, production readiness, or a measured reduction in cost.
-
-Repository-authored material is licensed under [Apache License 2.0](LICENSE).
-External incident text and downloaded target distributions retain their own
-rights and licenses. Raw corpora, private evidence, credentials, and runtime
-state are not part of this public repository.
+Current delivery: [verified release](docs/current-delivery.md).
+Documentation: [guide](docs/README.md).
+Dated validation and operational history: [archive index](docs/history/README.md).
+The [previous README](README.history-20261015.md) is retained as a dated snapshot.

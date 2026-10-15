@@ -1,6 +1,10 @@
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 from reqlox import _runtime
 _runtime()
-from reqlox_paths import state_root
+from reqlox_core.reqlox_paths import state_root
 """\u53cd\u4f8b、\u4fee\u5fa9、\u5225round\u3067\u306e\u5168catalog\u78ba\u8a8d、\u6761\u4ef6\u4ed8\u304d\u63a1\u7528\u306e\u5b9f\u7d4c\u8def。"""
 import datetime
 from pathlib import Path
@@ -10,10 +14,10 @@ import tempfile
 import unittest
 
 ROOT=Path(__file__).resolve().parents[1]
-sys.path[:0]=[str(ROOT/'reqlox_core'),str(ROOT/'tests')]
-import reliability_reuse as reuse
-import run_reliability_reuse as runner
-import run_reliability_improvement_loop as loop
+sys.path[:0]=[str(ROOT / 'tests')]
+from reqlox_core import reliability_reuse as reuse
+from reqlox_core import run_reliability_reuse as runner
+from reqlox_core import run_reliability_improvement_loop as loop
 from test_reliability_reuse import ATOMIC,contracts
 
 
@@ -29,7 +33,7 @@ def hypothesis():
     return h,{'constructed':text}
 
 
-@unittest.skipUnless(__import__("os").environ.get("REQLOX_RUN_NATIVE_TESTS") == "1", "native experiments are opt-in")
+@unittest.skip('Archived native tests require a separate retained-scope authorized harness')
 class FiniteLoopTests(unittest.TestCase):
     def setUp(self):
         base=state_root()

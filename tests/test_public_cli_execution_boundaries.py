@@ -1,4 +1,9 @@
 """Mocked CLI execution covers stop states without provider or Target calls."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+from runtime_imports import patched_runtime_modules
+
 import contextlib
 import io
 import json
@@ -61,26 +66,25 @@ class PublicCliExecutionTests(unittest.TestCase):
         self.sources = {'owned.py': 'value = 1\n'}
         self.config = {'contracts': {'family': {'basis': 'OWNED', 'scope': 'CALLER'}},
                        'source_texts': {'incident': 'owned evidence'}, 'hypotheses': ['owned hypothesis']}
-        self.runner = ModuleType('run_reliability_reuse')
+        self.runner = ModuleType('reqlox_core.run_reliability_reuse')
         self.runner.load_snapshot = Mock(return_value=self.sources)
         self.runner.read = Mock(return_value=self.config)
-        self.paths = ModuleType('reqlox_paths')
+        self.paths = ModuleType('reqlox_core.reqlox_paths')
         self.paths.ensure_state = Mock(return_value=self.root)
-        self.reuse = ModuleType('reliability_reuse')
+        self.reuse = ModuleType('reqlox_core.reliability_reuse')
         self.reuse.hypothesis = Mock(return_value='prepared hypothesis')
-        self.loop = ModuleType('run_reliability_improvement_loop')
+        self.loop = ModuleType('reqlox_core.run_reliability_improvement_loop')
         self.loop.run = Mock(return_value={'status': 'ADOPTED_IN_SNAPSHOT'})
-        self.requirements = ModuleType('reliability_requirement_experiment')
+        self.requirements = ModuleType('reqlox_core.reliability_requirement_experiment')
         self.requirements.prepare = Mock(return_value='owned experiment')
-        self.paired = ModuleType('run_reliability_paired')
+        self.paired = ModuleType('reqlox_core.run_reliability_paired')
         self.paired.run = Mock(return_value={'status': 'COMPLETE'})
-        self.audit = ModuleType('audit_reliability_reuse')
+        self.audit = ModuleType('reqlox_core.audit_reliability_reuse')
         self.audit.main = Mock()
         for replacement in (patch.object(cli, '_runtime'), patch.dict(os.environ),
-                            patch.dict(sys.modules, {m.__name__: m for m in
+                            patched_runtime_modules( {m.__name__: m for m in
                                 (self.runner, self.paths, self.reuse, self.loop, self.requirements, self.paired, self.audit)})):
-            replacement.start()
-            self.addCleanup(replacement.stop)
+            self.enterContext(replacement)
 
     def qualify(self, *extra):
         output, error = io.StringIO(), io.StringIO()
@@ -187,16 +191,16 @@ class PublicCliExecutionTests(unittest.TestCase):
             delegate = ModuleType('reqlox.' + command + '_cli')
             delegate.main = Mock(return_value=4)
             arguments = [command, '--help']
-            with self.subTest(command=command), patch.dict(sys.modules, {delegate.__name__: delegate}):
+            with self.subTest(command=command), patched_runtime_modules( {delegate.__name__: delegate}):
                 self.assertEqual(cli.main(arguments), 4)
                 delegate.main.assert_called_once_with(['--help'])
                 self.assertEqual(arguments, [command, '--help'])
 
     def test_prepare_delegate_receives_arguments_and_restores_argv_on_exception(self):
-        delegate = ModuleType('prepare_reliability_reuse')
+        delegate = ModuleType('reqlox_core.prepare_reliability_reuse')
         saved, seen = sys.argv, []
         delegate.main = Mock(side_effect=lambda: seen.append(sys.argv.copy()) or self.raise_error(RuntimeError('owned')))
-        with patch.dict(sys.modules, {delegate.__name__: delegate}), self.assertRaisesRegex(RuntimeError, 'owned'):
+        with patched_runtime_modules( {delegate.__name__: delegate}), self.assertRaisesRegex(RuntimeError, 'owned'):
             cli.main(['prepare', '--help'])
         self.assertIs(sys.argv, saved)
         self.assertEqual(seen, [['reqlox prepare', '--help']])
@@ -216,7 +220,7 @@ class PublicRuntimeBoundaryTests(unittest.TestCase):
 
     def test_loaded_module_without_origin_is_rejected_without_import_path_mutation(self):
         before = sys.path.copy()
-        with patch.dict(sys.modules, {'workflow_effort': ModuleType('workflow_effort')}):
-            with self.assertRaisesRegex(ImportError, 'Conflicting runtime module: workflow_effort'):
+        with patched_runtime_modules( {'reqlox_core': ModuleType('reqlox_core')}):
+            with self.assertRaisesRegex(ImportError, 'Conflicting runtime package'):
                 reqlox._runtime()
         self.assertEqual(sys.path, before)

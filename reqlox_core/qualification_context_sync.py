@@ -2,8 +2,8 @@
 import ast
 import hashlib
 from pathlib import Path
-from qualification_adapters_v2 import inventory as previous_inventory,_signature,_class,_methods,sha,need
-from qualification_context_protocol import keyword_call
+from .qualification_adapters_v2 import inventory as previous_inventory, _signature, _class, _methods, sha, need
+from .qualification_context_protocol import keyword_call
 
 
 def inventory(root):

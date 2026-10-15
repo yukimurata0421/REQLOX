@@ -12,11 +12,11 @@ def check(condition, reason):
 
 def build(target, repositories, all_repositories=False, *, natural_source=None,
           condition_input=None, source_index=None, packets=None, specification_input=None):
-    import run_reliability_reuse as runner
-    import reliability_reuse as reuse
-    import reliability_source_conditions as natural
-    import reliability_specifications as specifications
-    import prepare_reliability_reuse as preparation
+    from reqlox_core import run_reliability_reuse as runner
+    from reqlox_core import reliability_reuse as reuse
+    from reqlox_core import reliability_source_conditions as natural
+    from reqlox_core import reliability_specifications as specifications
+    from reqlox_core import prepare_reliability_reuse as preparation
     from .target_snapshot import verify_target
     verify_target(target)
     path, manifest, roots = targets.load(target)
@@ -96,8 +96,8 @@ def build(target, repositories, all_repositories=False, *, natural_source=None,
 
 
 def save_bundle(target, repositories, output, all_repositories=False, **options):
-    import run_reliability_reuse as runner
-    import reliability_reuse as reuse
+    from reqlox_core import run_reliability_reuse as runner
+    from reqlox_core import reliability_reuse as reuse
     path, original_manifest, roots, entries = build(target, repositories, all_repositories, **options)
     output = runner.private(Path(os.path.abspath(output)), new=True)
     check(not any(output.is_relative_to(r) or r.is_relative_to(output) for r in roots.values()),

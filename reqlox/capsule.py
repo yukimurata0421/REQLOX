@@ -22,7 +22,7 @@ from . import _runtime
 
 def _contract():
     _runtime()
-    import incident_reference
+    from reqlox_core import incident_reference
     return incident_reference
 
 

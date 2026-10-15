@@ -166,6 +166,32 @@ Read both arms separately. A completed comparison can show zero additional
 Source benefit or no eligible repair adoption. Supplied text is bound locally;
 the interface does not authenticate external incident retrieval or causation.
 
+### Audit a saved comparison without replay
+
+Use the saved comparison directory to check its Source spans, equal discovery
+budgets, baseline, both arms, candidate bindings, common confirmation envelope,
+child receipts, archived method bytes, and final campaign totals:
+
+```bash
+.venv/bin/reqlox study compare-audit \
+  --directory "$REQLOX_STATE_DIR/comparison-run" \
+  --state-dir "$REQLOX_STATE_DIR"
+```
+
+The command prints a JSON report and does not change the saved directory,
+start a Target, fetch Source text, make a model call, or reserve a campaign.
+`VERIFIED` means that the saved records agree; it is not a new native result,
+repair success, independent provenance check, or execution authorization.
+Baseline failures and unknown observations retain their recorded outcomes.
+Incomplete runs and changed or missing evidence stop the audit without retry.
+Older planner versions remain identified as archived versions. A changed repair
+generator is held instead of being treated as the original generator.
+
+The Python equivalent is `studies.audit_comparison(directory)`. As with the
+other saved-run interfaces, the directory must stay under `$REQLOX_STATE_DIR`
+and must not use symlinks. Source verification binds the supplied document
+bytes; external incident retrieval remains unverified.
+
 ## Score and register calibration candidates
 
 The shipped datasets illustrate the interface with synthetic examples. Their

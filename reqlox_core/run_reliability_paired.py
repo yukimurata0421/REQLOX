@@ -1,15 +1,22 @@
 """Finite reliability controls and verification."""
+
+if __name__ == '__main__' and not __package__:
+    import sys as _entry_sys
+    from pathlib import Path as _EntryPath
+    _entry_sys.path.insert(0, str(_EntryPath(__file__).resolve().parents[1]))
+    __package__ = 'reqlox_core'
+
 import argparse
 import datetime
 import json
 from pathlib import Path
 import signal
-import reliability_requirement_experiment as requirements
-import reliability_source_conditions as natural
-import reliability_specifications as specifications
-import reliability_reuse as reuse
-import run_reliability_reuse as runner
-import run_reliability_improvement_loop as loop
+from . import reliability_requirement_experiment as requirements
+from . import reliability_source_conditions as natural
+from . import reliability_specifications as specifications
+from . import reliability_reuse as reuse
+from . import run_reliability_reuse as runner
+from . import run_reliability_improvement_loop as loop
 METHODS = (*loop.METHODS, 'reliability_requirement_experiment.py', 'reliability_specifications.py', 'reliability_source_conditions.py', 'run_reliability_paired.py')
 
 def method_identity(path):

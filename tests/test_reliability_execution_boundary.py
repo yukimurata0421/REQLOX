@@ -1,4 +1,8 @@
 """Launcher limits and unsafe observations are rejected without native workers."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 from copy import deepcopy
 import json
 from pathlib import Path
@@ -8,7 +12,7 @@ from unittest.mock import patch
 
 import reqlox
 reqlox._runtime()
-import run_reliability_reuse as runner
+from reqlox_core import run_reliability_reuse as runner
 
 
 class ExecutionBoundaryTests(unittest.TestCase):

@@ -3,7 +3,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
-import reliability_path_context as protocol
+from . import reliability_path_context as protocol
 c = protocol.c
 
 def read(path, *, maximum=25165824, sealed=True):

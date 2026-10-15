@@ -1,4 +1,8 @@
 """Deployment inputs must not weaken local isolation or include private files."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 import importlib.util
 import io
 import json

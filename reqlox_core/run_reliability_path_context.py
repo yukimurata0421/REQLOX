@@ -5,8 +5,8 @@ from pathlib import Path
 import signal
 import subprocess
 
-import reliability_path_context as protocol
-import run_reliability_reuse as storage
+from . import reliability_path_context as protocol
+from . import run_reliability_reuse as storage
 
 
 def execute(plan, output, *, before_native=None):
@@ -33,9 +33,9 @@ def execute(plan, output, *, before_native=None):
     cmd=['/usr/bin/bwrap','--unshare-all','--die-with-parent','--new-session','--clearenv','--cap-drop','ALL',
          '--ro-bind','/usr','/usr','--symlink','usr/lib','/lib','--symlink','usr/lib64','/lib64',
          '--tmpfs','/tmp','--proc','/proc','--dev','/dev','--chdir','/tmp',
-         '--ro-bind',str(output/'plan.json'),'/run/plan.json','--ro-bind',str(method),'/app',
+         '--ro-bind',str(output/'plan.json'),'/run/plan.json','--ro-bind',str(method),'/app/reqlox_core',
          '--ro-bind',str(source),'/target','/usr/bin/python3','-I','-S','-B','-c',
-         'import sys;sys.path.insert(0,"/app");from reliability_path_context_worker import run;run(sys.argv[1],sys.argv[2])',
+         'import sys;sys.path.insert(0,"/app");from reqlox_core.reliability_path_context_worker import run;run(sys.argv[1],sys.argv[2])',
          '/run/plan.json',protocol.c.digest(plan)]
     cmd=['/usr/bin/prlimit','--cpu=2:2','--as=134217728:134217728',
          '--fsize=131072:131072','--core=0:0','--',*cmd]

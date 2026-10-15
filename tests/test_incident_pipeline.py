@@ -1,4 +1,8 @@
 """Boundary checks for source-to-IR replay and exact request/response association."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 from copy import deepcopy
 import importlib.util
 from datetime import datetime, timedelta, timezone

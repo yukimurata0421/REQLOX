@@ -3,7 +3,7 @@ import errno
 import hashlib
 import re
 
-import incident_reference as c
+from . import incident_reference as c
 
 FIELDS = {'kind','family','operation','phase','occurrence','source_id','span','origin'}
 
@@ -60,7 +60,7 @@ def pool(hypotheses):
 
 def owned_qualification():
     "Owned qualification."
-    import reliability_reuse as reuse
+    from . import reliability_reuse as reuse
     source_id = 'owned-model-qualification-grid-v1'
     text = 'Owned finite file lifecycle model: first explicit flush before/after and first stream context exit after. Not an external incident or physical fault oracle.'
     texts = {source_id:text};span = dict(start=0,end=len(text),sha256=sha(text));hypotheses=[]

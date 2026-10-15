@@ -1,5 +1,5 @@
 "Finite reliability controls and verification."
-from qualification_adapters_v2 import _class,_methods,sha,need
+from .qualification_adapters_v2 import _class, _methods, sha, need
 
 
 def keyword_call(signature,kwargs):

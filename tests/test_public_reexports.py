@@ -1,4 +1,8 @@
 """Check current public reexports and distinct API and repair-unit accounting."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 from copy import deepcopy
 import os
 from pathlib import Path
@@ -7,9 +11,9 @@ import unittest
 
 import reqlox
 reqlox._runtime()
-import reliability_reuse as reuse
-import run_reliability_reuse as runner
-from reqlox_paths import state_root
+from reqlox_core import reliability_reuse as reuse
+from reqlox_core import run_reliability_reuse as runner
+from reqlox_core.reqlox_paths import state_root
 from test_reliability_modular_flow import MODULES
 from test_reliability_reuse import contracts
 
@@ -49,7 +53,7 @@ class PublicReexportTests(unittest.TestCase):
         rows[-1]['observed']['repair_pass']=None
         self.assertEqual(runner.exposure_accounting(inventory,rows)['arms']['SOURCE']['candidate_passed_repair_units'],0)
 
-    @unittest.skipUnless(os.environ.get('REQLOX_RUN_NATIVE_TESTS')=='1','native experiments are opt-in')
+    @unittest.skip('Archived native tests require a separate retained-scope authorized harness')
     def test_isolated_public_invocation_repairs_once_and_verifies_accounting(self):
         with tempfile.TemporaryDirectory(prefix='reqlox-reexport-',dir=state_root()) as tmp:
             output=Path(tmp)/'run'

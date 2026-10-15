@@ -1,6 +1,6 @@
 "Validate finite semantic answers without repairing responses."
 from copy import deepcopy
-import incident_reference as c
+from . import incident_reference as c
 
 
 def fingerprint(answer):

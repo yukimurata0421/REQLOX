@@ -4,7 +4,7 @@ import uuid
 import reqlox
 reqlox._runtime()
 from reqlox import targets, target_prepare, target_audit, target_snapshot
-from reqlox_paths import state_root
+from reqlox_core.reqlox_paths import state_root
 
 OPERATIONS = frozenset(('snapshot', 'plan', 'prepare', 'run', 'audit', 'result'))
 
@@ -37,7 +37,7 @@ class TargetLab:
         """Bounded discovery of completed records for startup-registered Targets."""
         if not self.manifests:
             return []
-        import run_reliability_reuse as runner
+        from reqlox_core import run_reliability_reuse as runner
         root = runner.private(state_root() / 'target-runs')
         if not root.is_dir():
             return []
@@ -217,7 +217,7 @@ class TargetLab:
     @staticmethod
     def private_parent(name):
         import os
-        import run_reliability_reuse as runner
+        from reqlox_core import run_reliability_reuse as runner
         state = runner.private(state_root()); state.mkdir(parents=True, mode=0o700, exist_ok=True)
         require(state.stat().st_uid == os.getuid() and state.stat().st_mode & 0o077 == 0, 'TARGET_UI_PRIVATE_STATE')
         root = runner.private(state / name); root.mkdir(mode=0o700, exist_ok=True)

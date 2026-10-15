@@ -12,10 +12,10 @@ import uuid
 from . import contracts, isolation, targets
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "reqlox_core"))
-import qualification_adapters_v2 as api
-import qualification_context_protocol as context
-import qualification_context_sync as sync
+pass  # Package imports resolve from the repository root.
+from reqlox_core import qualification_adapters_v2 as api
+from reqlox_core import qualification_context_protocol as context
+from reqlox_core import qualification_context_sync as sync
 
 
 def binding(target):

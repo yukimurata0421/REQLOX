@@ -1,4 +1,8 @@
 """Saved evidence rejects ambiguous JSON, unsafe paths, and false claims."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 import hashlib
 import json
 import os

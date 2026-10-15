@@ -1,7 +1,7 @@
 "Finite reliability controls and verification."
 import re
 
-import reliability_reuse as reuse
+from . import reliability_reuse as reuse
 
 c = reuse.c
 PREDICATES = {

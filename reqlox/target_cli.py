@@ -97,7 +97,7 @@ def main(argv=None):
             if args.dry_run:
                 result = planned
             else:
-                from reqlox_paths import state_root
+                from reqlox_core.reqlox_paths import state_root
                 result = targets.execute(planned, prepared, roots, state_root(), name=args.name, expected=args.expect_plan_sha256)
         print(json.dumps(result, ensure_ascii=False))
         if result['status'] in ('PLANNED', 'TARGET_CREATED', 'REPOSITORY_REGISTERED', 'TARGET_LISTED', 'SNAPSHOTTED', 'PREPARED', 'VERIFIED', 'COMPLETE'):

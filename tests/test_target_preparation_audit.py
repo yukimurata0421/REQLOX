@@ -1,4 +1,8 @@
 """Preparation provenance, aggregate integrity and read-only audit boundaries."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 import copy
 import json
 from pathlib import Path
@@ -7,9 +11,9 @@ from unittest.mock import patch
 import reqlox
 reqlox._runtime()
 from reqlox import targets, target_prepare, target_audit
-import reliability_reuse as reuse
-import run_reliability_reuse as runner
-import run_reliability_improvement_loop as loop
+from reqlox_core import reliability_reuse as reuse
+from reqlox_core import run_reliability_reuse as runner
+from reqlox_core import run_reliability_improvement_loop as loop
 import test_target_workspace as fixtures
 
 

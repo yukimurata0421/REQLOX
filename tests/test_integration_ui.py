@@ -1,4 +1,8 @@
 """Safe summary checks with synthetic records; no native execution."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 import json
 from pathlib import Path
 import unittest

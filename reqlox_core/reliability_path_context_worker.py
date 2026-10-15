@@ -1,4 +1,11 @@
 "Execute original context implementations inside a bounded namespace."
+
+if __name__ == '__main__' and not __package__:
+    import sys as _entry_sys
+    from pathlib import Path as _EntryPath
+    _entry_sys.path.insert(0, str(_EntryPath(__file__).resolve().parents[1]))
+    __package__ = 'reqlox_core'
+
 import datetime
 import gc
 import hashlib
@@ -13,8 +20,8 @@ import resource
 import sys
 import tempfile
 
-import incident_reference as c
-import reliability_path_context as protocol
+from . import incident_reference as c
+from . import reliability_path_context as protocol
 
 
 class BodyException(Exception):

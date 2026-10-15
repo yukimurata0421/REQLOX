@@ -3,9 +3,9 @@ from collections import Counter
 from copy import deepcopy
 import math
 
-import incident_choice_response as responses
-import incident_reference as c
-import reliability_probability_evaluation as probability
+from . import incident_choice_response as responses
+from . import incident_reference as c
+from . import reliability_probability_evaluation as probability
 
 GROUP_AXES = ('source_group', 'target_group', 'mechanism_group', 'dependency_component')
 EPSILON = 1e-6

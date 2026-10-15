@@ -17,9 +17,9 @@ def main():
     if hashlib.sha256(raw).hexdigest() != sys.argv[2]:
         raise ValueError("GOLD_PLAN_DRIFT")
     plan = json.loads(raw)
-    sys.path.insert(0, "/app/reqlox_core")
-    import qualification_context_gold as state
-    import qualification_context_oracle_log as log
+    sys.path.insert(0, "/app")
+    from reqlox_core import qualification_context_gold as state
+    from reqlox_core import qualification_context_oracle_log as log
     first = {case["id"]: {stage["id"]: state.expected(case, stage) for stage in plan["stages"]} for case in plan["cases"]}
     second = {case["id"]: {stage["id"]: log.expected(case, stage) for stage in plan["stages"]} for case in plan["cases"]}
     if first != second:

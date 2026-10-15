@@ -54,17 +54,19 @@ not established by those implementation checks.
 
 ## Delivery and remaining work
 
-The owner Workspace has a verified GCP deployment through the existing VM and
-Cloud Run gateway. The [dated checkpoint](../publication/ci-delivery-20261015.json)
-records the actual commit and release. Earlier package validation predates that
-deployment and remains historical.
+The owner Workspace and anonymous [read-only publication](read-only-demo.md)
+were deployed from public main `dffb8f7` through the existing VM and Cloud Run
+gateway. [Latest delivery](current-delivery.md) and its
+[checkpoint](../publication/read-only-delivery-20261015.json) record successful
+Actions and Cloudflare browser checks. Public GET/HEAD routes serve curated
+static records; private history and execution APIs retain their access boundary.
+The [earlier CI checkpoint](../publication/ci-delivery-20261015.json) and source-only
+review remain historical.
 
-A separate [read-only publication](read-only-demo.md) now exports curated static
-records and defines anonymous GET/HEAD routes without exposing private history
-or execution APIs. Its source and local checks are separate from the installed
-owner release; delivery of these new routes requires the separate Actions and browser gates. Competition
-submission, qualifying Cloud AI usage, public source access and sustained hosting
-costs require the evidence or decisions listed in the [review register](review-follow-up-20261015.md).
+The [past Vertex AI call](historical-vertex-ai-usage.md) has separate retained
+evidence. Submission/eligibility, completed video, public code access, maintenance
+ownership and cost limits remain open; see [current remaining gates](current-delivery.md#historical-inference-and-remaining-gates).
+The [19:34 register](review-follow-up-20261015.md) is not a current deployment status page.
 
 Additional targets and incident workflows can extend this slice after their
 interfaces and evidence boundaries are specified and checked. This page does

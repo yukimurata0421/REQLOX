@@ -1,3 +1,7 @@
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 from pathlib import Path
 import tempfile
 import unittest

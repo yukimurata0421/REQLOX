@@ -1,4 +1,8 @@
 """Documented context dispatch and inherited authorization, without Target execution."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 import copy
 import datetime
 import hashlib
@@ -12,9 +16,9 @@ from unittest.mock import patch
 import reqlox
 reqlox._runtime()
 from reqlox import targets, target_context, target_prepare, target_audit, target_authorization
-import reliability_path_context as context
-import run_reliability_path_context as native
-import run_reliability_reuse as storage
+from reqlox_core import reliability_path_context as context
+from reqlox_core import run_reliability_path_context as native
+from reqlox_core import run_reliability_reuse as storage
 
 SOURCES = {'pkg/__init__.py': 'from .resource import Resource\n', 'pkg/resource.py': '''from pathlib import Path
 from tempfile import gettempdir

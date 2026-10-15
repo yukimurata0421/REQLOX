@@ -1,4 +1,8 @@
 """Static protocol bindings reject unsupported and ambiguous ownership."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 import hashlib
 from pathlib import Path
 import tempfile

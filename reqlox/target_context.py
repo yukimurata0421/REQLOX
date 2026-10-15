@@ -13,8 +13,8 @@ def require(condition, reason):
 
 
 def validate(value):
-    import reliability_path_context as context
-    from reliability_specifications import DENIAL
+    from reqlox_core import reliability_path_context as context
+    from reqlox_core.reliability_specifications import DENIAL
     require(type(value) is dict and set(value) == {'profile', 'documents', 'recipe', 'contract'}
             and value['profile'] == PROFILE, 'TARGET_CONTEXT_CONFIGURATION')
     documents = value['documents']; declaration = value['contract']
@@ -45,7 +45,7 @@ def validate(value):
 
 
 def prepare(sources, configuration):
-    import reliability_path_context as context
+    from reqlox_core import reliability_path_context as context
     value = validate(configuration['path_context'])
     require(not configuration['contracts'] and not configuration.get('hypotheses')
             and not configuration.get('source_texts') and not configuration.get('specification_texts'),
@@ -60,16 +60,16 @@ def prepare(sources, configuration):
 
 
 def method_identity():
-    import reliability_path_context as context
-    import reliability_context_evidence as evidence
+    from reqlox_core import reliability_path_context as context
+    from reqlox_core import reliability_context_evidence as evidence
     return dict(bridge=context.hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                 execution=context.methods(), verifier=context.hashlib.sha256(Path(evidence.__file__).read_bytes()).hexdigest())
 
 
 def run(plan, contract, output, *, before_native, deadline, maximum_native_campaigns):
-    import reliability_path_context as context
-    import run_reliability_path_context as native
-    import run_reliability_reuse as storage
+    from reqlox_core import reliability_path_context as context
+    from reqlox_core import run_reliability_path_context as native
+    from reqlox_core import run_reliability_reuse as storage
     output = storage.private(output, new=True); output.mkdir(mode=0o700)
     storage.save(output / 'input.json', context.c.seal(dict(context_plan=plan, contract=contract,
         deadline=deadline, maximum_native_campaigns=maximum_native_campaigns)))
@@ -101,9 +101,9 @@ def run(plan, contract, output, *, before_native, deadline, maximum_native_campa
 
 
 def verify(output, plan, contract):
-    import reliability_path_context as context
-    import reliability_context_evidence as evidence
-    import run_reliability_reuse as storage
+    from reqlox_core import reliability_path_context as context
+    from reqlox_core import reliability_context_evidence as evidence
+    from reqlox_core import run_reliability_reuse as storage
     from .target_audit import read
     output = storage.private(output)
     inputs = read(output / 'input.json'); result = read(output / 'result.json')

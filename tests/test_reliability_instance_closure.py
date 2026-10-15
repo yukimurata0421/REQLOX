@@ -1,13 +1,17 @@
 "Finite reliability controls and verification."
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 import ast
 from copy import deepcopy
 from pathlib import Path
 import sys
 import unittest
 
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'reqlox_core'))
-import reliability_reuse as reuse
-import reliability_reuse_cache as cache
+pass  # Package imports resolve from the repository root.
+from reqlox_core import reliability_reuse as reuse
+from reqlox_core import reliability_reuse_cache as cache
 
 INSTANCE = '''import os as kernel
 from pathlib import Path as Location

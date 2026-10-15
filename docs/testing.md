@@ -11,15 +11,53 @@ env -u REQLOX_RUN_NATIVE_TESTS .venv/bin/python -B scripts/coverage_check.py \
 
 Use a new output directory for each run, such as `coverage-report-next`.
 The runner preserves existing reports and bounds its owned test process to
-120 seconds. It refuses the native-test flag; it does not create a network
-namespace. Provider responses and campaign dispatch are mocked by the unit
-suite. UI tests use local HTTP servers and owned fixtures.
+120 seconds. It refuses the native-test flag and installs the same process-wide offline
+guard before loading tests; it does not create a network namespace. The guard
+rejects native workers, shell and arbitrary Python children, process escape
+calls, and external connections. Only static CLI children and temporary local
+Git fixtures are allowed; `posix_spawn` uses the same command allowlist.
+A denied attempt fails the report even if a test catches its exception.
+This accidental-dispatch fence is not an adversarial sandbox. Provider
+responses and campaign dispatch are mocked by the unit suite. UI tests use local HTTP servers and owned fixtures.
+
+
+## User identity and self-contained offline tests
+
+The portable suite may run as a regular user or root in a disposable test
+environment. Native integration still refuses both real UID 0 and effective
+UID 0. An invalid or pending grant is rejected before identity admission,
+workspace creation or process dispatch. A valid grant does not permit root
+execution.
+
+The integration orchestration tests mock the identity admission function only
+inside their synthetic supervisor fixture, alongside mocked observation and
+dispatch. Separate negative tests exercise the real identity gate and assert
+that rejected requests reach no bundle, workspace or process. Do not remove
+the production non-root restriction to make the tests pass.
+
+The static Source CLI fixture creates its own private state directory and
+passes it to the child process. It does not depend on an existing user HOME,
+shared state directory or live Target. All archived native cases are unconditionally held in portable discovery;
+an opt-in flag cannot re-enable them. This includes mixed legacy classes whose
+static assertions share native setup. See [runtime imports and the native
+inventory](runtime-imports.md) for the source-only audit and its limits.
+
+An older development test path started four synthetic-fixture native campaigns
+during offline verification despite the disabled native flag. Its temporary
+raw evidence was not retained. Those launches are recorded separately as an
+authorization violation, with the original copied-Target ledger unchanged; they
+are not approved capacity or new repair qualification. The held test and the
+offline process guard prevent this path in subsequent verification.
+
+Test counts below are dated snapshots. For a new checkout, use its generated
+`summary.json`; compare revision, suite and skipped IDs instead of treating an
+older count as the current expected total. See [historical records](history/README.md).
 
 ## Native evidence retention
 
 Native execution needs a separately approved host, frozen plans, an inherited
-ledger and a deadline. Setting `REQLOX_RUN_NATIVE_TESTS=1` is a test selection
-switch; it grants no execution authority. The path-context launcher requires a
+ledger and a deadline. Setting `REQLOX_RUN_NATIVE_TESTS=1` grants no execution authority and does
+not re-enable the archived cases. The offline runner rejects that setting. The path-context launcher requires a
 `before_native` callback that checks and reserves the authorized campaign
 immediately before process creation. A missing callback is rejected; denied
 reservations and failed starts are kept, with no automatic retry.
@@ -64,7 +102,8 @@ denominator. No runtime file is omitted to increase the displayed total.
 Reports contain:
 
 - `summary.json`: test results, skipped IDs, per-file gate, overview counts,
-  interpreter/tool versions, and source/policy/configuration hashes;
+  interpreter/tool versions, selected roots/modules, denied attempts, and
+  source/policy/configuration hashes;
 - `coverage.json` and `coverage.xml`: machine-readable coverage;
 - `html/index.html`: source-level missing lines and branches.
 

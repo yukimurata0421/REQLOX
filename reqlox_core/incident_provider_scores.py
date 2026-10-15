@@ -1,7 +1,7 @@
 "Reject repaired probability vectors from raw forecast evaluation."
 from copy import deepcopy
-import incident_reference as c
-import incident_semantic_response as previous
+from . import incident_reference as c
+from . import incident_semantic_response as previous
 
 
 def raw_answers(answers):

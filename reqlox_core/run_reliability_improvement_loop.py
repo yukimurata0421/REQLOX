@@ -1,11 +1,18 @@
 """Finite reliability controls and verification."""
+
+if __name__ == '__main__' and not __package__:
+    import sys as _entry_sys
+    from pathlib import Path as _EntryPath
+    _entry_sys.path.insert(0, str(_EntryPath(__file__).resolve().parents[1]))
+    __package__ = 'reqlox_core'
+
 import argparse
 import datetime
 import json
 from pathlib import Path
 import signal
-import reliability_reuse as reuse
-import run_reliability_reuse as runner
+from . import reliability_reuse as reuse
+from . import run_reliability_reuse as runner
 METHODS = (*runner.METHODS, 'run_reliability_improvement_loop.py')
 QUALIFICATION_POLICIES = ('SOURCE_DERIVED_SHARED_ENVELOPE', 'OWNED_MODEL_GRID')
 

@@ -5,7 +5,7 @@ import hashlib
 from pathlib import Path
 import re
 
-import reliability_path_context as context
+from . import reliability_path_context as context
 
 c=context.c
 EVENT='FINITE_TRANSIENT_TEMP_CLEANUP_REQUIREMENT_V1'

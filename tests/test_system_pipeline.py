@@ -1,4 +1,8 @@
 """Source snapshot and source-fidelity replay boundaries; owned controls only."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 from copy import deepcopy
 import importlib.util
 import json

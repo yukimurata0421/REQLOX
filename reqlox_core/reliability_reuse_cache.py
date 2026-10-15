@@ -1,5 +1,5 @@
 "Finite reliability controls and verification."
-import reliability_reuse as reuse
+from . import reliability_reuse as reuse
 
 COMPILED_FAMILIES = ('atomic_file', 'async_resource', 'elapsed_ttl')
 MAXIMUM_REFERENCE_DEPTH = 4

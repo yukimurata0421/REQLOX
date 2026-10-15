@@ -1,4 +1,8 @@
 """Selection, isolation, immutable outcomes and shared multi-repository budgets."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 import contextlib
 import datetime
 import io
@@ -12,9 +16,9 @@ import reqlox
 reqlox._runtime()
 from reqlox import targets
 from reqlox.target_cli import main
-import run_reliability_reuse as runner
-import run_reliability_improvement_loop as loop
-import run_reliability_paired as paired
+from reqlox_core import run_reliability_reuse as runner
+from reqlox_core import run_reliability_improvement_loop as loop
+from reqlox_core import run_reliability_paired as paired
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = '''import os

@@ -1,4 +1,8 @@
 """Restore real temporary files; cloud, service and secret effects remain fake."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 import copy
 import importlib.util
 import json

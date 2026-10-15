@@ -1,4 +1,8 @@
 """Synthetic component mocks only; the copied Target is never imported."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 import asyncio
 from pathlib import Path
 import tempfile

@@ -1,4 +1,9 @@
 """Exercise CI release admission and rollback with owned fake cloud effects."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+from runtime_imports import patched_runtime_modules
+
 import base64
 import copy
 import datetime
@@ -130,7 +135,7 @@ class DeployJobImportTests(unittest.TestCase):
                 return (405,b'{}') if kwargs.get('value') is not None else (200,b'owned static asset')
             return (401,b'{}') if path=='/api/workspace/config' else (404,b'{}')
         manifest=dict(files=[dict(name=n,sha256=ci.digest(b'owned static asset')) for n in set(routes.values())])
-        with patch.dict(sys.modules, {'reqlox_demo':None,'reqlox_demo.public_demo':None}),patch.object(job,'public',side_effect=response):
+        with patched_runtime_modules( {'reqlox_demo':None,'reqlox_demo.public_demo':None}),patch.object(job,'public',side_effect=response):
             job.verify_public_demo(None,manifest)
         self.assertTrue(job.result['anonymous_demo_verified'])
 

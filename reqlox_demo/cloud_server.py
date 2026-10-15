@@ -100,7 +100,7 @@ def main():
         raise ValueError("The namespace isolation probe failed; the UI cannot start")
     from reqlox import _runtime
     _runtime()
-    from reqlox_paths import ensure_state
+    from reqlox_core.reqlox_paths import ensure_state
     state = ensure_state()
     server = Server(8765, Demo(state / "demo"))
     # Only the reviewed aggregate ships; no copied Target or raw receipt is loaded.

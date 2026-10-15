@@ -55,7 +55,7 @@ def main(argv=None):
         if argv[0] == "demo":
             from reqlox_demo.__main__ import main as delegated
         else:
-            from prepare_reliability_reuse import main as delegated
+            from reqlox_core.prepare_reliability_reuse import main as delegated
         saved = sys.argv
         try:
             sys.argv = ["reqlox " + argv[0], *argv[1:]]
@@ -95,16 +95,16 @@ def main(argv=None):
         if args.command == "check":
             return check()
         if args.command == "inventory":
-            import run_reliability_reuse as runner
+            from reqlox_core import run_reliability_reuse as runner
             sources = runner.load_snapshot(args.root.resolve())
             print(json.dumps(runner.inventory_for(sources), ensure_ascii=False))
             return 0
         if args.state_dir is not None:
             os.environ["REQLOX_STATE_DIR"] = str(args.state_dir.absolute())
-        from reqlox_paths import ensure_state
+        from reqlox_core.reqlox_paths import ensure_state
         state = ensure_state()
         if args.command == "audit":
-            import audit_reliability_reuse
+            from reqlox_core import audit_reliability_reuse
             saved = sys.argv
             try:
                 sys.argv = ["reqlox audit", "--kind", args.kind, "--output", str(args.output.absolute())]
@@ -112,7 +112,7 @@ def main(argv=None):
             finally:
                 sys.argv = saved
             return 0
-        import run_reliability_reuse as runner
+        from reqlox_core import run_reliability_reuse as runner
         if not 1 <= args.seconds <= 7200 or not 0 <= args.maximum_native_campaigns <= 64:
             parser.error("seconds must be 1..7200 and campaign limit must be 0..64")
         name = args.name or datetime.datetime.now(datetime.timezone.utc).strftime("run-%Y%m%dT%H%M%S%fZ")
@@ -127,15 +127,15 @@ def main(argv=None):
         common = dict(deadline=deadline, maximum_rounds=args.maximum_rounds,
                       maximum_probes=config.get("maximum_probes", 3))
         if args.paired:
-            import reliability_requirement_experiment as requirements
-            import run_reliability_paired as paired
+            from reqlox_core import reliability_requirement_experiment as requirements
+            from reqlox_core import run_reliability_paired as paired
             policies = {family: {key: row[key] for key in ("basis", "scope")} for family, row in config["contracts"].items()}
             experiment = requirements.prepare(sources, config.get("specification_texts", {}), policies)
             result = paired.run(sources, experiment, config.get("source_texts", {}), output,
                                 maximum_native_campaigns_per_arm=args.maximum_native_campaigns, **common)
         else:
-            import reliability_reuse as reuse
-            import run_reliability_improvement_loop as loop
+            from reqlox_core import reliability_reuse as reuse
+            from reqlox_core import run_reliability_improvement_loop as loop
             hypotheses = [reuse.hypothesis(h, config.get("source_texts", {})) for h in config.get("hypotheses", [])]
             result = loop.run(sources, config["contracts"], hypotheses, output,
                               source_texts=config.get("source_texts", {}),

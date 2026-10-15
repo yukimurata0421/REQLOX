@@ -107,7 +107,7 @@ class Budget(targets.Budget):
     def reserve(self):
         require(self.attempts - self.prior_attempts < self.maximum_new, 'TARGET_AUTHORIZATION_CONTINUATION_LIMIT')
         super().reserve()
-        import run_reliability_reuse as storage
+        from reqlox_core import run_reliability_reuse as storage
         path = self.reservation_directory / f'native-reservation-{self.attempts:03d}.json'
         with path.open('x') as stream:
             os.fchmod(stream.fileno(), 0o600)

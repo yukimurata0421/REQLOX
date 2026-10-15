@@ -9,7 +9,7 @@ import re
 import sys
 import sysconfig
 
-import incident_reference as c
+from . import incident_reference as c
 
 EVENT = 'FINITE_PATH_CONTEXT_RESOURCE_RELEASE_V1'
 PROFILE = 'DOCUMENTED_SYNC_PATH_CONTEXT_V1'
@@ -467,7 +467,7 @@ def recipes(sources, documents):
                             rows.append({**rows[-1], 'binding':legacy})
                     except (ValueError, TypeError):pass
     if not rows:
-        import reliability_signature_context as signatures
+        from . import reliability_signature_context as signatures
         rows=signatures.discover(sources,profile=PROFILE,path_keywords=PATH_KEYWORDS,
                                 directory_keywords=DIRECTORY_KEYWORDS,allowed_modules=modules)
     c.require(len(rows)<=12, 'PATH_CONTEXT_RECIPE_CAP')

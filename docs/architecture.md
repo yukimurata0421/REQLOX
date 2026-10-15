@@ -8,9 +8,12 @@ interfaces. The broader incident-knowledge workflow is listed separately in
 The hosted owner application also runs on the dedicated GCP VM through the
 existing gateway. Its current Web policy is `OFFLINE_RECORDS_ONLY`: the worker
 capabilities described below are not permission to start new browser experiments.
-The [dated delivery checkpoint](../publication/ci-delivery-20261015.json) identifies
-the earlier observed deployment. The read-only branch below belongs to a later
-release, whose actual availability requires its own Actions and browser evidence.
+The [latest delivery](current-delivery.md) and its
+[checkpoint](../publication/read-only-delivery-20261015.json) identify public main
+`dffb8f7` and the observed read-only branch below, including successful Actions
+and Cloudflare browser checks. The [earlier checkpoint](../publication/ci-delivery-20261015.json)
+is retained separately. [Historical Vertex AI use](historical-vertex-ai-usage.md)
+is a distinct inference record, not an inference performed by this public UI.
 
 ## Public viewing and owner access
 

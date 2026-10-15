@@ -1,0 +1,98 @@
+{
+  "schema": "reqlox.public-readonly-delivery-checkpoint.v1",
+  "status": "DEPLOYED_AND_CLOUDFLARE_BROWSER_VERIFIED",
+  "observed_at_jst": "2026-10-15T21:09:36.343002+09:00",
+  "release_identity_rechecked_at_jst": "2026-10-15T21:31:55.376502+09:00",
+  "public_url": "https://reqlox.yukimurata0421.dev/demo/",
+  "commit": "dffb8f79062aa9b0dda94395457b185bc56aedf2",
+  "actions_url": "https://github.com/yukimurata0421/REQLOX/actions/runs/38731637902",
+  "actions_conclusion": "success",
+  "release_sha256": "ccae5e8006d269295200f37f07b3152aeb9822b9171f8042e278e39804bfbaf4",
+  "gateway_revision": "reqlox-web-gateway-00017-kej",
+  "gateway_traffic_percent": 100,
+  "python_jobs": [
+    {
+      "version": "3.11",
+      "tests_run": 712,
+      "failures": 0,
+      "errors": 0,
+      "native_skips": 29
+    },
+    {
+      "version": "3.14",
+      "tests_run": 712,
+      "failures": 0,
+      "errors": 0,
+      "native_skips": 29
+    }
+  ],
+  "browser_checks": {
+    "observed_at_jst": {
+      "anonymous": "2026-10-15T21:08:37.374813+09:00",
+      "owner": "2026-10-15T21:09:03.087350+09:00"
+    },
+    "records": 7,
+    "stages_per_record": 5,
+    "record_and_stage_reload": true,
+    "source_and_evidence_hashes": true,
+    "mobile_width": 390,
+    "javascript_exceptions": 0,
+    "normal_public_browsing": "STATIC_GET_HEAD_ONLY_NO_WORKSPACE_API",
+    "anonymous_management_status": 401,
+    "public_write_status": 405,
+    "public_route_escape_status": 404,
+    "owner_execution_status": 403,
+    "owner_execution_reason": "UI_EXECUTION_DISABLED",
+    "private_response_cache_control": "no-store, no-transform",
+    "public_response_cache_control": "public, no-transform, max-age=0, must-revalidate",
+    "screenshots_retained_privately": 16
+  },
+  "copied_target_ledger": {
+    "campaigns": 15,
+    "maximum_campaigns": 15,
+    "charged_seconds": 62,
+    "maximum_seconds": 120,
+    "remaining_campaigns": 0
+  },
+  "temppath": {
+    "held_atomic_bindings": 4,
+    "repair_performed": false,
+    "repair_reinjection_performed": false
+  },
+  "private_history_preserved": true,
+  "state_disk_preserved": true,
+  "prior_records_preserved": true,
+  "failed_deployments": [
+    {
+      "commit": "ca50603cb4f8785b87fb7aac2066574c9554ad69",
+      "actions_run": 38723613418,
+      "status": "FAILED",
+      "original_rollback": "OUTCOME_UNKNOWN_PRESERVED"
+    },
+    {
+      "commit": "be1e91fa6c51cf3d606af90d10a8e5da2f3f1e43",
+      "actions_run": 38726865492,
+      "status": "FAILED",
+      "rollback": "RESTORED_AND_HTTP_VERIFIED"
+    },
+    {
+      "commit": "a936347f3180573cec7b07b2cb82973deb0e47cf",
+      "actions_run": 38728566071,
+      "status": "FAILED",
+      "rollback": "RESTORED_AND_HTTP_VERIFIED"
+    }
+  ],
+  "failed_commits_retried": false,
+  "successful_deployment_rollback_used": false,
+  "historical_raw_gap": "UNKNOWN_UNRECOVERED",
+  "new_native_campaigns": 0,
+  "new_model_calls": 0,
+  "raw_evidence_exported": false,
+  "video_assets_exported": false,
+  "competition_submission_verified": false,
+  "qualifying_cloud_ai_usage_proven_by_deployment": false,
+  "independent_generalization": false,
+  "probability_calibration": false,
+  "source_added_value": false,
+  "record_sha256": "73d0d4107bcc105086f743c9257ad3c49f932a08eb06836d6397814365cb811b"
+}

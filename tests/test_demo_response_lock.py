@@ -1,4 +1,8 @@
 """A completed response must permit the next request; active work remains held."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 import ast
 import io
 import json

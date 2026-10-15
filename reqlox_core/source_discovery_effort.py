@@ -3,9 +3,9 @@ from copy import deepcopy
 from decimal import Decimal
 import math
 
-import incident_reference as c
-import source_discovery_metrics as discovery
-import workflow_effort as effort
+from . import incident_reference as c
+from . import source_discovery_metrics as discovery
+from . import workflow_effort as effort
 
 
 def report(policy, outcomes, summaries):

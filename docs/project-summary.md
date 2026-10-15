@@ -13,9 +13,11 @@ four atomic bindings remain HELD, with no repair performed. Missing historical
 raw observations remain unknown.
 
 The owner application is hosted on a dedicated GCP VM through a Cloud Run
-gateway. A separate static review surface is implemented for anonymous reading,
-with no private Workspace access or new computation. Live availability is
-verified separately from the source checks.
+gateway. The anonymous static review surface was deployed from main `dffb8f7`
+and verified through Cloudflare; [latest delivery](current-delivery.md) binds the
+observed release and access checks. It exposes no private Workspace data or new
+computation. A [historical Vertex AI call](historical-vertex-ai-usage.md) generated
+an Incident IR candidate in a separate earlier run; raw records remain private.
 The copied Target scope is closed at 15/15 campaigns and 62/120 seconds.
 Independent generalization, Source benefit, calibration and effort savings
 remain unproven.

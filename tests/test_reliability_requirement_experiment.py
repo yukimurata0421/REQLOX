@@ -1,16 +1,20 @@
 "Finite reliability controls and verification."
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 from copy import deepcopy
 from pathlib import Path
 import sys
 import unittest
 
 ROOT=Path(__file__).resolve().parents[1]
-sys.path[:0]=[str(ROOT/'reqlox_core'),str(ROOT/'tests')]
-import reliability_requirement_experiment as requirements
-import reliability_specifications as specs
-import reliability_reuse as reuse
-import run_reliability_reuse as runner
-import run_reliability_paired as paired
+sys.path[:0]=[str(ROOT / 'tests')]
+from reqlox_core import reliability_requirement_experiment as requirements
+from reqlox_core import reliability_specifications as specs
+from reqlox_core import reliability_reuse as reuse
+from reqlox_core import run_reliability_reuse as runner
+from reqlox_core import run_reliability_paired as paired
 from test_reliability_natural_conditions import SOURCES, POLICY, SPEC, TEXT
 
 

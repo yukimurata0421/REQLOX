@@ -1,6 +1,10 @@
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 from reqlox import _runtime
 _runtime()
-from reqlox_paths import state_root
+from reqlox_core.reqlox_paths import state_root
 """\u5171\u901abinding\u306e\u610f\u5473\u5883\u754c、\u5b9f\u4fee\u5fa9、\u9694\u96e2、\u518d\u5229\u7528\u306e\u5931\u52b9\u3092\u691c\u67fb\u3059\u308b。"""
 from copy import deepcopy
 import asyncio
@@ -14,10 +18,10 @@ import unittest
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT/'reqlox_core'))
-import reliability_reuse as r
-import reliability_reuse_worker as w
-import run_reliability_reuse as runner
+pass  # Package imports resolve from the repository root.
+from reqlox_core import reliability_reuse as r
+from reqlox_core import reliability_reuse_worker as w
+from reqlox_core import run_reliability_reuse as runner
 
 ATOMIC = '''import os as operating
 from pathlib import Path as FilePath
@@ -277,8 +281,8 @@ class ExecutionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'CONFLICTING_REPAIRS'):r.compose_patches(sources,rows+[conflict])
 
 
-@unittest.skipUnless(__import__("os").environ.get("REQLOX_RUN_NATIVE_TESTS") == "1", "native experiments are opt-in")
 class NativeAndReuseTests(unittest.TestCase):
+    @unittest.skip('Archived native scenario; an authorized retained-scope harness is required')
     def test_native_two_families_and_verified_reuse_without_rerun(self):
         base=state_root()
         with tempfile.TemporaryDirectory(prefix='reuse-test-',dir=base) as directory:
@@ -307,7 +311,9 @@ class NativeAndReuseTests(unittest.TestCase):
     def test_missing_contract_is_reported_in_full_denominator(self):
         base=state_root()
         with tempfile.TemporaryDirectory(prefix='reuse-held-',dir=base) as directory:
-            result=runner.run({'a.py':ASYNC},{},[],Path(directory)/'run')
+            with patch.object(runner, 'execute', side_effect=AssertionError('NATIVE_DISPATCH_FORBIDDEN')) as execute:
+                result=runner.run({'a.py':ASYNC},{},[],Path(directory)/'run')
+            execute.assert_not_called()
             self.assertEqual(result['accepted_sites'],1)
             self.assertEqual(result['executed_sites'],0)
             self.assertEqual(result['held_sites'],1)
@@ -315,3 +321,15 @@ class NativeAndReuseTests(unittest.TestCase):
 
 
 if __name__=='__main__':unittest.main()
+
+
+class NativeSelectionBoundaryTests(unittest.TestCase):
+    def test_archived_native_case_never_dispatches_from_unit_suite(self):
+        case = NativeAndReuseTests('test_native_two_families_and_verified_reuse_without_rerun')
+        result = unittest.TestResult()
+        with patch.object(runner, 'execute', side_effect=AssertionError('NATIVE_DISPATCH_FORBIDDEN')) as execute:
+            case.run(result)
+        self.assertEqual(len(result.skipped), 1)
+        self.assertEqual(result.failures, [])
+        self.assertEqual(result.errors, [])
+        execute.assert_not_called()

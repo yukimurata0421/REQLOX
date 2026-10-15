@@ -464,10 +464,15 @@ def launch(prepared, phase, plan, guard):
     return summary
 
 
+def _require_non_root():
+    """The launcher requires both real and effective identities to be non-root."""
+    require(os.getuid() > 0 and os.geteuid() > 0, 'INTEGRATION_NON_ROOT_REQUIRED')
+
+
 def execute(output, grant):
     output = private_dir(output)
-    require(os.getuid() > 0, 'INTEGRATION_NON_ROOT_REQUIRED')
     deadline = check_grant(output, grant)  # Deny before *any* process or new workspace.
+    _require_non_root()
     bundle = check_bundle(output)
     original = None; decision = 'NOT_PERFORMED'; reason = None
     with retained_workspace(output, 'execution') as run:

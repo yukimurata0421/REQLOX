@@ -5,9 +5,9 @@ import os
 from pathlib import Path
 import signal
 import subprocess
-import reliability_incident_conditions as protocol
-import reliability_context_evidence as evidence
-import run_reliability_reuse as storage
+from . import reliability_incident_conditions as protocol
+from . import reliability_context_evidence as evidence
+from . import run_reliability_reuse as storage
 c = protocol.c
 
 def verify_source_raw(source):
@@ -122,9 +122,9 @@ def execute(plan,output,guard):
         '--ro-bind','/usr','/usr','--symlink','usr/lib','/lib','--symlink','usr/lib64','/lib64',
         '--tmpfs','/tmp','--proc','/proc','--dev','/dev','--chdir','/tmp',
         '--ro-bind',str(output/'condition-plan.json'),'/run/condition-plan.json',
-        '--ro-bind',str(output/'plan.json'),'/run/base-plan.json','--ro-bind',str(method),'/app',
+        '--ro-bind',str(output/'plan.json'),'/run/base-plan.json','--ro-bind',str(method),'/app/reqlox_core',
         '--ro-bind',str(target),'/target','/usr/bin/python3','-I','-S','-B','-c',
-        'import sys;sys.path.insert(0,"/app");from reliability_incident_conditions_worker import run;run(sys.argv[1],sys.argv[2])',
+        'import sys;sys.path.insert(0,"/app");from reqlox_core.reliability_incident_conditions_worker import run;run(sys.argv[1],sys.argv[2])',
         '/run/condition-plan.json',c.digest(plan)]
     code=None;error=None;observed=None
     with (output/'observed.json').open('xb') as out,(output/'stderr.log').open('xb') as err:

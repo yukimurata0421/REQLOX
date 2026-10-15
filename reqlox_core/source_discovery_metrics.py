@@ -3,7 +3,7 @@ from copy import deepcopy
 from decimal import Decimal
 import re
 
-import incident_reference as c
+from . import incident_reference as c
 
 ARMS = ('CORRECT_SOURCE', 'NO_SOURCE')
 METRICS = ('fault_discovered', 'discriminating_experiment', 'repair_reinjection_pass')

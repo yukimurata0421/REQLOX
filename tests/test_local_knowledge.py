@@ -1,4 +1,8 @@
 """Exercise the reusable document, native IR, and bounded provider interfaces."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 from copy import deepcopy
 from datetime import datetime, timedelta, timezone
 import json

@@ -1,4 +1,11 @@
 """Finite reliability controls and verification."""
+
+if __name__ == '__main__' and not __package__:
+    import sys as _entry_sys
+    from pathlib import Path as _EntryPath
+    _entry_sys.path.insert(0, str(_EntryPath(__file__).resolve().parents[1]))
+    __package__ = 'reqlox_core'
+
 import ast
 import asyncio
 import errno
@@ -12,8 +19,8 @@ import sys
 import tempfile
 from types import SimpleNamespace
 from unittest.mock import patch
-import reliability_reuse as reuse
-import repository_atomic_worker as atomic_worker
+from . import reliability_reuse as reuse
+from . import repository_atomic_worker as atomic_worker
 
 def compile_site(code, scope):
     node = ast.parse(code).body[0]
@@ -87,7 +94,19 @@ async def async_case(code, fault, returns_result=None):
     passed = work_held and released and reacquired and (error == expected) and prior_owner_preserved and result_preserved
     if fault == 'ACQUIRE_CANCEL':
         passed = passed and waiting_observed
-    return dict(fault=fault, contract_pass=passed, work_held_resource=work_held, resource_released=released, different_task_reacquired=reacquired, error_class=error, expected_error_class=expected, prior_owner_lock_preserved=prior_owner_preserved, acquisition_wait_observed=waiting_observed, work_result_preserved=result_preserved, returns_work_result=returns_result)
+    return dict(
+        fault=fault,
+        contract_pass=passed,
+        work_held_resource=work_held,
+        resource_released=released,
+        different_task_reacquired=reacquired,
+        error_class=error,
+        expected_error_class=expected,
+        prior_owner_lock_preserved=prior_owner_preserved,
+        acquisition_wait_observed=waiting_observed,
+        work_result_preserved=result_preserved,
+        returns_work_result=returns_result,
+    )
 
 def clock_case(code, fault, ttl, cache_type):
     schedules = {'NORMAL': [(100, 0), (100 + ttl / 2, ttl / 2), (100 + ttl, ttl)], 'BACKWARD': [(100, 0), (99, ttl)], 'FORWARD': [(0, 0), (100, 1 if ttl > 1 else ttl / 2)], 'STATIONARY': [(10, 0), (10, ttl)], 'OFFSET': [(-100, 0), (-101, ttl + 1)], 'BOUNDARY': [(100, 0), (99, ttl - 0.25 if ttl > 0.25 else ttl / 2), (98, ttl)]}
@@ -103,7 +122,13 @@ def clock_case(code, fault, ttl, cache_type):
         else:
             actual.append(cache.get('record'))
             expected.append(11 if elapsed < ttl else None)
-    return dict(fault=fault, contract_pass=actual == expected, observed=actual, expected=expected, actual_cache_type=type(cache).__module__ + '.' + type(cache).__qualname__)
+    return dict(
+        fault=fault,
+        contract_pass=actual == expected,
+        observed=actual,
+        expected=expected,
+        actual_cache_type=type(cache).__module__ + '.' + type(cache).__qualname__,
+    )
 
 def context_case(source, symbol, fault, binding=None, default_mode=False, condition=None, payload_case='BASE', sources=None):
     if binding is not None and 'module_graph' in binding:
@@ -230,7 +255,21 @@ def _context_case(source, symbol, fault, binding=None, default_mode=False, condi
         required_content = expected_content if fault == 'NORMAL' else b'prior'
         passed = error == expected_error and dest.read_bytes() == required_content and (unrelated.read_bytes() == b'other') and (not residue) and (returned is None)
         reached = fault == 'NORMAL' or bool(injected)
-        row = dict(fault=fault, contract_pass=passed if reached else None, error_class=error, fault_injected=bool(injected), fault_injection_count=len(injected), applicability='OBSERVED' if reached else 'FAULT_NOT_REACHED', default_mode_used=default_mode, invocation_kwargs=options, write_input_kind='TEXT' if text_mode else 'BYTES', expected_error_class=expected_error, residual_temporary_files=len(residue), destination_preserved=dest.read_bytes() == required_content, unrelated_file_preserved=unrelated.read_bytes() == b'other')
+        row = dict(
+            fault=fault,
+            contract_pass=passed if reached else None,
+            error_class=error,
+            fault_injected=bool(injected),
+            fault_injection_count=len(injected),
+            applicability='OBSERVED' if reached else 'FAULT_NOT_REACHED',
+            default_mode_used=default_mode,
+            invocation_kwargs=options,
+            write_input_kind='TEXT' if text_mode else 'BYTES',
+            expected_error_class=expected_error,
+            residual_temporary_files=len(residue),
+            destination_preserved=dest.read_bytes() == required_content,
+            unrelated_file_preserved=unrelated.read_bytes() == b'other',
+        )
         if injector is not None:
             row.update(condition_id=condition['condition_id'], condition_hits=injector.hits, condition_seen=injector.seen)
         if delegated:
@@ -239,12 +278,25 @@ def _context_case(source, symbol, fault, binding=None, default_mode=False, condi
             row.update(public_entry_symbol=binding['entry_symbol'], repair_symbol=binding['repair_symbol'], input_profile=binding['caller_profile'], input_case=payload_case, input_payload_sha256=reuse.c.digest(payload), expected_content_sha256=reuse.sha(required_content), destination_sha256=reuse.sha(dest.read_bytes()), returned_none=returned is None, input_domain_qualified=False)
         return row
 
+def observation_status(healthy, probes, fault_discovered, candidate_executed, repair_pass):
+    """Keep invalid baselines and unreached faults ahead of repair outcomes."""
+    if not healthy['contract_pass']:
+        return 'BASELINE_INVALID'
+    if any(row['contract_pass'] is None for row in probes):
+        return 'FAULT_NOT_REACHED'
+    if candidate_executed:
+        return 'REPAIRED' if repair_pass else 'REPAIR_FAILED'
+    if fault_discovered:
+        return 'REPAIR_UNSUPPORTED'
+    return 'NO_COUNTEREXAMPLE'
+
+
 def observe(plan, cache_type=None, loop=None):
-    c = reuse.c
+    contracts = reuse.c
     site = plan['site']
     family = site['family']
-    c.require(plan['contract']['family'] == family and plan['contract']['code_sha256'] == site['code_sha256'], 'REUSE_NATIVE_CONTRACT')
-    c.require(reuse.sha(site['code']) == site['code_sha256'], 'REUSE_NATIVE_CODE')
+    contracts.require(plan['contract']['family'] == family and plan['contract']['code_sha256'] == site['code_sha256'], 'REUSE_NATIVE_CONTRACT')
+    contracts.require(reuse.sha(site['code']) == site['code_sha256'], 'REUSE_NATIVE_CODE')
     code = site['code']
     patched = plan['candidate_code']
     if patched is not None:
@@ -258,10 +310,10 @@ def observe(plan, cache_type=None, loop=None):
             row['fault'] = fault
             return row
         if family == 'async_resource':
-            c.require(loop is not None, 'REUSE_ASYNC_LOOP_REQUIRED')
+            contracts.require(loop is not None, 'REUSE_ASYNC_LOOP_REQUIRED')
             return loop.run_until_complete(async_case(value, fault, site['binding']['returns_result']))
         if family == 'elapsed_ttl':
-            c.require(cache_type is not None, 'REUSE_REAL_TTL_DEPENDENCY_REQUIRED')
+            contracts.require(cache_type is not None, 'REUSE_REAL_TTL_DEPENDENCY_REQUIRED')
             return clock_case(value, fault, site['binding']['ttl'], cache_type)
         sources = plan['sources'] if value == code else reuse.apply_candidate(plan['sources'], site, value)
         program = plan['proposal'].get('condition_programs', {}).get(fault)
@@ -291,9 +343,29 @@ def observe(plan, cache_type=None, loop=None):
                 regression.append(context_case(revised[site['member']], site['symbol'], 'NORMAL', site['binding'], default_mode=True))
         revised = reuse.apply_candidate(plan['sources'], site, patched)
         rebound = next((x for x in reuse.inventory(revised)['accepted'] if x['id'] == site['id']))
-        c.require(rebound['code'] == patched, 'REUSE_PATCH_REBIND_DRIFT')
+        contracts.require(rebound['code'] == patched, 'REUSE_PATCH_REBIND_DRIFT')
     executed = bool(reinjection)
-    return dict(family=family, healthy=healthy, probes=probes, fault_discovered=found, candidate_code=patched if executed else None, candidate_sha256=reuse.sha(patched) if executed else None, actual_candidate_code_executed=executed, reinjection=reinjection, regression=regression, repair_pass=None if not executed else all((r['contract_pass'] is True for r in reinjection + regression)), status='BASELINE_INVALID' if not healthy['contract_pass'] else 'FAULT_NOT_REACHED' if any((r['contract_pass'] is None for r in probes)) else 'REPAIRED' if executed and all((r['contract_pass'] is True for r in reinjection + regression)) else 'REPAIR_FAILED' if executed else 'REPAIR_UNSUPPORTED' if found else 'NO_COUNTEREXAMPLE', generator='VALIDATED_FAMILY_REWRITE_OR_SUPPLIED_CANDIDATE', model_calls=0, forecasts=None)
+    repair_pass = (
+        all(row['contract_pass'] is True for row in reinjection + regression)
+        if executed else None
+    )
+    status = observation_status(healthy, probes, found, executed, repair_pass)
+    return dict(
+        family=family,
+        healthy=healthy,
+        probes=probes,
+        fault_discovered=found,
+        candidate_code=patched if executed else None,
+        candidate_sha256=reuse.sha(patched) if executed else None,
+        actual_candidate_code_executed=executed,
+        reinjection=reinjection,
+        regression=regression,
+        repair_pass=repair_pass,
+        status=status,
+        generator='VALIDATED_FAMILY_REWRITE_OR_SUPPLIED_CANDIDATE',
+        model_calls=0,
+        forecasts=None,
+    )
 
 def main():
     os.nice(10)

@@ -1,4 +1,8 @@
 """Exercise leakage, missing evidence, artifact drift, and shared budgets."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 import base64
 from copy import deepcopy
 import csv
@@ -136,7 +140,7 @@ class PreparationAndComparisonTests(unittest.TestCase):
         prepared = studies.prepare_context(self.sources, {}, project='owned-example')
         frozen = studies.freeze_comparison(prepared, studies.supplied_source({'r': 'unlink failed with EIO.'}, url='https://example.test/owned'))
         with tempfile.TemporaryDirectory() as d, patch.dict(os.environ, {'REQLOX_STATE_DIR': str(Path(d)/'state')}):
-            from reqlox_paths import ensure_state
+            from reqlox_core.reqlox_paths import ensure_state
             state = ensure_state()
             output = state / 'zero-budget'
             with self.assertRaisesRegex(ValueError, 'CAMPAIGN_BOUND'):
@@ -154,7 +158,7 @@ class PreparationAndComparisonTests(unittest.TestCase):
             self.assertEqual(prepared['recipes'], [])
 
     def test_repair_rebinds_position_without_replacing_original_author_evidence(self):
-        import reliability_path_context as context
+        from reqlox_core import reliability_path_context as context
         prepared = studies.prepare_context(self.sources, {}, project='owned-example')
         original = prepared['recipes'][0]
         modified = {n: '# An extra line in a private candidate.\n' + text for n, text in self.sources.items()}

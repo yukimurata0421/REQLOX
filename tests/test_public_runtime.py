@@ -1,4 +1,8 @@
 """Portability, state containment, and paid-call terminal behavior."""
+
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
 import datetime
 import importlib.resources
 import json
@@ -10,8 +14,8 @@ from unittest.mock import Mock, patch
 
 import reqlox
 reqlox._runtime()
-from reqlox_paths import ensure_state, state_root
-import run_reliability_reuse as runner
+from reqlox_core.reqlox_paths import ensure_state, state_root
+from reqlox_core import run_reliability_reuse as runner
 from reqlox_demo import contracts, model, repair, repair_contract
 from reqlox_demo.cloud_model import LiveModel, ProviderFailure
 

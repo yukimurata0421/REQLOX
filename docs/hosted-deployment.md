@@ -1,10 +1,20 @@
 # Hosted deployment
 
+The [latest verified delivery](current-delivery.md) is public main `dffb8f7`,
+runtime `ccae5e8006d269295200f37f07b3152aeb9822b9171f8042e278e39804bfbaf4`,
+Gateway `reqlox-web-gateway-00017-kej` at 100% traffic. Its anonymous read-only
+UI, restoration and access rejection were browser-verified on 2026-10-15 JST.
+Use the [new checkpoint](../publication/read-only-delivery-20261015.json) for
+that observation. The sections below retain the earlier delivery history;
+their revision, analytics behavior and procedural statements are historical.
+
+## Historical owner-workspace checkpoint: 2026-10-14
+
 The owner-authenticated [records workspace](https://reqlox.yukimurata0421.dev/records) was verified
 on 14 October 2026 at 21:59 JST. The backend reported READY
 with release `9d5d858fd14877081bb3e99ef455e398e3c6ceb6daefd217b6ee9d178a2a5907`.
 Gateway revision `reqlox-web-gateway-00003-jlt` received 100% of traffic.
-The [current UI delivery record](../publication/hosted-ui-record-history.json)
+The [14 October UI delivery record](../publication/hosted-ui-record-history.json)
 identifies the runtime, gateway, fourteen browser assets and verification scope.
 Continued hosting remains enabled on the same dedicated VM and state disk.
 The [initial delivery](../publication/hosted-integration-deployment.json),
@@ -123,9 +133,9 @@ calibration, Source added value, or a new live repair experiment.
 The [continuous deployment guide](continuous-deployment.md) describes the checked-main
 workflow and its separate deployment result artifacts.
 
-## Later delivery checkpoint
+## Historical CI checkpoint: earlier on 2026-10-15
 
 The [2026-10-15 CI delivery record](../publication/ci-delivery-20261015.json) supersedes
-the earlier no-commit/no-push delivery procedure as a current deployment reference.
+the earlier no-commit/no-push procedure for that historical checkpoint.
 The earlier observations remain historical. The new [read-only demo](read-only-demo.md)
 is a subsequent source change and is not part of that deployed checkpoint.

@@ -1,5 +1,9 @@
 "Finite reliability controls and verification."
 
+from reqlox.offline_testing import install as _install_offline_guard
+_install_offline_guard()
+
+
 import copy
 import hashlib
 import json

@@ -3,7 +3,7 @@ import ast
 from copy import deepcopy
 import sys
 
-import incident_reference as c
+from . import incident_reference as c
 
 KIND = 'DELEGATED_GENERATOR_CONTEXT'
 
