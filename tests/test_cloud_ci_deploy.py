@@ -119,6 +119,18 @@ class DeployJobImportTests(unittest.TestCase):
             job.verify_public_demo(None,manifest)
         self.assertTrue(job.result['anonymous_demo_verified'])
 
+    def test_changed_edge_html_is_rejected_with_route_status_and_hash_evidence(self):
+        import sys
+        sys.path.insert(0, str(ROOT/'scripts'))
+        cfg,vm=fixture();job=ci.Deployment(cfg,'b'*40,ROOT,ROOT/'unused',FakeCloud(vm))
+        manifest=dict(files=[dict(name='public-demo.html',sha256=ci.digest(b'original'))])
+        with patch.object(job,'public',return_value=(200,b'original plus an edge script')):
+            with self.assertRaisesRegex(ValueError,'READONLY_DEMO_ASSET_DRIFT'):
+                job.verify_public_demo(None,manifest)
+        check=job.result['public_asset_checks'][0]
+        self.assertEqual((check['route'],check['phase'],check['status']),('/demo/','origin',200))
+        self.assertNotEqual(check['observed_sha256'],check['expected_sha256'])
+
 
 class AdmissionTests(unittest.TestCase):
     def test_only_fixed_host_project_and_budget_are_accepted(self):
@@ -228,10 +240,17 @@ class FakeDeploymentTests(AdmissionTests):
         self.assertTrue(result['anonymous_demo_verified'])
         self.assertEqual([k for k,v in cloud.effects],['setMetadata','stop','start'])
 
-    def test_failed_cutover_restores_old_metadata_once_and_keeps_admission_history(self):
+    def test_failed_cutover_uses_inverse_startup_and_keeps_admission_history(self):
         result,cloud,old=self.run_owned(failure=True)
         self.assertEqual(result['status'],'FAILED')
-        self.assertEqual(cloud.vm['metadata']['items'],old['metadata']['items'])
+        actual={r['key']:r['value'] for r in cloud.vm['metadata']['items']}
+        expected={r['key']:r['value'] for r in old['metadata']['items']}
+        self.assertEqual({k:v for k,v in actual.items() if k!='startup-script'},
+                         {k:v for k,v in expected.items() if k!='startup-script'})
+        self.assertIn('/usr/local/libexec/reqlox-reviewed-return.py',actual['startup-script'])
+        self.assertNotEqual(actual['startup-script'],expected['startup-script'])
+        self.assertTrue(any(name.startswith('returns/') for name in cloud.uploads))
+        self.assertEqual(result['rollback'],'RESTORED_AND_HTTP_VERIFIED')
         self.assertEqual(sum(k=='start' for k,v in cloud.effects),2)
         self.assertTrue(any(name.startswith('deployments/') for name in cloud.uploads))
 

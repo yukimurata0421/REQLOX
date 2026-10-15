@@ -29,7 +29,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def send(self,status,raw=b'',kind='application/json; charset=utf-8',challenge=False):
         self.send_response(status)
-        for key,value in [('Content-Type',kind),('Content-Length',str(len(raw))),('Cache-Control','no-store'),
+        for key,value in [('Content-Type',kind),('Content-Length',str(len(raw))),('Cache-Control','no-store, no-transform'),
                           ('X-Content-Type-Options','nosniff'),('Referrer-Policy','no-referrer'),('Content-Security-Policy',CSP),
                           ('Strict-Transport-Security','max-age=86400')]:
             self.send_header(key,value)

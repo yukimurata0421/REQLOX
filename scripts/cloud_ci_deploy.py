@@ -5,6 +5,7 @@ import base64
 import copy
 import datetime
 import hashlib
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -104,6 +105,33 @@ def startup_script(config):
                  'chmod ' + mode + ' ' + path]
     rows += ['timeout 600 python3 -B /usr/local/libexec/reqlox-reviewed-rollout.py /etc/reqlox/reviewed-rollout.json']
     return '\n'.join(rows) + '\n'
+
+
+def rollback_config(host, old, failed, cfg, commit):
+    source = ROOT/'infra/gcp/runtime_rollback.py'
+    spec = importlib.util.spec_from_file_location('rollback_web_config', ROOT/'infra/gcp/public_web/web_bootstrap.py')
+    web = importlib.util.module_from_spec(spec); spec.loader.exec_module(web)
+    nginx = web.nginx_config(urllib.parse.urlsplit(cfg['origin']).hostname, cfg['assets_bucket'], True)
+    return dict(request_id='git-'+commit+'-return', physical_instance_id=cfg['instance_id'],
+        old_release_sha256=old['release_sha256'], failed_release_sha256=failed,
+        rollback_method_sha256=digest(source.read_bytes()), base_bootstrap_sha256=cfg['base_bootstrap_sha256'],
+        collector_unit_sha256=digest(host['collector_unit'].encode()),
+        instructions_sha256=digest(host['instructions'].encode()),
+        old_contract_sha256=digest(host['contract'].encode()),
+        old_runtime_sha256=digest((json.dumps(old, sort_keys=True)+'\n').encode()),
+        new_nginx_sha256=digest(nginx.encode()),
+        new_web_bootstrap_sha256=digest((ROOT/'infra/gcp/public_web/web_bootstrap.py').read_bytes()))
+
+
+def rollback_startup_script(config):
+    source = (ROOT/'infra/gcp/runtime_rollback.py').read_bytes()
+    require(digest(source) == config['rollback_method_sha256'], 'ROLLBACK_METHOD_DRIFT')
+    rows = ['#!/bin/bash', 'set -euo pipefail', 'umask 077']
+    for raw, path, mode in [(source, '/usr/local/libexec/reqlox-reviewed-return.py', '0755'),
+            (json.dumps(config, sort_keys=True).encode(), '/etc/reqlox/reviewed-return.json', '0600')]:
+        rows += ["printf '%s' " + base64.b64encode(raw).decode() + ' | base64 -d > ' + path, 'chmod '+mode+' '+path]
+    rows += ['timeout 300 python3 -B /usr/local/libexec/reqlox-reviewed-return.py /etc/reqlox/reviewed-return.json']
+    return '\n'.join(rows)+'\n'
 
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -276,6 +304,9 @@ class Deployment:
         rows = {r['name']: r for r in assets['files']}
         for route, name in ROUTES.items():
             status, raw = self.public(route, base=base, authenticate=False)
+            self.result.setdefault('public_asset_checks', []).append(dict(
+                phase='staged' if base else 'origin', route=route, status=status,
+                bytes=len(raw), observed_sha256=digest(raw), expected_sha256=rows[name]['sha256']))
             require(status == 200 and digest(raw) == rows[name]['sha256'], 'READONLY_DEMO_ASSET_DRIFT')
         require(self.public('/api/workspace/config', base=base, authenticate=False)[0] == 401,
                 'READONLY_DEMO_PRIVATE_API_EXPOSED')
@@ -294,8 +325,17 @@ class Deployment:
             and current['scheduling'] == before_vm['scheduling']
             and [d['source'] for d in current['disks']] == [d['source'] for d in before_vm['disks']],
             'ROLLBACK_IDENTITY_DRIFT')
+        items = {r['key']:r['value'] for r in before_vm['metadata']['items']}
+        old = json.loads(items['reqlox-runtime'])
+        current_items = {r['key']:r['value'] for r in current['metadata']['items']}
+        failed = json.loads(current_items['reqlox-runtime'])['release_sha256']
+        config = rollback_config(host_before, old, failed, self.cfg, self.commit)
+        self.cloud.upload(self.cfg['releases_bucket'], 'returns/'+self.commit+'.json',
+                          json.dumps(config, sort_keys=True).encode(), 'application/json')
+        items['startup-script'] = rollback_startup_script(config)
+        self.result['rollback_method_sha256'] = config['rollback_method_sha256']
         self.cloud.poll(self.cloud.api(self.vm_url+'/setMetadata', 'POST', dict(
-            fingerprint=current['metadata']['fingerprint'], items=before_vm['metadata']['items'])))
+            fingerprint=current['metadata']['fingerprint'], items=[dict(key=k,value=v) for k,v in items.items()])))
         if current['status'] != 'TERMINATED':
             self.cloud.poll(self.cloud.api(self.vm_url+'/stop', 'POST', {}))
         self.cloud.poll(self.cloud.api(self.vm_url+'/start', 'POST', {}))
@@ -400,8 +440,10 @@ class Deployment:
             if self.vm_changed:
                 try:
                     self.restore(before_vm, old_revision, host, workspace['history'])
-                except BaseException:
+                except BaseException as rollback_error:
                     self.result['rollback'] = 'OUTCOME_UNKNOWN_STOP_NO_RETRY'
+                    self.result['rollback_error_type'] = type(rollback_error).__name__
+                    self.result['rollback_reason'] = str(rollback_error)[:500]
             raise
         finally:
             self.save()

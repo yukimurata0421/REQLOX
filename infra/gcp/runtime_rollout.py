@@ -108,6 +108,8 @@ def main(config):
              '/usr/local/libexec/reqlox-web-bootstrap.py')
     for index, name in enumerate(names):
         data = protected(name); out = backup/str(index); out.write_bytes(data); out.chmod(0o600)
+    (backup/'manifest.json').write_text(json.dumps(dict(sha256=[sha(protected(backup/str(i)))
+        for i in range(len(names))])))
     (backup/'site-pointer').write_text(str(old_site))
     cutover = False
     try:

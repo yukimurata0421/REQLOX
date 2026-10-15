@@ -175,7 +175,7 @@ class OwnerGatewayTests(unittest.TestCase):
             with self.request('/api/config',{'Authorization':auth}) as response:
                 self.assertEqual(response.status,401)
                 self.assertIn('Basic',response.headers['WWW-Authenticate'])
-                self.assertEqual(response.headers['Cache-Control'],'no-store')
+                self.assertEqual(response.headers['Cache-Control'],'no-store, no-transform')
 
     def test_cross_origin_request_is_rejected_even_with_valid_owner_credentials(self):
         with self.request('/api/config',{'Authorization':self.server.authorization.decode(),'Origin':'https://evil.example.dev'}) as response:
@@ -212,6 +212,7 @@ class OwnerGatewayTests(unittest.TestCase):
             for path in ROUTES:
                 with self.request(path,{'Cookie':'private-cookie','X-REQLOX-Token':'private-token'}) as response:
                     self.assertEqual(response.status,200)
+                    self.assertEqual(response.headers['Cache-Control'],'no-store, no-transform')
                     self.assertNotIn('WWW-Authenticate',response.headers)
             self.assertEqual(len(observed),len(ROUTES))
             self.assertTrue(all(r.header_items()==[] for r in observed))

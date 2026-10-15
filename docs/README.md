@@ -23,7 +23,7 @@ They are a usage and inspection guide, not a transcript of development history.
 | Reproduce code/spec-to-System-IR review | [System IR reproduction](system-ir-reproduction.md) → [Validation record](../publication/system-ir-reproduction.json) |
 | Read the existing repair demo | [Getting started](getting-started.md) → [Recorded demo delivery](../publication/recorded-demo-tour.json) |
 | Inspect automatic deployment | [Continuous deployment](continuous-deployment.md) → [Workflow](../.github/workflows/check.yml) |
-| Inspect the hosted revision | [Hosted deployment](hosted-deployment.md) → [Current UI delivery record](../publication/hosted-ui-record-history.json) |
+| Inspect the hosted revision | [Hosted deployment](hosted-deployment.md) → [Deployment recovery](deployment-recovery-20261015.md) → [UI delivery record](../publication/hosted-ui-record-history.json) |
 | Check current delivery scope | [Public scope](minimal-implementation-plan.md) → [Current local validation](../publication/knowledge-port.json) |
 
 ## Inspect the implementation
