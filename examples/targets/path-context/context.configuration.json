@@ -1,0 +1,44 @@
+{
+  "contracts": {},
+  "path_context": {
+    "profile": "DOCUMENTED_SYNC_PATH_CONTEXT_V1",
+    "documents": {
+      "README.md": "# Owned path context example\n\nThe file is removed when you leave the `with` context.\n\n```python\nfrom pkg import Resource\nwith Resource() as path:\n    path.write_text('data')\n```\n\nThis is an included owned control. Its normal-exit statement defines the finite\nrelease requirement; it makes no cleanup-error retry guarantee.\n"
+    },
+    "recipe": {
+      "binding": {
+        "profile": "DOCUMENTED_SYNC_PATH_CONTEXT_V1",
+        "module": "pkg",
+        "symbol": "Resource",
+        "args": [],
+        "kwargs": {},
+        "path_argument": {
+          "placement": "TEMPFILE_DEFAULT",
+          "keyword": null,
+          "value_type": "STR"
+        }
+      },
+      "document": "README.md",
+      "document_sha256": "77c4d994055e6969bab53a82eee3123e43caa7acab7d87813712a079f5d92ddc",
+      "span": {
+        "start": 96,
+        "end": 174,
+        "sha256": "3b083373b14bb4297bb4b177006aa835fb8ee90c3a80efe961fd2b5ab57b82dd"
+      },
+      "example_sha256": "3b083373b14bb4297bb4b177006aa835fb8ee90c3a80efe961fd2b5ab57b82dd",
+      "original_path_literal_retained_in_private_document": true
+    },
+    "contract": {
+      "id": "documented.path-context-release.v1",
+      "scope": "DOCUMENTED_WITH_EXIT_ONLY",
+      "evidence": {
+        "document": "README.md",
+        "span": {
+          "start": 30,
+          "end": 84,
+          "sha256": "f180034b3169162ba861cbf7747af699eb1b45908dd32a079535ee1c671af252"
+        }
+      }
+    }
+  }
+}

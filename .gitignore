@@ -9,6 +9,7 @@ dist/
 corpus/
 database/
 targets/
+!examples/targets/
 *.log
 .env
 model-scope.json

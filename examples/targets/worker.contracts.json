@@ -1,0 +1,12 @@
+{
+  "contracts": {
+    "async_resource": {
+      "id": "owned.async-release.v1",
+      "basis": "Owner requires resource release, preservation of work results and exceptions, and cancellation-safe cleanup.",
+      "scope": "This explicitly selected owned worker snapshot only"
+    }
+  },
+  "maximum_probes": 3,
+  "source_texts": {},
+  "hypotheses": []
+}

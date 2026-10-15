@@ -1,0 +1,10 @@
+{
+  "schema": "reqlox.target.v1",
+  "name": "owned-path-context",
+  "repositories": {
+    "resource": {
+      "path": "repository",
+      "configuration": "context.configuration.json"
+    }
+  }
+}

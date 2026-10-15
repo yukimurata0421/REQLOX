@@ -1,0 +1,14 @@
+{
+  "schema": "reqlox.target.v1",
+  "name": "owned-system",
+  "repositories": {
+    "api": {
+      "path": "api",
+      "configuration": "api.contracts.json"
+    },
+    "worker": {
+      "path": "worker",
+      "configuration": "worker.contracts.json"
+    }
+  }
+}
